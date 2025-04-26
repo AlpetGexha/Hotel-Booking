@@ -43,10 +43,11 @@ When providing code examples or explanations:
 - Prefer **Eloquent ORM** for standard queries.
   - Use **Query Builder** for performance-critical or complex queries.
   - Use **raw SQL** only when absolutely necessary.
-
+- use @forelse and @empy instead @foreach and @if
 ---
 
 ## Code Conventions
+
 
 - In **migrations**:
   - Use `foreignIdFor()` instead of `foreignId()` for better model binding.
