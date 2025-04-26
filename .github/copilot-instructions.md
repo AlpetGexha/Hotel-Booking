@@ -36,7 +36,7 @@ When providing code examples or explanations:
 - Use PHP **8.1+ features** (e.g., typed properties, enums, match expressions).
 - Leverage Laravel helpers such as `Str::`, `Arr::`, and `optional()`.
 - Follow Laravel’s **directory structure**, **naming conventions**, and **MVC architecture**.
-- Extract domain logic into **Action classes** when appropriate.
+- Extract domain logic into **Action classes** when appropriate the method need to be named handle().
 - Handle errors using Laravel's **exception handling** and **custom exceptions**.
 - Use `try-catch` blocks for **predictable exception flows**.
 - Validate requests with **Form Request** classes.
