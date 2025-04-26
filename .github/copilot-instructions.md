@@ -55,7 +55,6 @@ When providing code examples or explanations:
 - For **enum fields**:
   - Define enums in `App\Enum\YourEnumName`.
   - Always use enum class values in migrations, models, and validation instead of raw strings.
-
 ---
 
 ## Testing & Quality
@@ -75,3 +74,7 @@ When providing code examples or explanations:
 - For APIs:
   - Use **Eloquent API Resources** for clean responses.
   - Support **API versioning**
+
+
+# Others 
+- Dont remove the namespaces even if they are not used in the code.

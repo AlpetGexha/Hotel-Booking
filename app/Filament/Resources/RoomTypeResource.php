@@ -1,0 +1,154 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Enum\RoomAmenity;
+use App\Filament\Resources\RoomTypeResource\Pages;
+use App\Filament\Resources\RoomTypeResource\RelationManagers;
+use App\Models\RoomType;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+
+class RoomTypeResource extends Resource
+{
+    protected static ?string $model = RoomType::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-home';
+
+    protected static ?string $navigationLabel = 'Room Types';
+
+    protected static ?int $navigationSort = 1;
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Section::make('Room Type Details')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->maxLength(255),
+
+                        Forms\Components\TextInput::make('price_per_night')
+                            ->required()
+                            ->numeric()
+                            ->prefix('$')
+                            ->minValue(0)
+                            ->step(0.01),
+
+                        Forms\Components\TextInput::make('capacity')
+                            ->required()
+                            ->numeric()
+                            ->minValue(1)
+                            ->maxValue(10)
+                            ->default(2),
+
+                        Forms\Components\Textarea::make('description')
+                            ->rows(3)
+                            ->columnSpanFull(),
+                    ])->columns(2),
+
+                Forms\Components\Section::make('Amenities')
+                    ->schema([
+                        Forms\Components\CheckboxList::make('amenities')
+                            ->options(RoomAmenity::options())
+                            ->columns(2)
+                            ->searchable(),
+                    ]),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('price_per_night')
+                    ->money('USD')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('capacity')
+                    ->numeric()
+                    ->sortable()
+                    ->label('Max Guests'),
+
+                Tables\Columns\TextColumn::make('rooms_count')
+                    ->counts('rooms')
+                    ->label('# Rooms')
+                    ->sortable(),
+            ])
+            ->filters([
+                Tables\Filters\Filter::make('price_range')
+                    ->form([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('price_from')
+                                    ->label('Min price')
+                                    ->numeric()
+                                    ->placeholder('Min price'),
+                                Forms\Components\TextInput::make('price_to')
+                                    ->label('Max price')
+                                    ->numeric()
+                                    ->placeholder('Max price'),
+                            ]),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['price_from'],
+                                fn (Builder $query, $price): Builder => $query->where('price_per_night', '>=', $price),
+                            )
+                            ->when(
+                                $data['price_to'],
+                                fn (Builder $query, $price): Builder => $query->where('price_per_night', '<=', $price),
+                            );
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+
+                        if ($data['price_from'] ?? null) {
+                            $indicators['price_from'] = 'Min price: $' . number_format($data['price_from']);
+                        }
+
+                        if ($data['price_to'] ?? null) {
+                            $indicators['price_to'] = 'Max price: $' . number_format($data['price_to']);
+                        }
+
+                        return $indicators;
+                    }),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\RoomsRelationManager::class,
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListRoomTypes::route('/'),
+            'create' => Pages\CreateRoomType::route('/create'),
+            'edit' => Pages\EditRoomType::route('/{record}/edit'),
+        ];
+    }
+}
