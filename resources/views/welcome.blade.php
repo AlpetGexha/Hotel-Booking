@@ -3,7 +3,7 @@
     <x-slot:metaDescription>Luxury Hotel Booking - Find your perfect stay</x-slot:metaDescription>
 
     <!-- Hero Section with Background Image -->
-    <div class="relative bg-cover bg-center h-[70vh] -mt-24 mb-24" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')">
+    <div class="relative bg-cover bg-center h-[70vh] -mt-24 mb-24" style="background-image: url('{{ asset('images/hotel-bg.jpg') }}');">
         <div class="absolute inset-0 bg-black bg-opacity-50"></div>
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
             <div class="text-center max-w-3xl mx-auto">
