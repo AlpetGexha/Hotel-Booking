@@ -9,6 +9,8 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/search-rooms', SearchRoomsController::class)->name('search.rooms');
+
+
 Route::get('/booking', function() {
     // This route will be implemented later
     return 'Booking page coming soon';
