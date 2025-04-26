@@ -44,10 +44,10 @@ class RoomTypeFactory extends Factory
                     'Penthouse' => 65,
                     default => 20
                 };
-                
+
                 // Add extra space based on capacity (5 sq meters per person above 1)
                 $capacityAdjustment = ($attributes['capacity'] - 1) * 5;
-                
+
                 return $baseSize + $capacityAdjustment;
             },
         ];

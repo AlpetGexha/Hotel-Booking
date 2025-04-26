@@ -222,7 +222,7 @@
                         <!-- Room Image -->
                         <div class="h-48 bg-gray-300 dark:bg-gray-700">
                             <img
-                                src="https://source.unsplash.com/random/800x600/?hotel,room,{{ $loop->index }}"
+                                src="{{ $roomType->thumbnailUrl }}"
                                 alt="{{ $roomType->name }}"
                                 class="w-full h-full object-cover"
                             >
@@ -240,7 +240,7 @@
                                     </svg>
                                     <span>{{ $roomType->capacity }} {{ Str::plural('Person', $roomType->capacity) }}</span>
                                 </div>
-                                
+
                                 <!-- Room Size -->
                                 @if($roomType->size)
                                 <div class="flex items-center text-gray-600 dark:text-gray-400">

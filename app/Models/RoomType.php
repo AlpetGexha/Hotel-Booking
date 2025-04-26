@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @property int $id
@@ -18,9 +21,10 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
-class RoomType extends Model
+class RoomType extends Model implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -35,6 +39,54 @@ class RoomType extends Model
         'capacity' => 'integer',
         'size' => 'integer',
     ];
+
+    /**
+     * Register media collections and conversions.
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('room_photo')
+            ->useFallbackUrl("https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80")
+            ->singleFile();
+    }
+
+    /**
+     * Register media conversions.
+     *
+     * @param Media|null $media
+     */
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumbnail')
+            ->width(420)
+            ->height(280)
+            ->sharpen(10)
+            ->useFallbackUrl('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')
+            ->nonQueued();
+
+        $this->addMediaConversion('small')
+            ->width(320)
+            ->height(240)
+            ->nonQueued();
+    }
+
+    /**
+     * Get the room photo URL.
+     */
+    public function getPhotoUrlAttribute(): ?string
+    {
+        return $this->getFirstMediaUrl('room_photo', 'thumbnail');
+    }
+
+    /**
+     * Get the thumbnail URL with fallback to placeholder.
+     */
+    public function getThumbnailUrlAttribute(): string
+    {
+        return $this->getFirstMediaUrl('room_photo', 'thumbnail');
+    }
+
+    //https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80
 
     /**
      * Get the rooms for this room type.
@@ -58,7 +110,7 @@ class RoomType extends Model
     protected function formattedSize(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->size ? "{$this->size} m²" : null,
+            get: fn() => $this->size ? "{$this->size} m²" : null,
         );
     }
 }

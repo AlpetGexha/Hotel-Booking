@@ -12,6 +12,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 
 class RoomTypeResource extends Resource
 {
@@ -47,7 +49,7 @@ class RoomTypeResource extends Resource
                             ->minValue(1)
                             ->maxValue(10)
                             ->default(2),
-                            
+
                         Forms\Components\TextInput::make('size')
                             ->numeric()
                             ->minValue(1)
@@ -59,6 +61,18 @@ class RoomTypeResource extends Resource
 
                         Forms\Components\Textarea::make('description')
                             ->rows(3)
+                            ->columnSpanFull(),
+
+                        SpatieMediaLibraryFileUpload::make('room_photo')
+                            ->collection('room_photo')
+                            ->maxFiles(1)
+                            ->image()
+                            ->imageEditor()
+                            ->imageResizeMode('cover')
+                            ->imageCropAspectRatio('3:2')
+                            ->imageResizeTargetWidth('1200')
+                            ->imageResizeTargetHeight('800')
+                            ->helperText('Upload a high-quality photo of the room.')
                             ->columnSpanFull(),
                     ])->columns(2),
 
@@ -83,6 +97,13 @@ class RoomTypeResource extends Resource
                     ->searchable()
                     ->sortable(),
 
+                // SpatieMediaLibraryImageColumn::make('room_photo')
+                    // ->collection('room_photo')
+                    // ->conversion('thumbnail')
+                    // ->square()
+                    // ->defaultImageUrl('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=420&h=280&q=80')
+                    // ->label('Photo'),
+
                 Tables\Columns\TextColumn::make('price_per_night')
                     ->money('USD')
                     ->sortable(),
@@ -91,7 +112,7 @@ class RoomTypeResource extends Resource
                     ->numeric()
                     ->sortable()
                     ->label('Max Guests'),
-                    
+
                 Tables\Columns\TextColumn::make('size')
                     ->numeric()
                     ->sortable()
