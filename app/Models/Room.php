@@ -29,4 +29,18 @@ class Room extends Model
     {
         return $this->belongsTo(RoomType::class);
     }
+
+    /**
+     * Get the bookings for this room.
+     */
+    public function bookings()
+    {
+        // return $this->hasMany(Booking::class);
+    }
+
+    // available
+    public function scopeAvailable($query)
+    {
+        return $query;
+    }
 }
