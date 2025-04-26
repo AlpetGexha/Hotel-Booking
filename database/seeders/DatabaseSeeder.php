@@ -19,7 +19,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        // First seed the room types
+        // First seed the amenities
+        $this->call(AmenitySeeder::class);
+
+        // Then seed the room types (which now depend on amenities)
         $this->call(RoomTypeSeeder::class);
 
         // Then seed the rooms (which depend on room types)

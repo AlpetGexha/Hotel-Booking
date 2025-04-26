@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Enum\RoomAmenity;
 use App\Filament\Resources\RoomTypeResource\Pages;
 use App\Filament\Resources\RoomTypeResource\RelationManagers;
+use App\Models\Amenity;
 use App\Models\RoomType;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -56,9 +56,11 @@ class RoomTypeResource extends Resource
                 Forms\Components\Section::make('Amenities')
                     ->schema([
                         Forms\Components\CheckboxList::make('amenities')
-                            ->options(RoomAmenity::options())
-                            ->columns(2)
-                            ->searchable(),
+                            ->options(Amenity::all()->pluck('name', 'id'))
+                            ->columns(3)
+                            ->searchable()
+                            ->gridDirection('row')
+                            ->helperText('Select the amenities available in this room type'),
                     ]),
             ]);
     }
@@ -79,6 +81,11 @@ class RoomTypeResource extends Resource
                     ->numeric()
                     ->sortable()
                     ->label('Max Guests'),
+
+                Tables\Columns\TextColumn::make('amenities_count')
+                    ->counts('amenities')
+                    ->label('# Amenities')
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('rooms_count')
                     ->counts('rooms')
@@ -140,6 +147,7 @@ class RoomTypeResource extends Resource
     {
         return [
             RelationManagers\RoomsRelationManager::class,
+            RelationManagers\AmenitiesRelationManager::class,
         ];
     }
 

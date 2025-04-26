@@ -2,8 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Enum\RoomAmenity;
+use App\Models\Amenity;
 use App\Models\RoomType;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Collection;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\RoomType>
@@ -18,11 +21,68 @@ class RoomTypeFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->unique()->randomElement(['Standard', 'Deluxe', 'Suite', 'Executive', 'Penthouse', 'Family Room', 'Single Room', 'Double Room']),
+            'name' => fake()->unique()->randomElement([
+                'Standard',
+                'Deluxe',
+                'Suite',
+                'Executive',
+                'Penthouse',
+                'Family Room',
+                'Single Room',
+                'Double Room'
+            ]),
             'description' => fake()->paragraph(),
             'price_per_night' => fake()->randomFloat(2, 100, 1000),
             'capacity' => fake()->numberBetween(1, 6),
-            'amenities' => fake()->randomElements(['WiFi', 'TV', 'Mini Bar', 'Air Conditioning', 'Desk', 'Safe', 'Bathtub', 'Shower', 'Balcony', 'Ocean View'], fake()->numberBetween(3, 6)),
         ];
+    }
+
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function (RoomType $roomType) {
+            // Get a random subset of amenities (between 3 and 8)
+            // Using a static cache to reduce database queries when creating multiple room types
+            static $amenities = null;
+
+            if ($amenities === null) {
+                $amenities = Amenity::all(['id'])->pluck('id')->toArray();
+            }
+
+            // Randomly select a subset of amenity IDs
+            $randomCount = fake()->numberBetween(3, min(8, count($amenities)));
+            $selectedAmenityIds = collect($amenities)
+                ->random($randomCount)
+                ->toArray();
+
+            // Attach the amenities to the room type (more efficient than loading full models)
+            $roomType->amenities()->attach($selectedAmenityIds);
+        });
+    }
+
+    /**
+     * Indicate that the room type should have specific amenities.
+     *
+     * @param array<int, RoomAmenity|string> $amenities
+     * @return static
+     */
+    public function withAmenities(array $amenities): static
+    {
+        return $this->afterCreating(function (RoomType $roomType) use ($amenities) {
+            // Convert RoomAmenity enum cases to their string values if necessary
+            $amenityNames = collect($amenities)->map(function ($amenity) {
+                return $amenity instanceof RoomAmenity ? $amenity->value : $amenity;
+            })->toArray();
+
+            // Find amenities by name
+            $amenityIds = Amenity::whereIn('name', $amenityNames)->pluck('id');
+
+            // Attach the specific amenities
+            $roomType->amenities()->attach($amenityIds);
+        });
     }
 }

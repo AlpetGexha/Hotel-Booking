@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class RoomType extends Model
@@ -15,11 +16,9 @@ class RoomType extends Model
         'description',
         'price_per_night',
         'capacity',
-        'amenities',
     ];
 
     protected $casts = [
-        'amenities' => 'array',
         'price_per_night' => 'decimal:2',
     ];
 
@@ -29,5 +28,9 @@ class RoomType extends Model
     public function rooms(): HasMany
     {
         return $this->hasMany(Room::class);
+    }
+    public function amenities(): BelongsToMany
+    {
+        return $this->belongsToMany(Amenity::class);
     }
 }
