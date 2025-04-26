@@ -56,6 +56,7 @@ class RoomTypeResource extends Resource
                 Forms\Components\Section::make('Amenities')
                     ->schema([
                         Forms\Components\CheckboxList::make('amenities')
+                            ->relationship('amenities', 'name')
                             ->options(Amenity::all()->pluck('name', 'id'))
                             ->columns(3)
                             ->searchable()
