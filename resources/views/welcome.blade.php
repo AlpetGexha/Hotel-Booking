@@ -79,6 +79,7 @@
                                     id="check_in_date"
                                     name="check_in_date"
                                     value="{{ \Carbon\Carbon::tomorrow()->format('Y-m-d') }}"
+                                    min="{{ \Carbon\Carbon::today()->format('Y-m-d') }}"
                                     class="block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-amber-500 focus:ring-amber-500"
                                 >
                             </div>
@@ -91,6 +92,7 @@
                                     id="check_out_date"
                                     name="check_out_date"
                                     value="{{ \Carbon\Carbon::tomorrow()->addDays(5)->format('Y-m-d') }}"
+                                    min="{{ \Carbon\Carbon::tomorrow()->addDay()->format('Y-m-d') }}"
                                     class="block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-amber-500 focus:ring-amber-500"
                                 >
                             </div>

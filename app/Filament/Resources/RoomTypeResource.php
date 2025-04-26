@@ -47,6 +47,15 @@ class RoomTypeResource extends Resource
                             ->minValue(1)
                             ->maxValue(10)
                             ->default(2),
+                            
+                        Forms\Components\TextInput::make('size')
+                            ->numeric()
+                            ->minValue(1)
+                            ->maxValue(500)
+                            ->suffix('m²')
+                            ->hint('Room size in square meters')
+                            ->helperText('Enter the room size in square meters')
+                            ->placeholder('e.g., 25'),
 
                         Forms\Components\Textarea::make('description')
                             ->rows(3)
@@ -82,6 +91,13 @@ class RoomTypeResource extends Resource
                     ->numeric()
                     ->sortable()
                     ->label('Max Guests'),
+                    
+                Tables\Columns\TextColumn::make('size')
+                    ->numeric()
+                    ->sortable()
+                    ->suffix(' m²')
+                    ->placeholder('Not specified')
+                    ->label('Room Size'),
 
                 Tables\Columns\TextColumn::make('amenities_count')
                     ->counts('amenities')

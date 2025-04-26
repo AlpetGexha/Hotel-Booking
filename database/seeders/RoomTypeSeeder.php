@@ -27,6 +27,7 @@ class RoomTypeSeeder extends Seeder
                 'description' => 'Comfortable room with all basic amenities for a pleasant stay.',
                 'price_per_night' => 120.00,
                 'capacity' => 2,
+                'size' => 25,
                 'amenities' => [
                     RoomAmenity::WIFI,
                     RoomAmenity::TV,
@@ -40,6 +41,7 @@ class RoomTypeSeeder extends Seeder
                 'description' => 'Spacious room with premium amenities and extra comfort.',
                 'price_per_night' => 180.00,
                 'capacity' => 2,
+                'size' => 35,
                 'amenities' => [
                     RoomAmenity::WIFI,
                     RoomAmenity::SMART_TV,
@@ -55,6 +57,7 @@ class RoomTypeSeeder extends Seeder
                 'description' => 'Luxury suite with separate living area and additional amenities.',
                 'price_per_night' => 300.00,
                 'capacity' => 3,
+                'size' => 60,
                 'amenities' => [
                     RoomAmenity::WIFI,
                     RoomAmenity::SMART_TV,
@@ -72,6 +75,7 @@ class RoomTypeSeeder extends Seeder
                 'description' => 'Spacious room designed for families with extra beds and family-friendly amenities.',
                 'price_per_night' => 250.00,
                 'capacity' => 4,
+                'size' => 55,
                 'amenities' => [
                     RoomAmenity::WIFI,
                     RoomAmenity::TV,
@@ -87,6 +91,7 @@ class RoomTypeSeeder extends Seeder
                 'description' => 'Luxurious top-floor accommodation with panoramic views and exclusive amenities.',
                 'price_per_night' => 500.00,
                 'capacity' => 4,
+                'size' => 100,
                 'amenities' => [
                     RoomAmenity::WIFI,
                     RoomAmenity::SMART_TV,
@@ -112,6 +117,7 @@ class RoomTypeSeeder extends Seeder
                     'description' => $data['description'],
                     'price_per_night' => $data['price_per_night'],
                     'capacity' => $data['capacity'],
+                    'size' => $data['size'] ?? null,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];

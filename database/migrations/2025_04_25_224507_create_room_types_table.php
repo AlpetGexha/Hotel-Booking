@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('price_per_night', 10, 2);
             $table->integer('capacity')->default(2);
+            $table->integer('size')->nullable();
             // $table->json('amenities')->nullable();
             $table->timestamps();
         });

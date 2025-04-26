@@ -34,6 +34,22 @@ class RoomTypeFactory extends Factory
             'description' => fake()->paragraph(),
             'price_per_night' => fake()->randomFloat(2, 100, 1000),
             'capacity' => fake()->numberBetween(1, 6),
+            'size' => function (array $attributes) {
+                // Set size based on room type and capacity
+                $baseSize = match($attributes['name']) {
+                    'Standard', 'Single Room' => 15,
+                    'Deluxe', 'Double Room' => 25,
+                    'Suite', 'Family Room' => 35,
+                    'Executive' => 45,
+                    'Penthouse' => 65,
+                    default => 20
+                };
+                
+                // Add extra space based on capacity (5 sq meters per person above 1)
+                $capacityAdjustment = ($attributes['capacity'] - 1) * 5;
+                
+                return $baseSize + $capacityAdjustment;
+            },
         ];
     }
 

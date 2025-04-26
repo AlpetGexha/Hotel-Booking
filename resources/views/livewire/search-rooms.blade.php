@@ -234,12 +234,22 @@
 
                             <div class="flex items-center mb-4">
                                 <!-- Room Capacity -->
-                                <div class="flex items-center text-gray-600 dark:text-gray-400">
+                                <div class="flex items-center text-gray-600 dark:text-gray-400 mr-4">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
                                     <span>{{ $roomType->capacity }} {{ Str::plural('Person', $roomType->capacity) }}</span>
                                 </div>
+                                
+                                <!-- Room Size -->
+                                @if($roomType->size)
+                                <div class="flex items-center text-gray-600 dark:text-gray-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
+                                    </svg>
+                                    <span>{{ $roomType->formatted_size }}</span>
+                                </div>
+                                @endif
                             </div>
 
                             <!-- Amenities -->
