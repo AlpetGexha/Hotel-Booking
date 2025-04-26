@@ -1,7 +1,7 @@
 @props(['roomType', 'checkInDate', 'checkOutDate', 'guests', 'nights'])
 
 <div
-    class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-xl">
+    class="bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-xl">
     <!-- Room Image with interactive hover effect -->
     <div class="relative h-56 overflow-hidden group">
         <img src="{{ $roomType->getFirstMediaUrl('room_photo', 'thumbnail') }}" alt="{{ $roomType->name }}"
@@ -35,23 +35,23 @@
     <!-- Room Details -->
     <div class="p-5 flex-grow flex flex-col">
         <div class="flex justify-between items-start mb-4">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-white">{{ $roomType->name }}</h2>
+            <h2 class="text-xl font-bold text-slate-800 dark:text-white">{{ $roomType->name }}</h2>
             <div class="text-right">
                 <p class="text-indigo-600 dark:text-indigo-400 font-bold">
                     ${{ number_format($roomType->price_per_night, 2) }}</p>
-                <span class="text-xs text-gray-500 dark:text-gray-400">per night</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400">per night</span>
             </div>
         </div>
 
         <!-- Room Description -->
-        <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+        <p class="text-slate-600 dark:text-slate-400 mb-4 line-clamp-3">
             {{ $roomType->description ?? 'Experience luxury and comfort in our ' . Str::lower($roomType->name) . '. Perfect for your stay with all the amenities you need.' }}
         </p>
 
         <!-- Amenities -->
         @if ($roomType->amenities->count() > 0)
             <div class="mb-4 mt-auto">
-                <h3 class="text-xs font-medium uppercase text-gray-500 dark:text-gray-400 mb-2">Amenities</h3>
+                <h3 class="text-xs font-medium uppercase text-slate-500 dark:text-slate-400 mb-2">Amenities</h3>
                 <div class="flex flex-wrap gap-2">
                     @foreach ($roomType->amenities as $amenity)
                         <span
@@ -70,7 +70,7 @@
                             @elseif(Str::contains(Str::lower($amenity->name), ['living', 'room', 'space']))
                                 bg-lime-100 text-lime-800 dark:bg-lime-900 dark:text-lime-200
                             @else
-                                bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 @endif">
+                                bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-200 @endif">
                             {{ $amenity->name }}
                         </span>
                     @endforeach
@@ -78,7 +78,7 @@
                     {{-- @if ($roomType->amenities->count() > 5)
                         <span
                             x-data="{ showAllAmenities: false }"
-                            class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 cursor-pointer"
+                            class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-200 cursor-pointer"
                             @click="showAllAmenities = !showAllAmenities"
                             x-on:click.away="showAllAmenities = false"
                         >
@@ -89,7 +89,7 @@
                             <div
                                 x-show="showAllAmenities"
                                 x-transition
-                                class="absolute z-10 mt-2 p-3 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700"
+                                class="absolute z-10 mt-2 p-3 bg-white dark:bg-slate-800 rounded-md shadow-lg border border-slate-200 dark:border-slate-700"
                                 style="min-width: 200px"
                             >
                                 <div class="grid grid-cols-1 gap-1">
@@ -107,12 +107,12 @@
         @endif
 
         <!-- Price calculation and Book Now -->
-        <div class="pt-4 mt-auto border-t border-gray-200 dark:border-gray-700">
+        <div class="pt-4 mt-auto border-t border-slate-200 dark:border-slate-700">
             <div class="flex justify-between items-center">
                 <div>
-                    <span class="text-xs text-gray-500 dark:text-gray-400">Total for {{ $nights }}
+                    <span class="text-xs text-slate-500 dark:text-slate-400">Total for {{ $nights }}
                         {{ Str::plural('night', $nights) }}</span>
-                    <p class="font-bold text-gray-900 dark:text-white">
+                    <p class="font-bold text-slate-900 dark:text-white">
                         ${{ number_format($roomType->price_per_night * $nights, 2) }}</p>
                 </div>
 

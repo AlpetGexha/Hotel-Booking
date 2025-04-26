@@ -17,7 +17,7 @@
         <!-- Extra Styles -->
         {{ $styles ?? '' }}
     </head>
-    <body class="antialiased bg-gray-50 dark:bg-gray-900">
+    <body class="antialiased bg-slate-50 dark:bg-slate-900">
         <div class="min-h-screen flex flex-col">
             <x-partials.header />
 
