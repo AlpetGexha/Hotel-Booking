@@ -13,6 +13,15 @@
         "fully_qualified_strict_types": true,
         "blank_line_between_import_groups": true,
         "mb_str_functions": true,
+        "modernize_types_casting": true,
+        "new_with_parentheses": false,
+        "no_superfluous_elseif": true,
+        "no_useless_else": true,
+        "no_multiple_statements_per_line": true,
+        "self_accessor": true,
+        "self_static_accessor": true,
+        "strict_comparison": true,
+        "visibility_required": true,
 
         "concat_space": {
             "spacing": "one"
@@ -78,6 +87,8 @@
                 "method_private"
             ],
             "sort_algorithm": "none"
-        }
+        },
+        "ordered_interfaces": true,
+        "ordered_traits": true
     }
 }
