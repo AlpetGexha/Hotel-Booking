@@ -29,7 +29,7 @@
                 $isViewable = in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf']);
             @endphp
 
-            @if($isViewable)
+            @if ($isViewable)
                 <a
                     href="{{ $media->getUrl() }}"
                     target="_blank"

@@ -43,8 +43,18 @@ class User extends Authenticatable implements FilamentUser
     {
         return Str::of($this->name)
             ->explode(' ')
-            ->map(fn(string $name) => Str::of($name)->substr(0, 1))
+            ->map(fn (string $name) => Str::of($name)->substr(0, 1))
             ->implode('');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->email === 'test@example.com';
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->isAdmin();
     }
 
     /**
@@ -58,15 +68,5 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function isAdmin(): bool
-    {
-        return $this->email === 'test@example.com';
-    }
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return $this->isAdmin();
     }
 }

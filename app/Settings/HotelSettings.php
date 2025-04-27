@@ -17,7 +17,6 @@ class HotelSettings extends Settings
     public ?string $github;
     public ?string $cv;
 
-
     public static function group(): string
     {
         return 'hotel';

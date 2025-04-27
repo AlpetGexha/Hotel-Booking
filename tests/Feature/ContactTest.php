@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Contact;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 
@@ -30,7 +29,7 @@ test('contact form can be submitted successfully', function () {
     $this->assertDatabaseHas('contacts', [
         'email' => 'test@example.com',
         'subject' => 'Test Subject',
-        'message' => 'This is a test message.'
+        'message' => 'This is a test message.',
     ]);
 });
 

@@ -15,7 +15,7 @@ return [
     'settings_path' => app_path('Settings'),
 
     /*
-     * In these directories settings migrations will be stored and ran when migrating. 
+     * In these directories settings migrations will be stored and ran when migrating.
      */
     'migrations_paths' => [
         database_path('settings'),

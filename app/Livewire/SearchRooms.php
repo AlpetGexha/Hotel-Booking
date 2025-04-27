@@ -109,7 +109,7 @@ class SearchRooms extends Component
         $this->alternatives = null;
 
         // Create instances with dependency injection
-        $availableRoomAction = new AvaibleRoomAction();
+        $availableRoomAction = new AvaibleRoomAction;
         $searchAction = new SearchRoomsAction($availableRoomAction);
 
         // Get search results
@@ -117,7 +117,7 @@ class SearchRooms extends Component
             $this->checkInDate,
             $this->checkOutDate,
             $this->guests,
-            !empty($this->selectedAmenities) ? $this->selectedAmenities : null,
+            ! empty($this->selectedAmenities) ? $this->selectedAmenities : null,
             $this->minPrice,
             $this->maxPrice
         );

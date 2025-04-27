@@ -51,7 +51,7 @@
             <div>
                 <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
                 <div class="flex space-x-4">
-                    @if($hotelSettings->facebook)
+                    @if ($hotelSettings->facebook)
                     <a href="{{ $hotelSettings->facebook }}" class="text-slate-300 hover:text-indigo-400 transition duration-150">
                         <span class="sr-only">Facebook</span>
                         <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -60,7 +60,7 @@
                     </a>
                     @endif
 
-                    @if($hotelSettings->instagram)
+                    @if ($hotelSettings->instagram)
                     <a href="{{ $hotelSettings->instagram }}" class="text-slate-300 hover:text-indigo-400 transition duration-150">
                         <span class="sr-only">Instagram</span>
                         <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -69,7 +69,7 @@
                     </a>
                     @endif
 
-                    @if($hotelSettings->twitter)
+                    @if ($hotelSettings->twitter)
                     <a href="{{ $hotelSettings->twitter }}" class="text-slate-300 hover:text-indigo-400 transition duration-150">
                         <span class="sr-only">Twitter</span>
                         <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

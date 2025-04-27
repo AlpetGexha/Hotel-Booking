@@ -128,12 +128,12 @@
                 @enderror
 
                 <!-- File Preview -->
-                @if(count($attachments) > 0)
+                @if (count($attachments) > 0)
                     <div class="mt-4 space-y-2">
                         <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300">Selected Files:</h4>
 
                         <ul class="divide-y divide-slate-200 dark:divide-slate-700 border border-slate-200 dark:border-slate-700 rounded-md overflow-hidden">
-                            @foreach($attachments as $index => $file)
+                            @foreach ($attachments as $index => $file)
                                 <li class="px-4 py-3 bg-white dark:bg-slate-800 flex items-center justify-between">
                                     <div class="flex items-center space-x-3 truncate">
                                         @php
@@ -144,15 +144,15 @@
                                         @endphp
 
                                         <span class="flex-shrink-0">
-                                            @if($isImage)
+                                            @if ($isImage)
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                 </svg>
-                                            @elseif($isPdf)
+                                            @elseif ($isPdf)
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                                                 </svg>
-                                            @elseif($isDoc)
+                                            @elseif ($isDoc)
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                                 </svg>
@@ -191,7 +191,7 @@
                                 {{ count($attachments) }} of 5 files selected
                             </span>
 
-                            @if(count($attachments) > 0)
+                            @if (count($attachments) > 0)
                                 <button
                                     type="button"
                                     wire:click="$set('attachments', [])"

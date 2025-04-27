@@ -4,7 +4,6 @@ namespace App\Actions;
 
 use App\Models\RoomType;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class CreateBookingAction
 {

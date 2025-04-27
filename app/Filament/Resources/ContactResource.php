@@ -6,13 +6,12 @@ use App\Filament\Resources\ContactResource\Pages;
 use App\Models\Contact;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
+use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
-use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class ContactResource extends Resource
 {
@@ -64,7 +63,7 @@ class ContactResource extends Resource
                 Tables\Columns\IconColumn::make('media')
                     ->label('Has Attachments')
                     ->boolean()
-                    ->state(fn(Contact $record): bool => $record->getMedia('attachments')->count() > 0),
+                    ->state(fn (Contact $record): bool => $record->getMedia('attachments')->count() > 0),
                 Tables\Columns\TextColumn::make('media_count')
                     ->label('Files')
                     ->counts('media')
@@ -96,7 +95,7 @@ class ContactResource extends Resource
                         Infolists\Components\TextEntry::make('email')
                             ->icon('heroicon-m-envelope')
                             ->iconColor('primary')
-                            ->url(fn(Contact $record) => "mailto:{$record->email}")
+                            ->url(fn (Contact $record) => "mailto:{$record->email}")
                             ->openUrlInNewTab(),
                         Infolists\Components\TextEntry::make('created_at')
                             ->dateTime()
@@ -113,7 +112,7 @@ class ContactResource extends Resource
                     ]),
 
                 Infolists\Components\Section::make('Attachments')
-                    ->visible(fn(Contact $record): bool => $record->getMedia('attachments')->count() > 0)
+                    ->visible(fn (Contact $record): bool => $record->getMedia('attachments')->count() > 0)
                     ->schema([
                         Infolists\Components\Grid::make()
                             ->schema(function (Contact $record): array {
@@ -129,15 +128,15 @@ class ContactResource extends Resource
                                         ->schema([
                                             $isImage
                                                 ? Infolists\Components\ImageEntry::make("media_{$index}")
-                                                ->label('Preview')
-                                                ->state($media->getUrl())
-                                                ->height('200px')
-                                                ->extraAttributes(['class' => 'rounded-md shadow-sm object-cover'])
+                                                    ->label('Preview')
+                                                    ->state($media->getUrl())
+                                                    ->height('200px')
+                                                    ->extraAttributes(['class' => 'rounded-md shadow-sm object-cover'])
                                                 : Infolists\Components\TextEntry::make("media_placeholder_{$index}")
-                                                ->label('File Type')
-                                                ->view('filament.infolists.components.file-icon', [
-                                                    'extension' => $extension,
-                                                ]),
+                                                    ->label('File Type')
+                                                    ->view('filament.infolists.components.file-icon', [
+                                                        'extension' => $extension,
+                                                    ]),
 
                                             Infolists\Components\TextEntry::make("media_details_{$index}")
                                                 ->label('File Details')
@@ -157,7 +156,7 @@ class ContactResource extends Resource
                     ]),
 
                 Infolists\Components\Section::make('No Attachments')
-                    ->visible(fn(Contact $record): bool => $record->getMedia('attachments')->count() === 0)
+                    ->visible(fn (Contact $record): bool => $record->getMedia('attachments')->count() === 0)
                     ->schema([
                         Infolists\Components\TextEntry::make('no_attachments')
                             ->label('Attachments')

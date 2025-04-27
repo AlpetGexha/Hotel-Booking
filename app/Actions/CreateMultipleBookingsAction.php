@@ -3,7 +3,6 @@
 namespace App\Actions;
 
 use App\Models\Room;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class CreateMultipleBookingsAction

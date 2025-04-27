@@ -60,7 +60,7 @@ test('booking store validates required fields', function () {
 
     $response->assertSessionHasErrors([
         'check_in', 'check_out', 'room_id', 'guests',
-        'first_name', 'last_name', 'email', 'phone'
+        'first_name', 'last_name', 'email', 'phone',
     ]);
 });
 
@@ -139,7 +139,7 @@ test('multiple rooms booking validates required fields', function () {
 
     $response->assertSessionHasErrors([
         'check_in', 'check_out', 'room_ids', 'guests',
-        'first_name', 'last_name', 'email', 'phone'
+        'first_name', 'last_name', 'email', 'phone',
     ]);
 });
 

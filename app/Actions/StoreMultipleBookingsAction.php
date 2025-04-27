@@ -31,7 +31,7 @@ class StoreMultipleBookingsAction
                 ['name' => $request->first_name . ' ' . $request->last_name]
             );
 
-            $bookings = new Collection();
+            $bookings = new Collection;
             $rooms = Room::whereIn('id', $request->room_ids)
                 ->with('roomType')
                 ->get();
@@ -45,7 +45,7 @@ class StoreMultipleBookingsAction
                     $request->check_out_date
                 );
 
-                if (!$availableRoom) {
+                if (! $availableRoom) {
                     throw new BookingException("Room {$room->room_number} is no longer available.");
                 }
 

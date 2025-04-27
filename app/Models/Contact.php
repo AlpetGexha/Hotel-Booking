@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Contact extends Model implements HasMedia
 {
@@ -27,8 +26,6 @@ class Contact extends Model implements HasMedia
 
     /**
      * Register media collections for the model.
-     *
-     * @return void
      */
     public function registerMediaCollections(): void
     {

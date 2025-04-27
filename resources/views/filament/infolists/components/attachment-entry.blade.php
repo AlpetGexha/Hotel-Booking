@@ -4,15 +4,15 @@
     $isDoc = in_array($extension, ['doc', 'docx']);
 @endphp
 
-<div class="flex flex-col h-full justify-center p-4 @if($isImage) pl-0 @endif">
+<div class="flex flex-col h-full justify-center p-4 @if ($isImage) pl-0 @endif">
     <div class="flex items-center gap-4 mb-2">
-        @if(!$isImage)
+        @if (!$isImage)
             <div class="shrink-0">
-                @if($isPdf)
+                @if ($isPdf)
                     <div class="w-10 h-10 flex items-center justify-center rounded-full bg-red-100 text-red-500">
                         <x-heroicon-o-document-text class="w-5 h-5" />
                     </div>
-                @elseif($isDoc)
+                @elseif ($isDoc)
                     <div class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 text-blue-500">
                         <x-heroicon-o-document-text class="w-5 h-5" />
                     </div>

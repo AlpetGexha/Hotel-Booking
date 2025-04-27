@@ -4,9 +4,9 @@ namespace App\Livewire;
 
 use App\Models\Contact;
 use Illuminate\Support\Facades\RateLimiter;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
-use Livewire\Attributes\Rule;
 
 class ContactForm extends Component
 {
@@ -41,6 +41,7 @@ class ContactForm extends Component
         if (RateLimiter::tooManyAttempts($key, 5)) {
             $secondsUntilAvailable = RateLimiter::availableIn($key);
             $this->addError('rate_limit', "Too many contact attempts. Please try again in {$secondsUntilAvailable} seconds.");
+
             return;
         }
 
@@ -61,7 +62,7 @@ class ContactForm extends Component
         ]);
 
         // Handle file uploads if present
-        if (!empty($this->attachments)) {
+        if (! empty($this->attachments)) {
             foreach ($this->attachments as $attachment) {
                 $contact->addMedia($attachment->getRealPath())
                     ->usingName($attachment->getClientOriginalName())

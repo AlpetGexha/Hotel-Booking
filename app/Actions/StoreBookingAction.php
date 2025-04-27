@@ -2,7 +2,6 @@
 
 namespace App\Actions;
 
-use App\Enum\RoomStatus;
 use App\Exceptions\BookingException;
 use App\Http\Requests\StoreBookingRequest;
 use App\Models\Booking;
@@ -27,8 +26,8 @@ class StoreBookingAction
             $request->check_out_date
         );
 
-        if (!$availableRoom) {
-            throw new BookingException("No rooms of this type are available for the selected dates");
+        if (! $availableRoom) {
+            throw new BookingException('No rooms of this type are available for the selected dates');
         }
 
         // Use database transaction for consistency

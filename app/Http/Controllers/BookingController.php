@@ -82,6 +82,7 @@ class BookingController extends Controller
                 ->withInput();
         } catch (Throwable $e) {
             report($e);
+
             return back()
                 ->withErrors(['message' => 'An unexpected error occurred. Please try again.'])
                 ->withInput();
@@ -188,6 +189,7 @@ class BookingController extends Controller
                 ->withInput();
         } catch (Throwable $e) {
             report($e);
+
             return back()
                 ->withErrors(['message' => 'An unexpected error occurred. Please try again.'])
                 ->withInput();

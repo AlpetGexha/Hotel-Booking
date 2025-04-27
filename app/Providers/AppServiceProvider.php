@@ -31,8 +31,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::automaticallyEagerLoadRelationships();
         // Model::unguard();
-        Model::shouldBeStrict(!app()->isProduction());
-        Model::preventLazyLoading(!app()->isProduction());
+        Model::shouldBeStrict(! app()->isProduction());
+        Model::preventLazyLoading(! app()->isProduction());
     }
 
     private function configurateCommands(): void
@@ -47,7 +47,8 @@ class AppServiceProvider extends ServiceProvider
         URL::forceScheme('https');
     }
 
-    private function configurateTime(){
-        // 
+    private function configurateTime()
+    {
+        //
     }
 }

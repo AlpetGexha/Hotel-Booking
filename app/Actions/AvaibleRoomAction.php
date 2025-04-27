@@ -3,7 +3,6 @@
 namespace App\Actions;
 
 use App\Models\Room;
-use App\Models\RoomType;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
@@ -23,10 +22,10 @@ class AvaibleRoomAction
     /**
      * Find available room alternatives when exact capacity isn't available.
      *
-     * @param int $guests Number of guests
-     * @param string $checkInDate Check-in date
-     * @param string $checkOutDate Check-out date
-     * @param int|null $roomTypeId Optional room type to check first
+     * @param  int  $guests  Number of guests
+     * @param  string  $checkInDate  Check-in date
+     * @param  string  $checkOutDate  Check-out date
+     * @param  int|null  $roomTypeId  Optional room type to check first
      * @return array Contains 'exact' (Room|null), 'larger' (Collection), 'multiple' (Collection), and 'message' (string|null)
      */
     public function findAlternatives(int $guests, string $checkInDate, string $checkOutDate, ?int $roomTypeId = null): array
@@ -46,6 +45,7 @@ class AvaibleRoomAction
         // Handle single guest case
         if ($guests === 1) {
             $this->findLargerRoomsForSingleGuest($result, $checkInDate, $checkOutDate);
+
             return $result;
         }
 
@@ -62,8 +62,8 @@ class AvaibleRoomAction
     {
         return [
             'exact' => null,                  // Exact match room (if found)
-            'larger' => new Collection(),     // Larger capacity alternative rooms (if no exact match)
-            'multiple' => new Collection(),   // Multiple room combinations (if no single room fits all guests)
+            'larger' => new Collection,     // Larger capacity alternative rooms (if no exact match)
+            'multiple' => new Collection,   // Multiple room combinations (if no single room fits all guests)
             'message' => null,                // Suggestion message for the user
         ];
     }
@@ -74,6 +74,7 @@ class AvaibleRoomAction
     private function findExactRoomTypeMatch(array &$result, int $roomTypeId, string $checkInDate, string $checkOutDate): bool
     {
         $result['exact'] = $this->handle($roomTypeId, $checkInDate, $checkOutDate);
+
         return $result['exact'] !== null;
     }
 
@@ -94,6 +95,7 @@ class AvaibleRoomAction
         }
 
         $result['exact'] = $exactCapacityRooms->first();
+
         return true;
     }
 
