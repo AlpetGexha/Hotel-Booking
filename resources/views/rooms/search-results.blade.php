@@ -134,8 +134,8 @@
     </div>
 
     <!-- Alternative Suggestions Section -->
-    @if (isset($suggestion) && isset($alternatives) && 
-        ((isset($alternatives['larger']) && is_countable($alternatives['larger']) && count($alternatives['larger']) > 0) || 
+    @if (isset($suggestion) && isset($alternatives) &&
+        ((isset($alternatives['larger']) && is_countable($alternatives['larger']) && count($alternatives['larger']) > 0) ||
         (isset($alternatives['multiple']) && is_countable($alternatives['multiple']) && count($alternatives['multiple']) > 0 && $guests > 4)))
         <div class="my-6 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-lg shadow-md p-6">
             <div class="flex items-start">
@@ -144,12 +144,12 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
                 </div>
-                <div class="ml-3">
+                <div class="ml-3 w-full">
                     <h3 class="text-md font-medium text-amber-800 dark:text-amber-300">Alternative Options Available</h3>
                     <div class="mt-2 text-sm text-amber-700 dark:text-amber-300">
                         <p>{{ $suggestion }}</p>
                     </div>
-                    
+
                     <!-- Alternatives Section -->
                     <div class="mt-4">
                         <!-- For larger rooms alternative -->
@@ -170,7 +170,7 @@
                                                 <span class="ml-2">${{ number_format($room->roomType->price_per_night * $nights, 0) }} total</span>
                                             </p>
                                         </div>
-                                        <a 
+                                        <a
                                             href="{{ route('bookings.create', [
                                                 'room_type_id' => $room->roomType->id,
                                                 'check_in_date' => $check_in_date,
@@ -184,6 +184,26 @@
                                     </div>
                                 @endforeach
                             </div>
+
+                            <!-- Book All Larger Rooms Button -->
+                            @if (count($alternatives['larger']) > 1)
+                                <div class="mt-4 text-right">
+                                    <form action="{{ route('bookings.create-multiple') }}" method="GET">
+                                        @foreach ($alternatives['larger'] as $room)
+                                            <input type="hidden" name="room_ids[]" value="{{ $room->id }}">
+                                        @endforeach
+                                        <input type="hidden" name="check_in_date" value="{{ $check_in_date }}">
+                                        <input type="hidden" name="check_out_date" value="{{ $check_out_date }}">
+                                        <input type="hidden" name="guests" value="{{ $guests }}">
+                                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-medium text-sm text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
+                                            </svg>
+                                            Book All {{ count($alternatives['larger']) }} Rooms Together
+                                        </button>
+                                    </form>
+                                </div>
+                            @endif
                         @endif
 
                         <!-- For multiple rooms alternative (when a single room can't fit all guests) -->
@@ -205,19 +225,19 @@
                                     <p class="text-xs text-slate-500 dark:text-slate-400">
                                         We have a total capacity of {{ $availableCapacity }} guests across {{ count($alternatives['multiple']) }} available rooms.
                                     </p>
-                                    
+
                                     <div class="mt-3 flex flex-col gap-2">
                                         @foreach ($suggestedRooms as $room)
                                             <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-2">
                                                 <div>
                                                     <span class="text-sm font-medium text-slate-800 dark:text-white">{{ $room->roomType->name }}</span>
                                                     <p class="text-xs text-slate-500 dark:text-slate-400">
-                                                        <span>Room {{ $room->room_number }}</span> · 
-                                                        <span>{{ $room->roomType->capacity }} {{ Str::plural('person', $room->roomType->capacity) }}</span> · 
+                                                        <span>Room {{ $room->room_number }}</span> ·
+                                                        <span>{{ $room->roomType->capacity }} {{ Str::plural('person', $room->roomType->capacity) }}</span> ·
                                                         <span>${{ number_format($room->roomType->price_per_night * $nights, 0) }}</span>
                                                     </p>
                                                 </div>
-                                                <a 
+                                                <a
                                                     href="{{ route('bookings.create', [
                                                         'room_type_id' => $room->roomType->id,
                                                         'check_in_date' => $check_in_date,
@@ -232,9 +252,42 @@
                                         @endforeach
                                     </div>
 
-                                    <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
-                                        <span class="font-medium">Tip:</span> After booking your first room, continue booking additional rooms as needed for your group.
-                                    </p>
+                                    <!-- Book All Multiple Rooms Button -->
+                                    <div class="mt-6">
+                                        <form action="{{ route('bookings.create-multiple') }}" method="GET">
+                                            @php
+                                                // Select optimal combination of rooms to fit guest count
+                                                $remainingGuests = $guests;
+                                                $selectedRooms = [];
+
+                                                // First try to fill with larger rooms
+                                                foreach ($alternatives['multiple']->sortByDesc(function($room) {
+                                                    return $room->roomType->capacity;
+                                                }) as $room) {
+                                                    if ($remainingGuests > 0) {
+                                                        $selectedRooms[] = $room->id;
+                                                        $remainingGuests -= $room->roomType->capacity;
+                                                    }
+                                                }
+                                            @endphp
+
+                                            @foreach ($selectedRooms as $roomId)
+                                                <input type="hidden" name="room_ids[]" value="{{ $roomId }}">
+                                            @endforeach
+                                            <input type="hidden" name="check_in_date" value="{{ $check_in_date }}">
+                                            <input type="hidden" name="check_out_date" value="{{ $check_out_date }}">
+                                            <input type="hidden" name="guests" value="{{ $guests }}">
+
+                                            <div class="flex justify-end">
+                                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-medium text-sm text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
+                                                    </svg>
+                                                    Book Optimal Room Combination
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         @endif

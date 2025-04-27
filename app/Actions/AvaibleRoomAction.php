@@ -21,7 +21,7 @@ class AvaibleRoomAction
 
     /**
      * Find available room alternatives when exact capacity isn't available.
-     * 
+     *
      * @param int $guests Number of guests
      * @param string $checkInDate Check-in date
      * @param string $checkOutDate Check-out date
@@ -40,7 +40,7 @@ class AvaibleRoomAction
         // First, try to find an exact match if room type is specified
         if ($roomTypeId) {
             $result['exact'] = $this->handle($roomTypeId, $checkInDate, $checkOutDate);
-            
+
             // If exact match is found, return early
             if ($result['exact']) {
                 return $result;
@@ -54,12 +54,12 @@ class AvaibleRoomAction
             ->with('roomType')
             ->availableForBooking($checkInDate, $checkOutDate)
             ->get();
-            
+
         if ($exactCapacityRooms->isNotEmpty()) {
             $result['exact'] = $exactCapacityRooms->first();
             return $result;
         }
-        
+
         // If no exact match, look for alternatives based on guest count
         if ($guests === 1) {
             // For a single guest, suggest a larger room
@@ -69,7 +69,7 @@ class AvaibleRoomAction
                 ->with('roomType')
                 ->availableForBooking($checkInDate, $checkOutDate)
                 ->get();
-            
+
             if ($largerRooms->isNotEmpty()) {
                 $result['larger'] = $largerRooms;
                 $result['message'] = 'No rooms for 1 guest, but we found a larger room.';
@@ -82,10 +82,10 @@ class AvaibleRoomAction
                 ->with('roomType')
                 ->availableForBooking($checkInDate, $checkOutDate)
                 ->get();
-            
+
             if ($largerRooms->isNotEmpty()) {
                 $result['larger'] = $largerRooms;
-                $result['message'] = 'We don\'t have any rooms available for exactly ' . $guests . ' ' . 
+                $result['message'] = 'We don\'t have any rooms available for exactly ' . $guests . ' ' .
                     Str::plural('person', $guests) . ', but we have larger rooms that can accommodate your group.';
             } else {
                 // If no single room can fit all guests, find combinations of smaller rooms
@@ -95,13 +95,13 @@ class AvaibleRoomAction
                     ->sortByDesc(function($room) {
                         return $room->roomType->capacity;
                     });
-                
+
                 if ($availableRooms->isNotEmpty()) {
                     // Calculate total available capacity
                     $totalCapacity = $availableRooms->sum(function($room) {
                         return $room->roomType->capacity;
                     });
-                    
+
                     // Only suggest multiple rooms if the total capacity can accommodate all guests
                     if ($totalCapacity >= $guests) {
                         $result['multiple'] = $availableRooms;

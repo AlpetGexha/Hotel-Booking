@@ -327,7 +327,7 @@
                     <div class="mt-2 text-sm text-amber-700 dark:text-amber-300">
                         <p>{{ $suggestion }}</p>
                     </div>
-                    
+
                     <!-- Alternatives Section -->
                     <div class="mt-4">
                         <!-- For larger rooms alternative -->
@@ -348,7 +348,7 @@
                                                 <span class="ml-2">${{ number_format($room->roomType->price_per_night * $nights, 0) }} total</span>
                                             </p>
                                         </div>
-                                        <a 
+                                        <a
                                             href="{{ route('bookings.create', [
                                                 'room_type_id' => $room->roomType->id,
                                                 'check_in_date' => $checkInDate,
@@ -383,19 +383,19 @@
                                     <p class="text-xs text-slate-500 dark:text-slate-400">
                                         We have a total capacity of {{ $availableCapacity }} guests across {{ $alternatives['multiple']->count() }} available rooms.
                                     </p>
-                                    
+
                                     <div class="mt-3 flex flex-col gap-2">
                                         @foreach ($suggestedRooms as $room)
                                             <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-2">
                                                 <div>
                                                     <span class="text-sm font-medium text-slate-800 dark:text-white">{{ $room->roomType->name }}</span>
                                                     <p class="text-xs text-slate-500 dark:text-slate-400">
-                                                        <span>Room {{ $room->room_number }}</span> · 
-                                                        <span>{{ $room->roomType->capacity }} {{ Str::plural('person', $room->roomType->capacity) }}</span> · 
+                                                        <span>Room {{ $room->room_number }}</span> ·
+                                                        <span>{{ $room->roomType->capacity }} {{ Str::plural('person', $room->roomType->capacity) }}</span> ·
                                                         <span>${{ number_format($room->roomType->price_per_night * $nights, 0) }}</span>
                                                     </p>
                                                 </div>
-                                                <a 
+                                                <a
                                                     href="{{ route('bookings.create', [
                                                         'room_type_id' => $room->roomType->id,
                                                         'check_in_date' => $checkInDate,

@@ -45,7 +45,7 @@ class SearchRoomsAction
         //     $maxPrice
         // ) {
         $roomTypes = $this->findAvailableRoomTypes($checkIn, $checkOut, $guests, $amenityIds, $minPrice, $maxPrice);
-        
+
         // Prepare the result array
         $result = [
             'roomTypes' => $roomTypes,
@@ -56,15 +56,15 @@ class SearchRoomsAction
         // If no exact matches found, look for alternatives
         if ($roomTypes->isEmpty()) {
             $alternatives = $this->availableRoomAction->findAlternatives(
-                $guests, 
-                $checkInDate, 
+                $guests,
+                $checkInDate,
                 $checkOutDate
             );
-            
+
             $result['alternatives'] = $alternatives;
             $result['suggestion'] = $alternatives['message'];
         }
-        
+
         return $result;
         // });
     }
