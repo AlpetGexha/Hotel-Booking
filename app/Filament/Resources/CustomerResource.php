@@ -24,6 +24,9 @@ class CustomerResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
+    protected static ?string $navigationGroup = 'Management';
+
+
     public static function form(Form $form): Form
     {
         return $form
@@ -59,11 +62,12 @@ class CustomerResource extends Resource
                 Tables\Columns\TextColumn::make('bookings_count')
                     ->counts('bookings')
                     ->label('Total Bookings')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
@@ -76,7 +80,7 @@ class CustomerResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 // Removed bulk actions as per requirements

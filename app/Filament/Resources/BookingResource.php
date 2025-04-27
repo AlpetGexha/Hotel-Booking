@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Grouping\Group;
 use Illuminate\Support\Carbon;
 
 class BookingResource extends Resource
@@ -25,6 +26,8 @@ class BookingResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
+    protected static ?string $navigationGroup = 'Management';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -36,6 +39,10 @@ class BookingResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                Group::make('check_in')
+                    ->date(),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('Booking ID')
@@ -81,13 +88,13 @@ class BookingResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\Filter::make('upcoming')
-                    ->query(fn (Builder $query): Builder => $query->where('check_in', '>=', now()))
+                    ->query(fn(Builder $query): Builder => $query->where('check_in', '>=', now()))
                     ->label('Upcoming Bookings'),
                 Tables\Filters\Filter::make('current')
-                    ->query(fn (Builder $query): Builder => $query->where('check_in', '<=', now())->where('check_out', '>=', now()))
+                    ->query(fn(Builder $query): Builder => $query->where('check_in', '<=', now())->where('check_out', '>=', now()))
                     ->label('Current Stays'),
                 Tables\Filters\Filter::make('past')
-                    ->query(fn (Builder $query): Builder => $query->where('check_out', '<', now()))
+                    ->query(fn(Builder $query): Builder => $query->where('check_out', '<', now()))
                     ->label('Past Bookings'),
             ])
             ->actions([
