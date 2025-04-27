@@ -10,7 +10,6 @@ enum RoomStatus: string
     case DIRTY = 'dirty';
     case MAINTENANCE = 'maintenance';
     case OUT_OF_SERVICE = 'out_of_service';
-
     case Available = 'available';
 
     public static function values(): array
