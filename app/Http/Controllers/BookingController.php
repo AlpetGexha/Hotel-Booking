@@ -86,7 +86,7 @@ class BookingController extends Controller
             $validated['check_out_date']
         );
         // Find an available room for this room type within requested dates
-        $availableRoom = $this->findAvailableRoom(
+        $availableRoom = $this->pricingService->findAvailableRoom(
             $roomTypeId,
             $validated['check_in_date'],
             $validated['check_out_date']
@@ -126,34 +126,10 @@ class BookingController extends Controller
             // Redirect to booking confirmation page
             return redirect()->route('bookings.confirmation', $booking)->with('success', 'Your booking has been confirmed!');
         } catch (\Exception $e) {
-            \Log::error('Booking creation failed: ' . $e->getMessage());
             return back()
                 ->withErrors(['booking_error' => 'An error occurred while processing your booking. Please try again.'])
                 ->withInput();
         }
-    }
-
-    /**
-     * Find an available room for the given room type and date range.
-     */
-    private function findAvailableRoom(int $roomTypeId, string $checkInDate, string $checkOutDate): ?\App\Models\Room
-    {
-        return \App\Models\Room::where('room_type_id', $roomTypeId)
-            ->where('is_available', true)
-            ->whereDoesntHave('bookings', function ($query) use ($checkInDate, $checkOutDate) {
-                $query->where(function ($q) use ($checkInDate, $checkOutDate) {
-                    // Room is not booked during the requested period
-                    // Check if existing booking overlaps with requested dates
-                    $q->whereBetween('check_in', [$checkInDate, $checkOutDate])
-                        ->orWhereBetween('check_out', [$checkInDate, $checkOutDate])
-                        ->orWhere(function ($innerQuery) use ($checkInDate, $checkOutDate) {
-                            // Or if requested dates are within an existing booking
-                            $innerQuery->where('check_in', '<=', $checkInDate)
-                                      ->where('check_out', '>=', $checkOutDate);
-                        });
-                });
-            })
-            ->first();
     }
 
     /**
