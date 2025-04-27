@@ -235,7 +235,7 @@ class BookingController extends Controller
             $customer = Customer::firstOrCreate(
                 ['email' => $validated['email']],
                 [
-                    'name' => $validated['firt_name'] . ' ' . $validated['last_name'],
+                    'name' => $validated['first_name'] . ' ' . $validated['last_name'],
                     // 'last_name' => $validated['last_name'],
                     // 'phone' => $validated['phone'],
                 ]
@@ -267,13 +267,14 @@ class BookingController extends Controller
                 // Create booking record
                 $booking = Booking::create([
                     'room_id' => $room->id,
+                    'room_type_id' => $room->room_type_id, // Add the room_type_id field
                     'customer_id' => $customer->id,
                     'check_in' => $validated['check_in_date'],
                     'check_out' => $validated['check_out_date'],
                     'guests' => min($validated['guests'], $room->roomType->capacity),
                     'total_price' => $totalPrice,
                     'special_requests' => $validated['special_requests'] ?? null,
-                    'status' => 'confirmed',
+                    // 'status' => 'confirmed',
                 ]);
 
                 $bookings[] = $booking;
