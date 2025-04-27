@@ -7,6 +7,8 @@ use App\Actions\CreateMultipleBookingsAction;
 use App\Actions\StoreBookingAction;
 use App\Actions\StoreMultipleBookingsAction;
 use App\Exceptions\BookingException;
+use App\Http\Requests\BookingCreateRequest;
+use App\Http\Requests\CreateMultipleBookingsRequest;
 use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\StoreMultipleBookingsRequest;
 use App\Models\Booking;
@@ -27,15 +29,10 @@ class BookingController extends Controller
     /**
      * Show the booking form.
      */
-    public function create(Request $request, CreateBookingAction $action): View
+    public function create(BookingCreateRequest $request, CreateBookingAction $action): View
     {
         // Validate required parameters
-        $request->validate([
-            'room_type_id' => ['required', 'exists:room_types,id'],
-            'check_in_date' => ['required', 'date', 'after_or_equal:today'],
-            'check_out_date' => ['required', 'date', 'after:check_in_date'],
-            'guests' => ['required', 'integer', 'min:1', 'max:10'],
-        ]);
+        $request->validated();
 
         // Calculate nights and total price using PricingService
         $roomType = RoomType::findOrFail($request->room_type_id);
@@ -50,7 +47,6 @@ class BookingController extends Controller
             $request->check_out_date
         );
 
-        // Pass request and pre-calculated values to the action
         $viewData = $action->handle($request, $totalPrice, $nights);
 
         return view('bookings.create', $viewData);
@@ -102,18 +98,10 @@ class BookingController extends Controller
     /**
      * Show the form for creating multiple room bookings.
      */
-    public function createMultipleRooms(Request $request, CreateMultipleBookingsAction $action): View
+    public function createMultipleRooms(CreateMultipleBookingsRequest $request, CreateMultipleBookingsAction $action): View
     {
-        // Validate required parameters
-        $request->validate([
-            'room_ids' => ['required', 'array', 'min:1'],
-            'room_ids.*' => ['required', 'exists:rooms,id'],
-            'check_in_date' => ['required', 'date', 'after_or_equal:today'],
-            'check_out_date' => ['required', 'date', 'after:check_in_date'],
-            'guests' => ['required', 'integer', 'min:1', 'max:20'],
-        ]);
+        $request->validated();
 
-        // Calculate nights using PricingService
         $nights = $this->pricingService->getNightsCount(
             $request->check_in_date,
             $request->check_out_date
@@ -183,15 +171,11 @@ class BookingController extends Controller
                 'multiple' => true,
                 'booking_count' => $bookings->count(),
             ])->with('success', 'Your multiple room booking has been confirmed!');
-        } catch (BookingException $e) {
-            return back()
-                ->withErrors(['message' => $e->getMessage()])
-                ->withInput();
         } catch (Throwable $e) {
             report($e);
 
             return back()
-                ->withErrors(['message' => 'An unexpected error occurred. Please try again.'])
+                ->withErrors(['message' => 'An unexpected error occurred. Please try again.' . $e->getMessage()])
                 ->withInput();
         }
     }

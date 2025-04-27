@@ -51,6 +51,24 @@ When providing code examples or explanations:
 - Use **Local Model Scope** for the ORM queries to encapsulate common query logic.
 - Avoide using nested if else statements, use early returns instead (Guard Pattern).
 
+- Use the RequestClass like this:
+
+```php
+  public function handle(BookingTicketRequest $request)
+    {
+    
+    $request->validated(); // Validate the request data first
+    
+    Booking::create([
+        'check_in' => $request->check_in_date, // use the $request object to access validated data
+    ]);
+
+    // if we dont have any data that change from user input or we dont have any custom data use validated() for creating the model
+    
+    Booking::create($request->validated());
+    }
+```
+
 ---
 
 ## Code Conventions
