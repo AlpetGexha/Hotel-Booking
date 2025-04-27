@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\AmenitiesController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\SearchRoomsController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,9 @@ Route::get('search-rooms', SearchRoomsController::class)->name('search.rooms');
 
 // Contact route
 Route::view('contact', 'contact')->name('contact');
+
+// Amenities route
+Route::get('amenities', [AmenitiesController::class, 'index'])->name('amenities');
 
 // Booking routes
 Route::get('booking', [BookingController::class, 'create'])->name('bookings.create');
