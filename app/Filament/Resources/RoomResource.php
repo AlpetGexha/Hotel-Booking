@@ -131,7 +131,7 @@ class RoomResource extends Resource
                             ->label('Floor')
                             ->numeric(),
                     ])
-                    ->query(fn(Builder $query, array $data): Builder => $query->when(
+                    ->query(fn (Builder $query, array $data): Builder => $query->when(
                         $data['floor'],
                         fn (Builder $query, $floor): Builder => $query->where('floor', $floor),
                     )),

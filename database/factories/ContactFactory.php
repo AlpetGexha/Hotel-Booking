@@ -22,7 +22,7 @@ class ContactFactory extends Factory
             'message' => $this->faker->paragraphs(3, true),
             'ip_address' => $this->faker->ipv4(),
             'created_at' => $this->faker->dateTimeBetween('-1 month', 'now'),
-            'updated_at' => fn(array $attributes) => $attributes['created_at'],
+            'updated_at' => fn (array $attributes) => $attributes['created_at'],
         ];
     }
 }

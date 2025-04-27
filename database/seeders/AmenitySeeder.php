@@ -17,7 +17,7 @@ class AmenitySeeder extends Seeder
     public function run(): void
     {
         // Prepare data for bulk insert based on our RoomAmenity enum
-        $amenities = collect(RoomAmenity::cases())->map(fn(RoomAmenity $amenity): array => [
+        $amenities = collect(RoomAmenity::cases())->map(fn (RoomAmenity $amenity): array => [
             'name' => $amenity->value,
             'icon' => $amenity->getHeroicon(),
             'description' => $amenity->getDescription(),

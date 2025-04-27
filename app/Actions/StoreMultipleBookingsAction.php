@@ -45,7 +45,7 @@ class StoreMultipleBookingsAction
                     $request->check_out_date
                 );
 
-                if (!$availableRoom instanceof \App\Models\Room) {
+                if (! $availableRoom instanceof \App\Models\Room) {
                     throw new BookingException("Room {$room->room_number} is no longer available.");
                 }
 

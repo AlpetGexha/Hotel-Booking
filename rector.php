@@ -10,7 +10,8 @@ return RectorConfig::configure()
         __DIR__ . '/app',
         __DIR__ . '/bootstrap/app.php',
         __DIR__ . '/config',
-        __DIR__ . '/database',
+        __DIR__ . '/database/seeders',
+        __DIR__ . '/database/factories',
         __DIR__ . '/public',
     ])
     ->withSkip([

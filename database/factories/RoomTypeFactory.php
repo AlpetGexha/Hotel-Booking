@@ -88,7 +88,7 @@ class RoomTypeFactory extends Factory
     {
         return $this->afterCreating(function (RoomType $roomType) use ($amenities): void {
             // Convert RoomAmenity enum cases to their string values if necessary
-            $amenityNames = collect($amenities)->map(fn($amenity) => $amenity instanceof RoomAmenity ? $amenity->value : $amenity)->toArray();
+            $amenityNames = collect($amenities)->map(fn ($amenity) => $amenity instanceof RoomAmenity ? $amenity->value : $amenity)->toArray();
 
             // Find amenities by name
             $amenityIds = Amenity::whereIn('name', $amenityNames)->pluck('id');

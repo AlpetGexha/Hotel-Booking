@@ -112,7 +112,7 @@ class RoomTypeSeeder extends Seeder
             DB::beginTransaction();
 
             // Prepare room type data for bulk insert
-            $roomTypeInsertData = collect($roomTypesData)->map(fn($data): array => [
+            $roomTypeInsertData = collect($roomTypesData)->map(fn ($data): array => [
                 'name' => $data['name'],
                 'description' => $data['description'],
                 'price_per_night' => $data['price_per_night'],
