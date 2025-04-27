@@ -2,24 +2,22 @@
 
 namespace App\Actions;
 
-use App\Models\Room;
 use App\Models\RoomType;
-use Illuminate\Support\Collection;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CreateBookingAction
 {
-    public function handle(array $data, float $totalPrice, int $nights): array
+    public function handle(Request $request, float $totalPrice, int $nights): array
     {
-        // Get the room type
-        $roomTypeId = $data['room_type_id'];
-        $roomType = RoomType::with('amenities')->findOrFail($roomTypeId);
+        // Get the room type with amenities
+        $roomType = RoomType::with('amenities')->findOrFail($request->room_type_id);
 
         return [
             'roomType' => $roomType,
-            'checkInDate' => $data['check_in_date'],
-            'checkOutDate' => $data['check_out_date'],
-            'guests' => $data['guests'],
+            'checkInDate' => $request->check_in_date,
+            'checkOutDate' => $request->check_out_date,
+            'guests' => $request->guests,
             'nights' => $nights,
             'totalPrice' => $totalPrice,
         ];

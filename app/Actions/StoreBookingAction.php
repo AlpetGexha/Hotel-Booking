@@ -2,11 +2,10 @@
 
 namespace App\Actions;
 
+use App\Enum\RoomStatus;
 use App\Http\Requests\StoreBookingRequest;
 use App\Models\Booking;
 use App\Models\Customer;
-use App\Models\RoomType;
-use App\Services\PricingService;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -19,50 +18,41 @@ class StoreBookingAction
         $this->availableRoomAction = $availableRoomAction;
     }
 
-    public function handle(StoreBookingRequest $request, float $totalPrice): Booking|bool
+    public function handle(StoreBookingRequest $request, float $totalPrice): Booking
     {
-        // Get validated data
+        // Call validated() to ensure validation has run
         $request->validated();
-
+        
         // Find an available room for this room type within requested dates
         $availableRoom = $this->availableRoomAction->handle(
-            $validated['room_type_id'],
-            $validated['check_in_date'],
-            $validated['check_out_date']
+            $request->room_type_id,
+            $request->check_in_date,
+            $request->check_out_date
         );
 
         if (!$availableRoom) {
-            return false;
+            throw new Exception("No rooms of this type are available for the selected dates");
         }
 
         // Use database transaction for consistency
-        try {
-            return DB::transaction(function () use ($validated, $totalPrice, $availableRoom) {
-                // Find or create customer
-                $customer = Customer::firstOrCreate(
-                    [
-                        'email' => $validated['email'],
-                    ],
-                    [
-                        'name' => $validated['name'],
-                    ]
-                );
+        return DB::transaction(function () use ($request, $totalPrice, $availableRoom) {
+            // Find or create customer
+            $customer = Customer::firstOrCreate(
+                ['email' => $request->email],
+                ['name' => $request->name]
+            );
 
-                // Create booking
-                return Booking::create([
-                    'room_type_id' => $validated['room_type_id'],
-                    'room_id' => $availableRoom->id,
-                    'customer_id' => $customer->id,
-                    'guests' => $validated['guests'],
-                    'check_in' => $validated['check_in_date'],
-                    'check_out' => $validated['check_out_date'],
-                    'total_price' => $totalPrice,
-                    'special_requests' => $validated['special_requests'] ?? null,
-                ]);
-            });
-        } catch (Exception $e) {
-            report($e);
-            return false;
-        }
+            // Create booking
+            return Booking::create([
+                'room_type_id' => $request->room_type_id,
+                'room_id' => $availableRoom->id,
+                'customer_id' => $customer->id,
+                'guests' => $request->guests,
+                'check_in' => $request->check_in_date,
+                'check_out' => $request->check_out_date,
+                'total_price' => $totalPrice,
+                'special_requests' => $request->special_requests,
+            ]);
+        });
     }
 }
