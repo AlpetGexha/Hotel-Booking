@@ -11,6 +11,9 @@ Route::get('/', function () {
 
 Route::get('search-rooms', SearchRoomsController::class)->name('search.rooms');
 
+// Contact route
+Route::view('contact', 'contact')->name('contact');
+
 // Booking routes
 Route::get('booking', [BookingController::class, 'create'])->name('bookings.create');
 Route::post('booking', [BookingController::class, 'store'])->name('bookings.store');
