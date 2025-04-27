@@ -15,7 +15,7 @@ final class PricingService
     /**
      * Calculate the number of nights between two dates.
      */
-    public function getNightsCount(string $checkInDate, string $checkOutDate): int
+    public function getNightsCount(string $checkInDate, string $checkOutDate): int|float
     {
         $checkIn = Carbon::parse($checkInDate);
         $checkOut = Carbon::parse($checkOutDate);

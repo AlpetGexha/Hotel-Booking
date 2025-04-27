@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 final class CreateMultipleBookingsAction
 {
-    public function handle(Request $request, array $roomPrices, int $nights, float $totalPrice): array
+    public function handle(Request $request, array $roomPrices, int|float $nights, float $totalPrice): array
     {
         // Load rooms with their room types
         $rooms = Room::with('roomType.amenities')

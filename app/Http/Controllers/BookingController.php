@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers;
 
 use App\Actions\CreateBookingAction;
@@ -20,7 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Throwable;
 
-final class BookingController extends Controller
+class BookingController extends Controller
 {
     public function __construct(
         protected readonly PricingService $pricingService
@@ -86,7 +84,7 @@ final class BookingController extends Controller
             report($e);
 
             return back()
-                ->withErrors(['message' => 'An unexpected error occurred. Please try again.'])
+                ->withErrors(['message' => 'An unexpected error occurred. Please try again.' . $e->getMessage()])
                 ->withInput();
         }
     }

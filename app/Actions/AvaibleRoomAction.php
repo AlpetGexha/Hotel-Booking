@@ -14,7 +14,7 @@ final class AvaibleRoomAction
     /**
      * Find an available room for booking based on room type and date range.
      */
-    public function handle(int $roomTypeId, string $checkInDate, string $checkOutDate): ?Room
+    public function handle(int|string $roomTypeId, string $checkInDate, string $checkOutDate): ?Room
     {
         return Room::where('room_type_id', $roomTypeId)
             ->availableForBooking($checkInDate, $checkOutDate)

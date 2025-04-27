@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 final class CreateBookingAction
 {
-    public function handle(Request $request, float $totalPrice, int $nights): array
+    public function handle(Request $request, float $totalPrice, int|float $nights): array
     {
         // Get the room type with amenities
         $roomType = RoomType::with('amenities')->findOrFail($request->room_type_id);
