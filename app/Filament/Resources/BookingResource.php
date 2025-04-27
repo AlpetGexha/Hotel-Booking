@@ -23,7 +23,7 @@ class BookingResource extends Resource
 
     protected static ?string $navigationLabel = 'Bookings';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
