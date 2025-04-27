@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Actions;
+namespace App\Actions;
 
 use App\Models\RoomType;
 use Carbon\Carbon;
@@ -13,7 +13,7 @@ class SearchRoomsAction
     /**
      * Execute the room search.
      */
-    public function execute(
+    public function handle(
         string $checkInDate,
         string $checkOutDate,
         int $guests,

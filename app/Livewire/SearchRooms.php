@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Livewire\Actions\SearchRoomsAction;
 use App\Models\Amenity;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
@@ -101,9 +100,8 @@ class SearchRooms extends Component
             'guests' => ['required', 'integer', 'min:1', 'max:10'],
         ]);
 
-        $searchAction = new SearchRoomsAction;
 
-        $this->roomTypes = $searchAction->execute(
+        $this->roomTypes = (new \App\Actions\SearchRoomsAction)->handle(
             $this->checkInDate,
             $this->checkOutDate,
             $this->guests,

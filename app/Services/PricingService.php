@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Room;
 use App\Models\RoomType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -52,28 +53,5 @@ class PricingService
         $totalPrice = $pricePerNight * $nights;
 
         return $totalPrice;
-    }
-
-    /**
-     * Find an available room for the given room type and date range.
-     */
-    public function findAvailableRoom(int $roomTypeId, string $checkInDate, string $checkOutDate): ?\App\Models\Room
-    {
-        return \App\Models\Room::where('room_type_id', $roomTypeId)
-            ->where('is_available', true)
-            ->whereDoesntHave('bookings', function ($query) use ($checkInDate, $checkOutDate) {
-                $query->where(function ($q) use ($checkInDate, $checkOutDate) {
-                    // Room is not booked during the requested period
-                    // Check if existing booking overlaps with requested dates
-                    $q->whereBetween('check_in', [$checkInDate, $checkOutDate])
-                        ->orWhereBetween('check_out', [$checkInDate, $checkOutDate])
-                        ->orWhere(function ($innerQuery) use ($checkInDate, $checkOutDate) {
-                            // Or if requested dates are within an existing booking
-                            $innerQuery->where('check_in', '<=', $checkInDate)
-                                ->where('check_out', '>=', $checkOutDate);
-                        });
-                });
-            })
-            ->first();
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\SearchRoomsAction;
 use App\Http\Requests\SearchRoomsRequest;
-use App\Livewire\Actions\SearchRoomsAction;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\App;
 
@@ -19,7 +19,8 @@ class SearchRoomsController extends Controller
 
         // Get search results using the action class
         $searchAction = App::make(SearchRoomsAction::class);
-        $roomTypes = $searchAction->execute(
+        
+        $roomTypes = $searchAction->handle(
             $validated['check_in_date'],
             $validated['check_out_date'],
             $validated['guests'],

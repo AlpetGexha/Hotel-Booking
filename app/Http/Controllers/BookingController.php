@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\AvaibleRoomAction;
 use App\Http\Requests\BookingFormRequest;
+use App\Models\Booking;
+use App\Models\Customer;
 use App\Models\RoomType;
 use App\Services\PricingService;
 use DB;
@@ -68,7 +71,7 @@ class BookingController extends Controller
     /**
      * Store a new booking.
      */
-    public function store(BookingFormRequest $request)
+    public function store(BookingFormRequest $request, AvaibleRoomAction $action)
     {
         // Get validated data
         $validated = $request->validated();
@@ -88,7 +91,7 @@ class BookingController extends Controller
             $validated['check_out_date']
         );
         // Find an available room for this room type within requested dates
-        $availableRoom = $this->pricingService->findAvailableRoom(
+        $availableRoom = $action->handle(
             $roomTypeId,
             $validated['check_in_date'],
             $validated['check_out_date']
@@ -104,8 +107,10 @@ class BookingController extends Controller
         try {
             $booking = DB::transaction(function () use ($validated, $totalPrice, $availableRoom) {
                 // Find or create customer
-                $customer = \App\Models\Customer::firstOrCreate(
-                    ['email' => $validated['email']],
+                $customer = Customer::firstOrCreate(
+                    [
+                        'email' => $validated['email']
+                    ],
                     [
                         'name' => $validated['name'],
                         // 'phone' => $validated['phone'],
@@ -113,7 +118,7 @@ class BookingController extends Controller
                 );
 
                 // Create booking
-                return \App\Models\Booking::create([
+                return Booking::create([
                     'room_type_id' => $validated['room_type_id'],
                     'room_id' => $availableRoom->id,
                     'customer_id' => $customer->id,

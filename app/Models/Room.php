@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -41,27 +40,22 @@ class Room extends Model
     }
 
     /**
-     * Scope a query to only include available rooms.
+     * Scope a query to only include rooms available for booking in a specific date range.
      */
-    public function scopeAvailable($query, ?Carbon $checkIn = null, ?Carbon $checkOut = null)
+    public function scopeAvailableForBooking($query, string $checkInDate, string $checkOutDate)
     {
-        $query->where('is_available', true);
-
-        if ($checkIn && $checkOut) {
-            $query->whereDoesntHave('bookings', function ($query) use ($checkIn, $checkOut) {
-                $query->where(function ($q) use ($checkIn, $checkOut) {
+        return $query->where('is_available', true)
+            ->whereDoesntHave('bookings', function ($query) use ($checkInDate, $checkOutDate) {
+                $query->where(function ($q) use ($checkInDate, $checkOutDate) {
                     // Check if existing booking overlaps with requested dates
-                    $q->whereBetween('check_in', [$checkIn, $checkOut])
-                        ->orWhereBetween('check_out', [$checkIn, $checkOut])
-                        ->orWhere(function ($innerQuery) use ($checkIn, $checkOut) {
+                    $q->whereBetween('check_in', [$checkInDate, $checkOutDate])
+                        ->orWhereBetween('check_out', [$checkInDate, $checkOutDate])
+                        ->orWhere(function ($innerQuery) use ($checkInDate, $checkOutDate) {
                             // Or if requested dates are within an existing booking
-                            $innerQuery->where('check_in', '<=', $checkIn)
-                                ->where('check_out', '>=', $checkOut);
+                            $innerQuery->where('check_in', '<=', $checkInDate)
+                                ->where('check_out', '>=', $checkOutDate);
                         });
                 });
             });
-        }
-
-        return $query;
     }
 }
