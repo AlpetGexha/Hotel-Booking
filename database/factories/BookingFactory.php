@@ -27,7 +27,7 @@ class BookingFactory extends Factory
 
         return [
             'customer_id' => Customer::factory(),
-            'room_type_id' => rand(1, $roomTypeCount),
+            'room_type_id' => random_int(1, $roomTypeCount),
             'guests' => fake()->numberBetween(1, 4),
             'check_in' => $checkIn,
             'check_out' => $checkOut,
@@ -41,7 +41,7 @@ class BookingFactory extends Factory
      */
     public function withAssignedRoom(): static
     {
-        return $this->afterCreating(function ($booking) {
+        return $this->afterCreating(function ($booking): void {
             // Convert dates to Carbon instances if needed
             $checkIn = $booking->check_in instanceof Carbon ? $booking->check_in : Carbon::parse($booking->check_in);
             $checkOut = $booking->check_out instanceof Carbon ? $booking->check_out : Carbon::parse($booking->check_out);
@@ -49,12 +49,12 @@ class BookingFactory extends Factory
             // Find available room of the required type for the booking dates
             $availableRoom = Room::where('room_type_id', $booking->room_type_id)
                 ->where('is_available', true)
-                ->whereDoesntHave('bookings', function ($query) use ($checkIn, $checkOut) {
-                    $query->where(function ($q) use ($checkIn, $checkOut) {
+                ->whereDoesntHave('bookings', function ($query) use ($checkIn, $checkOut): void {
+                    $query->where(function ($q) use ($checkIn, $checkOut): void {
                         // Check for overlapping bookings
                         $q->whereBetween('check_in', [$checkIn, $checkOut])
                             ->orWhereBetween('check_out', [$checkIn, $checkOut])
-                            ->orWhere(function ($innerQuery) use ($checkIn, $checkOut) {
+                            ->orWhere(function ($innerQuery) use ($checkIn, $checkOut): void {
                                 $innerQuery->where('check_in', '<=', $checkIn)
                                     ->where('check_out', '>=', $checkOut);
                             });

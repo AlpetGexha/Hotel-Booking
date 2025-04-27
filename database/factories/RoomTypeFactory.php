@@ -33,7 +33,7 @@ class RoomTypeFactory extends Factory
             'description' => fake()->paragraph(),
             'price_per_night' => fake()->randomFloat(2, 100, 1000),
             'capacity' => fake()->numberBetween(1, 6),
-            'size' => function (array $attributes) {
+            'size' => function (array $attributes): int|float {
                 // Set size based on room type and capacity
                 $baseSize = match ($attributes['name']) {
                     'Standard', 'Single Room' => 15,
@@ -59,7 +59,7 @@ class RoomTypeFactory extends Factory
      */
     public function configure()
     {
-        return $this->afterCreating(function (RoomType $roomType) {
+        return $this->afterCreating(function (RoomType $roomType): void {
             // Get a random subset of amenities (between 3 and 8)
             // Using a static cache to reduce database queries when creating multiple room types
             static $amenities = null;
@@ -86,11 +86,9 @@ class RoomTypeFactory extends Factory
      */
     public function withAmenities(array $amenities): static
     {
-        return $this->afterCreating(function (RoomType $roomType) use ($amenities) {
+        return $this->afterCreating(function (RoomType $roomType) use ($amenities): void {
             // Convert RoomAmenity enum cases to their string values if necessary
-            $amenityNames = collect($amenities)->map(function ($amenity) {
-                return $amenity instanceof RoomAmenity ? $amenity->value : $amenity;
-            })->toArray();
+            $amenityNames = collect($amenities)->map(fn($amenity) => $amenity instanceof RoomAmenity ? $amenity->value : $amenity)->toArray();
 
             // Find amenities by name
             $amenityIds = Amenity::whereIn('name', $amenityNames)->pluck('id');

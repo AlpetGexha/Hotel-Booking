@@ -26,7 +26,7 @@ class StoreBookingAction
             $request->check_out_date
         );
 
-        if (! $availableRoom) {
+        if (!$availableRoom instanceof \App\Models\Room) {
             throw new BookingException('No rooms of this type are available for the selected dates');
         }
 

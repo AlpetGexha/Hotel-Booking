@@ -95,7 +95,7 @@ class ContactResource extends Resource
                         Infolists\Components\TextEntry::make('email')
                             ->icon('heroicon-m-envelope')
                             ->iconColor('primary')
-                            ->url(fn (Contact $record) => "mailto:{$record->email}")
+                            ->url(fn (Contact $record): string => "mailto:{$record->email}")
                             ->openUrlInNewTab(),
                         Infolists\Components\TextEntry::make('created_at')
                             ->dateTime()

@@ -32,7 +32,7 @@ class ContactForm extends Component
     /**
      * Submit the contact form with rate limiting
      */
-    public function submit()
+    public function submit(): void
     {
         // Apply rate limiting - 5 submissions per hour
         $ipAddress = request()->ip();

@@ -28,7 +28,7 @@ class RoomSeeder extends Seeder
 
         foreach ($floors as $floor) {
             // Define how many rooms are on each floor (between 10-20)
-            $roomsOnFloor = rand(10, 20);
+            $roomsOnFloor = random_int(10, 20);
 
             for ($roomNumberSuffix = 1; $roomNumberSuffix <= $roomsOnFloor; $roomNumberSuffix++) {
                 // Create a room number in format: floor + room sequence (e.g. 101, 102, 201, 202)
@@ -42,8 +42,8 @@ class RoomSeeder extends Seeder
                     'room_number' => (string) $roomNumber,
                     'floor' => $floor,
                     'room_type_id' => $randomRoomTypeId,
-                    'is_available' => rand(1, 100) <= 90, // 90% chance of being available
-                    'notes' => rand(1, 100) <= 30 ? fake()->sentence() : null, // 30% chance of having notes
+                    'is_available' => random_int(1, 100) <= 90, // 90% chance of being available
+                    'notes' => random_int(1, 100) <= 30 ? fake()->sentence() : null, // 30% chance of having notes
                     'created_at' => $now,
                     'updated_at' => $now,
                 ];
