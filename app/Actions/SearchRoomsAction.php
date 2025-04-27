@@ -76,7 +76,7 @@ class SearchRoomsAction
         // Get room types that have available rooms for the date range
         // This assumes a Room model with a scope for availability
         $query->whereHas('rooms', function (Builder $query) use ($checkIn, $checkOut) {
-            $query->available($checkIn, $checkOut);
+            $query->availableForBooking($checkIn, $checkOut);
         });
 
         // Get the results with eager loaded relationships
