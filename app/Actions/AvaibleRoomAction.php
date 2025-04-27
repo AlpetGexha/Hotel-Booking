@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
 // for this much code the best apporach is to use a Sercvice class but this is fine for me now
-class AvaibleRoomAction
+final class AvaibleRoomAction
 {
     /**
      * Find an available room for booking based on room type and date range.

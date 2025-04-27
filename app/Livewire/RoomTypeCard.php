@@ -9,7 +9,7 @@ use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
 #[Lazy]
-class RoomTypeCard extends Component
+final class RoomTypeCard extends Component
 {
     public RoomType $roomType;
     public string $checkInDate;

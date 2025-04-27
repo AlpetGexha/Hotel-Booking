@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Throwable;
 
-class HotelSettingsServiceProvider extends ServiceProvider
+final class HotelSettingsServiceProvider extends ServiceProvider
 {
     /**
      * Register services.

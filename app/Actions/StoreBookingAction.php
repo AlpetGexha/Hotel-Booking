@@ -10,7 +10,7 @@ use App\Models\Booking;
 use App\Models\Customer;
 use Illuminate\Support\Facades\DB;
 
-class StoreBookingAction
+final class StoreBookingAction
 {
     public function __construct(
         protected readonly AvaibleRoomAction $availableRoomAction

@@ -10,7 +10,7 @@ use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
-class ContactForm extends Component
+final class ContactForm extends Component
 {
     use WithFileUploads;
 

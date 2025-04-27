@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class SearchRooms extends Component
+final class SearchRooms extends Component
 {
     use WithPagination;
 

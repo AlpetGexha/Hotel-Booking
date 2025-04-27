@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 
-class SpatieMediaLibraryExtensionServiceProvider extends ServiceProvider
+final class SpatieMediaLibraryExtensionServiceProvider extends ServiceProvider
 {
     /**
      * Register services.

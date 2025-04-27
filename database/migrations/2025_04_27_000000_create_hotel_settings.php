@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Spatie\LaravelSettings\Migrations\SettingsMigration;
 
-class CreateHotelSettings extends SettingsMigration
+final class CreateHotelSettings extends SettingsMigration
 {
     public function up(): void
     {

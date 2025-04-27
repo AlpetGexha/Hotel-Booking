@@ -8,7 +8,7 @@ use App\Actions\SearchRoomsAction;
 use App\Http\Requests\SearchRoomsRequest;
 use Illuminate\Contracts\View\View;
 
-class SearchRoomsController extends Controller
+final class SearchRoomsController extends Controller
 {
     /**
      * Handle the search rooms request.

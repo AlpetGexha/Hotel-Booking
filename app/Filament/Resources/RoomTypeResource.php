@@ -17,7 +17,7 @@ use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class RoomTypeResource extends Resource
+final class RoomTypeResource extends Resource
 {
     protected static ?string $model = RoomType::class;
 

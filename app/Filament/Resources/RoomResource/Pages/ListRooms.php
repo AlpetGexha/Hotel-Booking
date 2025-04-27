@@ -8,7 +8,7 @@ use App\Filament\Resources\RoomResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListRooms extends ListRecords
+final class ListRooms extends ListRecords
 {
     protected static string $resource = RoomResource::class;
 

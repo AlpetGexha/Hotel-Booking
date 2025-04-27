@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-class StoreMultipleBookingsAction
+final class StoreMultipleBookingsAction
 {
     public function __construct(
         protected readonly AvaibleRoomAction $availableRoomAction

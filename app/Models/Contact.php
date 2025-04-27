@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Contact extends Model implements HasMedia
+final class Contact extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;

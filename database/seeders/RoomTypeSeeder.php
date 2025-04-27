@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class RoomTypeSeeder extends Seeder
+final class RoomTypeSeeder extends Seeder
 {
     use WithoutModelEvents;
 

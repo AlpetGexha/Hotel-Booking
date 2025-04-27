@@ -7,7 +7,7 @@ namespace App\Http\Requests;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SearchRoomsRequest extends FormRequest
+final class SearchRoomsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

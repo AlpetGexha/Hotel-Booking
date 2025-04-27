@@ -11,7 +11,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class RoomsRelationManager extends RelationManager
+final class RoomsRelationManager extends RelationManager
 {
     protected static string $relationship = 'rooms';
 

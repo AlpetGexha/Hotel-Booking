@@ -8,7 +8,7 @@ use App\Filament\Resources\CustomerResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditCustomer extends EditRecord
+final class EditCustomer extends EditRecord
 {
     protected static string $resource = CustomerResource::class;
 

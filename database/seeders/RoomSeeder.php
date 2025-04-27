@@ -9,7 +9,7 @@ use App\Models\RoomType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class RoomSeeder extends Seeder
+final class RoomSeeder extends Seeder
 {
     use WithoutModelEvents;
 

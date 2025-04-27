@@ -8,7 +8,7 @@ use App\Filament\Resources\RoomResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditRoom extends EditRecord
+final class EditRoom extends EditRecord
 {
     protected static string $resource = RoomResource::class;
 

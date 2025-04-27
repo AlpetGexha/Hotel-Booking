@@ -7,7 +7,7 @@ namespace App\Actions;
 use App\Models\Room;
 use Illuminate\Http\Request;
 
-class CreateMultipleBookingsAction
+final class CreateMultipleBookingsAction
 {
     public function handle(Request $request, array $roomPrices, int $nights, float $totalPrice): array
     {

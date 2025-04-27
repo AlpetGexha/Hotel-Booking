@@ -14,7 +14,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 
-class BookingResource extends Resource
+final class BookingResource extends Resource
 {
     protected static ?string $model = Booking::class;
 

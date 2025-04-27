@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Throwable;
 
-class BookingController extends Controller
+final class BookingController extends Controller
 {
     public function __construct(
         protected readonly PricingService $pricingService

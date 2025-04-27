@@ -11,7 +11,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 
-class BookingsRelationManager extends RelationManager
+final class BookingsRelationManager extends RelationManager
 {
     protected static string $relationship = 'bookings';
 

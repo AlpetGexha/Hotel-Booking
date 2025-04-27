@@ -6,7 +6,7 @@ namespace App\Settings;
 
 use Spatie\LaravelSettings\Settings;
 
-class HotelSettings extends Settings
+final class HotelSettings extends Settings
 {
     public string $name;
     public string $email;

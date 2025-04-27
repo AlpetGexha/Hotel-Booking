@@ -7,7 +7,7 @@ namespace App\Actions;
 use App\Models\RoomType;
 use Illuminate\Http\Request;
 
-class CreateBookingAction
+final class CreateBookingAction
 {
     public function handle(Request $request, float $totalPrice, int $nights): array
     {

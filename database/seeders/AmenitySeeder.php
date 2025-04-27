@@ -9,7 +9,7 @@ use App\Models\Amenity;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class AmenitySeeder extends Seeder
+final class AmenitySeeder extends Seeder
 {
     use WithoutModelEvents;
 

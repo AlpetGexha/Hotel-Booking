@@ -6,7 +6,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class ContactSeeder extends Seeder
+final class ContactSeeder extends Seeder
 {
     /**
      * Run the database seeds.
