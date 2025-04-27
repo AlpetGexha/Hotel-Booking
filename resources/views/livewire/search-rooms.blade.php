@@ -312,4 +312,113 @@
             </div>
         @endif
     </div>
+
+    <!-- Alternative Suggestions Section -->
+    @if ($suggestion && (($alternatives['larger']->isNotEmpty()) || ($alternatives['multiple']->isNotEmpty() && $guests > 4)))
+        <div class="my-6 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-lg shadow-md p-6">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600 dark:text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-md font-medium text-amber-800 dark:text-amber-300">Alternative Options Available</h3>
+                    <div class="mt-2 text-sm text-amber-700 dark:text-amber-300">
+                        <p>{{ $suggestion }}</p>
+                    </div>
+                    
+                    <!-- Alternatives Section -->
+                    <div class="mt-4">
+                        <!-- For larger rooms alternative -->
+                        @if ($alternatives['larger']->isNotEmpty())
+                            <h4 class="font-medium text-sm text-amber-800 dark:text-amber-300 mb-2">Available Larger Rooms:</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                @foreach ($alternatives['larger'] as $room)
+                                    <div class="bg-white dark:bg-slate-800/60 rounded-md shadow-sm p-3 flex items-center justify-between">
+                                        <div>
+                                            <p class="font-medium text-slate-800 dark:text-white">{{ $room->roomType->name }}</p>
+                                            <p class="text-xs text-slate-500 dark:text-slate-400">
+                                                <span class="inline-flex items-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                    </svg>
+                                                    {{ $room->roomType->capacity }} {{ Str::plural('person', $room->roomType->capacity) }}
+                                                </span>
+                                                <span class="ml-2">${{ number_format($room->roomType->price_per_night * $nights, 0) }} total</span>
+                                            </p>
+                                        </div>
+                                        <a 
+                                            href="{{ route('bookings.create', [
+                                                'room_type_id' => $room->roomType->id,
+                                                'check_in_date' => $checkInDate,
+                                                'check_out_date' => $checkOutDate,
+                                                'guests' => $guests
+                                            ]) }}"
+                                            class="inline-flex items-center px-3 py-1 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                        >
+                                            Book Now
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+
+                        <!-- For multiple rooms alternative (when a single room can't fit all guests) -->
+                        @if ($alternatives['multiple']->isNotEmpty() && $guests > 4)
+                            <h4 class="font-medium text-sm text-amber-800 dark:text-amber-300 mt-4 mb-2">Combination of Rooms:</h4>
+                            <div class="bg-white dark:bg-slate-800/60 rounded-md shadow-sm p-4">
+                                <p class="text-sm text-slate-700 dark:text-slate-300 mb-3">
+                                    Consider booking multiple rooms for your group of {{ $guests }} guests. Here are available options:
+                                </p>
+                                <div class="space-y-2">
+                                    @php
+                                        $availableCapacity = $alternatives['multiple']->sum(function($room) {
+                                            return $room->roomType->capacity;
+                                        });
+                                        $suggestedRooms = $alternatives['multiple']->sortByDesc(function($room) {
+                                            return $room->roomType->capacity;
+                                        })->take(3);
+                                    @endphp
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                                        We have a total capacity of {{ $availableCapacity }} guests across {{ $alternatives['multiple']->count() }} available rooms.
+                                    </p>
+                                    
+                                    <div class="mt-3 flex flex-col gap-2">
+                                        @foreach ($suggestedRooms as $room)
+                                            <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-2">
+                                                <div>
+                                                    <span class="text-sm font-medium text-slate-800 dark:text-white">{{ $room->roomType->name }}</span>
+                                                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                                                        <span>Room {{ $room->room_number }}</span> · 
+                                                        <span>{{ $room->roomType->capacity }} {{ Str::plural('person', $room->roomType->capacity) }}</span> · 
+                                                        <span>${{ number_format($room->roomType->price_per_night * $nights, 0) }}</span>
+                                                    </p>
+                                                </div>
+                                                <a 
+                                                    href="{{ route('bookings.create', [
+                                                        'room_type_id' => $room->roomType->id,
+                                                        'check_in_date' => $checkInDate,
+                                                        'check_out_date' => $checkOutDate,
+                                                        'guests' => min($guests, $room->roomType->capacity)
+                                                    ]) }}"
+                                                    class="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium"
+                                                >
+                                                    Book this room
+                                                </a>
+                                            </div>
+                                        @endforeach
+                                    </div>
+
+                                    <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                                        <span class="font-medium">Tip:</span> After booking your first room, continue booking additional rooms as needed for your group.
+                                    </p>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>

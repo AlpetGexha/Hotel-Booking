@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Actions\AvaibleRoomAction;
+use App\Actions\SearchRoomsAction;
 use App\Models\Amenity;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
@@ -29,6 +31,8 @@ class SearchRooms extends Component
      */
     public ?Collection $roomTypes = null;
     public int $nights = 1;
+    public ?string $suggestion = null;
+    public ?array $alternatives = null;
 
     /**
      * Component initialization.
@@ -100,14 +104,28 @@ class SearchRooms extends Component
             'guests' => ['required', 'integer', 'min:1', 'max:10'],
         ]);
 
-        $this->roomTypes = (new \App\Actions\SearchRoomsAction)->handle(
+        // Reset suggestions and alternatives
+        $this->suggestion = null;
+        $this->alternatives = null;
+
+        // Create instances with dependency injection
+        $availableRoomAction = new AvaibleRoomAction();
+        $searchAction = new SearchRoomsAction($availableRoomAction);
+
+        // Get search results
+        $searchResults = $searchAction->handle(
             $this->checkInDate,
             $this->checkOutDate,
             $this->guests,
-            ! empty($this->selectedAmenities) ? $this->selectedAmenities : null,
+            !empty($this->selectedAmenities) ? $this->selectedAmenities : null,
             $this->minPrice,
             $this->maxPrice
         );
+
+        // Extract results
+        $this->roomTypes = $searchResults['roomTypes'];
+        $this->alternatives = $searchResults['alternatives'];
+        $this->suggestion = $searchResults['suggestion'];
     }
 
     /**
@@ -119,6 +137,8 @@ class SearchRooms extends Component
             'roomTypes' => $this->roomTypes,
             'amenities' => $this->amenities,
             'nights' => $this->nights,
+            'suggestion' => $this->suggestion,
+            'alternatives' => $this->alternatives,
         ]);
     }
 }
