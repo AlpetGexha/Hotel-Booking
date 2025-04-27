@@ -100,7 +100,6 @@ class SearchRooms extends Component
             'guests' => ['required', 'integer', 'min:1', 'max:10'],
         ]);
 
-
         $this->roomTypes = (new \App\Actions\SearchRoomsAction)->handle(
             $this->checkInDate,
             $this->checkOutDate,

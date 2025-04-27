@@ -19,7 +19,7 @@ class SearchRoomsController extends Controller
 
         // Get search results using the action class
         $searchAction = App::make(SearchRoomsAction::class);
-        
+
         $roomTypes = $searchAction->handle(
             $validated['check_in_date'],
             $validated['check_out_date'],

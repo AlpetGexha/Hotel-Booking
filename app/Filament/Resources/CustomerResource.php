@@ -11,8 +11,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CustomerResource extends Resource
 {
@@ -25,7 +23,6 @@ class CustomerResource extends Resource
     protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationGroup = 'Management';
-
 
     public static function form(Form $form): Form
     {
@@ -75,7 +72,7 @@ class CustomerResource extends Resource
             ])
             ->filters([
                 Tables\Filters\Filter::make('has_bookings')
-                    ->query(fn(Builder $query): Builder => $query->has('bookings'))
+                    ->query(fn (Builder $query): Builder => $query->has('bookings'))
                     ->label('With Bookings'),
             ])
             ->actions([

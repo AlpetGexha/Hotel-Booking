@@ -8,9 +8,9 @@ use App\Models\Booking;
 use App\Models\Customer;
 use App\Models\RoomType;
 use App\Services\PricingService;
-use DB;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class BookingController extends Controller
@@ -109,7 +109,7 @@ class BookingController extends Controller
                 // Find or create customer
                 $customer = Customer::firstOrCreate(
                     [
-                        'email' => $validated['email']
+                        'email' => $validated['email'],
                     ],
                     [
                         'name' => $validated['name'],

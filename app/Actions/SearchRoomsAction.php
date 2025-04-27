@@ -37,7 +37,7 @@ class SearchRoomsAction
         //     $minPrice,
         //     $maxPrice
         // ) {
-            return $this->findAvailableRoomTypes($checkIn, $checkOut, $guests, $amenityIds, $minPrice, $maxPrice);
+        return $this->findAvailableRoomTypes($checkIn, $checkOut, $guests, $amenityIds, $minPrice, $maxPrice);
         // });
     }
 
