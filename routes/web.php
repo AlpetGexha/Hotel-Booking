@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\SearchRoomsController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -10,11 +11,10 @@ Route::get('/', function () {
 
 Route::get('/search-rooms', SearchRoomsController::class)->name('search.rooms');
 
-
-Route::get('/booking', function() {
-    // This route will be implemented later
-    return 'Booking page coming soon';
-})->name('booking');
+// Booking routes
+Route::get('/booking', [BookingController::class, 'create'])->name('bookings.create');
+Route::post('/booking', [BookingController::class, 'store'])->name('bookings.store');
+Route::get('/booking/confirmation/{booking}', [BookingController::class, 'confirmation'])->name('bookings.confirmation');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

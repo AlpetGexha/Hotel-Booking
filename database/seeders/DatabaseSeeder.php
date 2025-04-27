@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Booking;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,16 +20,17 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        // First seed the amenities
-        $this->call(AmenitySeeder::class);
+        $this->call([
+            AmenitySeeder::class,
+            RoomTypeSeeder::class,
+            RoomSeeder::class,
+            CustomerSeeder::class,
+        ]);
 
-        // Then seed the room types (which now depend on amenities)
-        $this->call(RoomTypeSeeder::class);
+        Booking::factory(20)
+            ->withAssignedRoom()
+            ->create();
 
-        // Then seed the rooms (which depend on room types)
-        $this->call(RoomSeeder::class);
-
-        // You can add more seeders here as your application grows
         // \App\Models\User::factory(10)->create();
     }
 }

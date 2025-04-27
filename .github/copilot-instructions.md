@@ -47,6 +47,8 @@ When providing code examples or explanations:
 - use @forelse and @empy instead @foreach and @if
 - when creating the new view blade file use the command `php artisan make:view` instead of creating the file manually or with mkdir, use this only for blade view.
 - If u use Blade View dont use the  @yield, @section, and @extends directives. use Blade views into reusable components following modern Laravel practices  
+- Use -mfs when creating an **Model**
+- Use **Local Model Scope** for the ORM queries to encapsulate common query logic.
 
 ---
 
