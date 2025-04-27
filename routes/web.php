@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\SearchRoomsController;
 use Illuminate\Support\Facades\Route;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Spatie\LaravelSettings\Migrations\SettingsMigration;
 
 class CreateHotelSettings extends SettingsMigration

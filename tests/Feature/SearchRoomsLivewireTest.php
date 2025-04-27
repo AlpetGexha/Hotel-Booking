@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Livewire\SearchRooms;
 use App\Models\Room;
 use App\Models\RoomType;
