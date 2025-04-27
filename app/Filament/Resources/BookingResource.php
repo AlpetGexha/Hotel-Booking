@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BookingResource\Pages;
@@ -12,7 +14,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 
-class BookingResource extends Resource
+final class BookingResource extends Resource
 {
     protected static ?string $model = Booking::class;
 

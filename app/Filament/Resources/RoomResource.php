@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\RoomResource\Pages;
@@ -11,7 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class RoomResource extends Resource
+final class RoomResource extends Resource
 {
     protected static ?string $model = Room::class;
 
@@ -131,12 +133,10 @@ class RoomResource extends Resource
                             ->label('Floor')
                             ->numeric(),
                     ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query->when(
-                            $data['floor'],
-                            fn (Builder $query, $floor): Builder => $query->where('floor', $floor),
-                        );
-                    }),
+                    ->query(fn (Builder $query, array $data): Builder => $query->when(
+                        $data['floor'],
+                        fn (Builder $query, $floor): Builder => $query->where('floor', $floor),
+                    )),
 
                 Tables\Filters\TernaryFilter::make('is_available')
                     ->label('Availability')

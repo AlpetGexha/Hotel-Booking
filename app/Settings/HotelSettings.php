@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Settings;
 
 use Spatie\LaravelSettings\Settings;
 
-class HotelSettings extends Settings
+final class HotelSettings extends Settings
 {
     public string $name;
     public string $email;
@@ -16,7 +18,6 @@ class HotelSettings extends Settings
     public ?string $linkedin;
     public ?string $github;
     public ?string $cv;
-
 
     public static function group(): string
     {

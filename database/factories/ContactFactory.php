@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -7,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Contact>
  */
-class ContactFactory extends Factory
+final class ContactFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -22,9 +24,7 @@ class ContactFactory extends Factory
             'message' => $this->faker->paragraphs(3, true),
             'ip_address' => $this->faker->ipv4(),
             'created_at' => $this->faker->dateTimeBetween('-1 month', 'now'),
-            'updated_at' => function (array $attributes) {
-                return $attributes['created_at'];
-            },
+            'updated_at' => fn (array $attributes) => $attributes['created_at'],
         ];
     }
 }

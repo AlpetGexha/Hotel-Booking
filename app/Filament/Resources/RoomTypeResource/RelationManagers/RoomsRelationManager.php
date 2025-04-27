@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\RoomTypeResource\RelationManagers;
 
 use Filament\Forms;
@@ -9,7 +11,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class RoomsRelationManager extends RelationManager
+final class RoomsRelationManager extends RelationManager
 {
     protected static string $relationship = 'rooms';
 

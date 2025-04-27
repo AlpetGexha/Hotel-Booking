@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SearchRoomsRequest extends FormRequest
+final class SearchRoomsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true; // Public search functionality
+        return true;
     }
 
     /**
@@ -22,45 +24,14 @@ class SearchRoomsRequest extends FormRequest
      */
     public function rules(): array
     {
-        $today = now()->startOfDay();
-
         return [
-            'check_in_date' => [
-                'required',
-                'date',
-                'after_or_equal:' . $today->format('Y-m-d'),
-            ],
-            'check_out_date' => [
-                'required',
-                'date',
-                'after:check_in_date',
-            ],
-            'guests' => [
-                'required',
-                'integer',
-                'min:1',
-                'max:10',
-            ],
-            'amenities' => [
-                'sometimes',
-                'array',
-            ],
-            'amenities.*' => [
-                'integer',
-                'exists:amenities,id',
-            ],
-            'price_min' => [
-                'sometimes',
-                'nullable',
-                'numeric',
-                'min:0',
-            ],
-            'price_max' => [
-                'sometimes',
-                'nullable',
-                'numeric',
-                'gt:price_min',
-            ],
+            'check_in_date' => ['required', 'date', 'after_or_equal:today'],
+            'check_out_date' => ['required', 'date', 'after:check_in_date'],
+            'guests' => ['required', 'integer', 'min:1', 'max:10'],
+            'amenities' => ['sometimes', 'array'],
+            'amenities.*' => ['exists:amenities,id'],
+            'price_min' => ['sometimes', 'numeric', 'min:0'],
+            'price_max' => ['sometimes', 'numeric', 'gt:price_min'],
         ];
     }
 
@@ -74,29 +45,15 @@ class SearchRoomsRequest extends FormRequest
         return [
             'check_in_date' => 'check-in date',
             'check_out_date' => 'check-out date',
-            'amenities' => 'amenities',
             'price_min' => 'minimum price',
             'price_max' => 'maximum price',
         ];
     }
 
     /**
-     * Get custom messages for validator errors.
-     *
-     * @return array<string, string>
+     * Calculate the number of nights for this search request.
      */
-    public function messages(): array
-    {
-        return [
-            'check_in_date.after_or_equal' => 'The check-in date must be today or later.',
-            'check_out_date.after' => 'The check-out date must be after the check-in date.',
-        ];
-    }
-
-    /**
-     * Calculate the number of nights between check-in and check-out dates.
-     */
-    public function getNightsCount(): int
+    public function getNightsCount(): int|float
     {
         $checkIn = Carbon::parse($this->check_in_date);
         $checkOut = Carbon::parse($this->check_out_date);

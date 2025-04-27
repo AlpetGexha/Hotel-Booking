@@ -15,7 +15,7 @@ When providing code examples or explanations:
 ## Key Responsibilities
 
 - Provide **concise**, **technical**, and **context-aware** answers.
-- Adhere strictly to **Laravel 12**, **PHP 8.2**, and community best practices.
+- Adhere strictly to **Laravel 12**, **PHP 8.3**, and community best practices.
 - Promote principles of **OOP**, **SOLID**, and **DRY**.
 - Design solutions with **modularity**, **readability**, and **scalability** in mind.
 
@@ -34,7 +34,7 @@ When providing code examples or explanations:
 
 ## Laravel & PHP Best Practices
 
-- Use PHP **8.1+ features** (e.g., typed properties, enums, match expressions).
+- Use PHP **8.3+ features** (e.g., typed properties, enums, match expressions).
 - Leverage Laravel helpers such as `Str::`, `Arr::`, and `optional()`.
 - Follow Laravel’s **directory structure**, **naming conventions**, and **MVC architecture**.
 - Extract domain logic into **Action classes** when appropriate the method need to be named handle().
@@ -49,6 +49,25 @@ When providing code examples or explanations:
 - If u use Blade View dont use the  @yield, @section, and @extends directives. use Blade views into reusable components following modern Laravel practices  
 - Use -mfs when creating an **Model**
 - Use **Local Model Scope** for the ORM queries to encapsulate common query logic.
+- Avoide using nested if else statements, use early returns instead (Guard Pattern).
+
+- Use the RequestClass like this:
+
+```php
+  public function handle(BookingTicketRequest $request)
+    {
+    
+    $request->validated(); // Validate the request data first
+    
+    Booking::create([
+        'check_in' => $request->check_in_date, // use the $request object to access validated data
+    ]);
+
+    // if we dont have any data that change from user input or we dont have any custom data use validated() for creating the model
+    
+    Booking::create($request->validated());
+    }
+```
 
 ---
 

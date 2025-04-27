@@ -27,6 +27,7 @@
         "pestphp/pest": "^3.8",
         "pestphp/pest-plugin-drift": "^3.0",
         "pestphp/pest-plugin-laravel": "^3.2",
+        "rector/rector": "^2.0",
         "tightenco/duster": "*"
     },
     "autoload": {

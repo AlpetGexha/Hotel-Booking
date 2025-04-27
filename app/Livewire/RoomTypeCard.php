@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
 use App\Models\RoomType;
@@ -7,7 +9,7 @@ use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
 #[Lazy]
-class RoomTypeCard extends Component
+final class RoomTypeCard extends Component
 {
     public RoomType $roomType;
     public string $checkInDate;

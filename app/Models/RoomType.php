@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -21,7 +23,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
-class RoomType extends Model implements HasMedia
+final class RoomType extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;

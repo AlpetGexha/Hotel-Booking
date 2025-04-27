@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
 use App\Actions\AvaibleRoomAction;
@@ -11,7 +13,7 @@ use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class SearchRooms extends Component
+final class SearchRooms extends Component
 {
     use WithPagination;
 
@@ -109,7 +111,7 @@ class SearchRooms extends Component
         $this->alternatives = null;
 
         // Create instances with dependency injection
-        $availableRoomAction = new AvaibleRoomAction();
+        $availableRoomAction = new AvaibleRoomAction;
         $searchAction = new SearchRoomsAction($availableRoomAction);
 
         // Get search results
@@ -117,7 +119,7 @@ class SearchRooms extends Component
             $this->checkInDate,
             $this->checkOutDate,
             $this->guests,
-            !empty($this->selectedAmenities) ? $this->selectedAmenities : null,
+            ! empty($this->selectedAmenities) ? $this->selectedAmenities : null,
             $this->minPrice,
             $this->maxPrice
         );

@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BookingCreateRequest extends FormRequest
+final class BookingCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,13 +24,10 @@ class BookingCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // Room and booking details
             'room_type_id' => ['required', 'exists:room_types,id'],
             'check_in_date' => ['required', 'date', 'after_or_equal:today'],
             'check_out_date' => ['required', 'date', 'after:check_in_date'],
             'guests' => ['required', 'integer', 'min:1', 'max:10'],
-            'customer_id' => ['required', 'exists:customers,id'],
-            'special_requests' => ['nullable', 'string', 'max:1000'],
         ];
     }
 }

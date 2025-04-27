@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\RoomTypeResource\Pages;
@@ -15,7 +17,7 @@ use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class RoomTypeResource extends Resource
+final class RoomTypeResource extends Resource
 {
     protected static ?string $model = RoomType::class;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use Closure;
@@ -8,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 
-class SpatieMediaLibraryExtensionServiceProvider extends ServiceProvider
+final class SpatieMediaLibraryExtensionServiceProvider extends ServiceProvider
 {
     /**
      * Register services.

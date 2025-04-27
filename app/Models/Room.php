@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -7,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Room extends Model
+final class Room extends Model
 {
     use HasFactory;
 
@@ -45,12 +47,12 @@ class Room extends Model
     public function scopeAvailableForBooking($query, string $checkInDate, string $checkOutDate)
     {
         return $query->where('is_available', true)
-            ->whereDoesntHave('bookings', function ($query) use ($checkInDate, $checkOutDate) {
-                $query->where(function ($q) use ($checkInDate, $checkOutDate) {
+            ->whereDoesntHave('bookings', function ($query) use ($checkInDate, $checkOutDate): void {
+                $query->where(function ($q) use ($checkInDate, $checkOutDate): void {
                     // Check if existing booking overlaps with requested dates
                     $q->whereBetween('check_in', [$checkInDate, $checkOutDate])
                         ->orWhereBetween('check_out', [$checkInDate, $checkOutDate])
-                        ->orWhere(function ($innerQuery) use ($checkInDate, $checkOutDate) {
+                        ->orWhere(function ($innerQuery) use ($checkInDate, $checkOutDate): void {
                             // Or if requested dates are within an existing booking
                             $innerQuery->where('check_in', '<=', $checkInDate)
                                 ->where('check_out', '>=', $checkOutDate);

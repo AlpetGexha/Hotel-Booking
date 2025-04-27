@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Enum\RoomAmenity;
@@ -12,7 +14,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class RoomTypeSeeder extends Seeder
+final class RoomTypeSeeder extends Seeder
 {
     use WithoutModelEvents;
 
@@ -112,17 +114,15 @@ class RoomTypeSeeder extends Seeder
             DB::beginTransaction();
 
             // Prepare room type data for bulk insert
-            $roomTypeInsertData = collect($roomTypesData)->map(function ($data) {
-                return [
-                    'name' => $data['name'],
-                    'description' => $data['description'],
-                    'price_per_night' => $data['price_per_night'],
-                    'capacity' => $data['capacity'],
-                    'size' => $data['size'] ?? null,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-            })->toArray();
+            $roomTypeInsertData = collect($roomTypesData)->map(fn ($data): array => [
+                'name' => $data['name'],
+                'description' => $data['description'],
+                'price_per_night' => $data['price_per_night'],
+                'capacity' => $data['capacity'],
+                'size' => $data['size'] ?? null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ])->toArray();
 
             // Bulk insert room types
             RoomType::insert($roomTypeInsertData);

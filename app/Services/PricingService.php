@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Models\Room;
@@ -8,12 +10,12 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use InvalidArgumentException;
 
-class PricingService
+final class PricingService
 {
     /**
      * Calculate the number of nights between two dates.
      */
-    public function getNightsCount(string $checkInDate, string $checkOutDate): int
+    public function getNightsCount(string $checkInDate, string $checkOutDate): int|float
     {
         $checkIn = Carbon::parse($checkInDate);
         $checkOut = Carbon::parse($checkOutDate);

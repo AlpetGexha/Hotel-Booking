@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\CustomerResource\RelationManagers;
 
 use Filament\Forms\Form;
@@ -9,7 +11,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 
-class BookingsRelationManager extends RelationManager
+final class BookingsRelationManager extends RelationManager
 {
     protected static string $relationship = 'bookings';
 

@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Settings\HotelSettings;
-use App\Settings\SocialSettings;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Throwable;
 
-class HotelSettingsServiceProvider extends ServiceProvider
+final class HotelSettingsServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -26,7 +28,7 @@ class HotelSettingsServiceProvider extends ServiceProvider
             $hotelSettings = app(HotelSettings::class);
 
             View::share('hotelSettings', $hotelSettings);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             logger()->info('Hotel settings not available: ' . $th->getMessage());
         }
     }
