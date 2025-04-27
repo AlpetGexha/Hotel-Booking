@@ -106,7 +106,7 @@ class BookingController extends Controller
                     ['email' => $validated['email']],
                     [
                         'name' => $validated['name'],
-                        'phone' => $validated['phone'],
+                        // 'phone' => $validated['phone'],
                     ]
                 );
 

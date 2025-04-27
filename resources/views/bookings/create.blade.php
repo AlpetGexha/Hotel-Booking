@@ -3,7 +3,7 @@
     <x-slot:metaDescription>Book your stay at {{ config('app.name') }} - Complete your reservation for {{ $roomType->name }}</x-slot:metaDescription>
 
     <!-- Hero Section with Background Image -->
-    <div class="relative bg-cover bg-center h-[50vh] -mt-24 mb-16"
+    {{-- <div class="relative bg-cover bg-center h-[50vh] -mt-24 mb-16"
          style="background-image: url('{{ asset('images/hotel-bg.jpg') }}'); background-repeat: no-repeat; background-size: cover;">
         <div class="absolute inset-0 bg-black bg-opacity-60"></div>
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
@@ -16,11 +16,24 @@
                 </p>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Booking Form Section -->
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 mt-12">
         <div class="bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden">
+
+            {{-- get all the errors --}}
+            @if ($errors->any())
+                <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 text-red-800 dark:text-red-200 p-4 rounded-md mb-6">
+                    <h3 class="font-medium">Please fix the following errors:</h3>
+                    <ul class="list-disc pl-5 mt-2">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <!-- Room Type Summary -->
             <div class="border-b border-gray-200 dark:border-gray-700">
                 <div class="px-6 py-5 flex items-center justify-between">
@@ -102,23 +115,6 @@
                         @enderror
                     </div>
 
-                    <!-- Phone -->
-                    <div class="mb-8">
-                        <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Phone Number</label>
-                        <input
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            value="{{ old('phone') }}"
-                            class="block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            required
-                        >
-                        @error('phone')
-                            <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Special Requests -->
                     <div class="mb-8">
                         <label for="special_requests" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Special Requests (Optional)</label>
                         <textarea

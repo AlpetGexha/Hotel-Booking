@@ -116,15 +116,17 @@
                         ${{ number_format($roomType->price_per_night * $nights, 2) }}</p>
                 </div>
 
-                <a {{-- href="{{ route('booking.create', [
-                        'room_type_id' => $roomType->id,
-                        'check_in_date' => $checkInDate,
-                        'check_out_date' => $checkOutDate,
-                        'guests' => $guests
-                    ]) }}" --}}
-                    class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-                    Book Now
-                </a>
+                <div class="flex space-x-2">
+                    <a href="{{ route('bookings.create', [
+                            'room_type_id' => $roomType->id,
+                            'check_in_date' => $checkInDate,
+                            'check_out_date' => $checkOutDate,
+                            'guests' => $guests
+                        ]) }}"
+                        class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:ring-offset-slate-800 transition-colors">
+                        Book Now
+                    </a>
+                </div>
             </div>
         </div>
     </div>

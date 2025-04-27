@@ -28,7 +28,7 @@ class BookingFormRequest extends FormRequest
             'guests' => ['required', 'integer', 'min:1', 'max:10'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
-            'phone' => ['required', 'string', 'max:20'],
+            'phone' => ['nullable', 'string', 'max:20'],
             'special_requests' => ['nullable', 'string', 'max:1000'],
         ];
     }
