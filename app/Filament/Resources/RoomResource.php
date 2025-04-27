@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\RoomResource\Pages;
 use App\Models\Room;
-use App\Models\RoomType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -153,7 +152,7 @@ class RoomResource extends Resource
                     ->icon(fn (Room $record): string => $record->is_available ? 'heroicon-m-x-mark' : 'heroicon-m-check')
                     ->color(fn (Room $record): string => $record->is_available ? 'danger' : 'success')
                     ->action(function (Room $record): void {
-                        $record->update(['is_available' => !$record->is_available]);
+                        $record->update(['is_available' => ! $record->is_available]);
                     }),
             ])
             ->bulkActions([

@@ -54,7 +54,7 @@
                     <div>
                         <label for="guests" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Guests</label>
                         <select id="guests" name="guests" class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            @foreach(range(1, 6) as $i)
+                            @foreach (range(1, 6) as $i)
                                 <option value="{{ $i }}">{{ $i }} {{ Str::plural('Person', $i) }}</option>
                             @endforeach
                         </select>

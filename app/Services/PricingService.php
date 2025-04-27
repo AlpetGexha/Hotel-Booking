@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\RoomType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use InvalidArgumentException;
 
 class PricingService
 {
@@ -22,9 +23,9 @@ class PricingService
     /**
      * Calculate the total price for a booking.
      *
-     * @param RoomType|Collection $roomType The room type or collection of room types
-     * @param string $checkInDate The check-in date
-     * @param string $checkOutDate The check-out date
+     * @param  RoomType|Collection  $roomType  The room type or collection of room types
+     * @param  string  $checkInDate  The check-in date
+     * @param  string  $checkOutDate  The check-out date
      * @return float The total price
      */
     public function calculateTotalPrice($roomType, string $checkInDate, string $checkOutDate): float
@@ -33,14 +34,14 @@ class PricingService
 
         if ($roomType instanceof Collection) {
             if ($roomType->isEmpty()) {
-                throw new \InvalidArgumentException('Room type collection is empty');
+                throw new InvalidArgumentException('Room type collection is empty');
             }
 
             $roomType = $roomType->first();
         }
 
-        if (!($roomType instanceof RoomType)) {
-            throw new \InvalidArgumentException('Invalid room type provided');
+        if (! ($roomType instanceof RoomType)) {
+            throw new InvalidArgumentException('Invalid room type provided');
         }
 
         $pricePerNight = $roomType->price_per_night;
@@ -51,7 +52,6 @@ class PricingService
 
         return $totalPrice;
     }
-
 
     /**
      * Find an available room for the given room type and date range.

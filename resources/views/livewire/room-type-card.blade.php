@@ -54,7 +54,7 @@
 
                 <!-- Room Details (Size, capacity) -->
                 <div class="flex flex-wrap items-center gap-3 mb-4">
-                    @if($roomType->size)
+                    @if ($roomType->size)
                     <div class="flex items-center text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded-md">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
@@ -72,25 +72,25 @@
                 </div>
 
                 <!-- Amenities -->
-                @if($roomType->amenities->count() > 0)
+                @if ($roomType->amenities->count() > 0)
                     <div class="mb-4 mt-auto">
                         <h3 class="text-xs font-medium uppercase text-slate-500 dark:text-slate-400 mb-2">Amenities</h3>
                         <div class="flex flex-wrap gap-2">
-                            @foreach($roomType->amenities->take(4) as $amenity)
+                            @foreach ($roomType->amenities->take(4) as $amenity)
                                 <span class="px-2.5 py-0.5 rounded-full text-xs font-medium
-                                    @if(Str::contains(Str::lower($amenity->name), ['wifi', 'internet']))
+                                    @if (Str::contains(Str::lower($amenity->name), ['wifi', 'internet']))
                                         bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
-                                    @elseif(Str::contains(Str::lower($amenity->name), ['tv', 'television', 'entertainment']))
+                                    @elseif (Str::contains(Str::lower($amenity->name), ['tv', 'television', 'entertainment']))
                                         bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200
-                                    @elseif(Str::contains(Str::lower($amenity->name), ['air', 'conditioning', 'climate']))
+                                    @elseif (Str::contains(Str::lower($amenity->name), ['air', 'conditioning', 'climate']))
                                         bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200
-                                    @elseif(Str::contains(Str::lower($amenity->name), ['bar', 'drink', 'minibar']))
+                                    @elseif (Str::contains(Str::lower($amenity->name), ['bar', 'drink', 'minibar']))
                                         bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200
-                                    @elseif(Str::contains(Str::lower($amenity->name), ['safe', 'security']))
+                                    @elseif (Str::contains(Str::lower($amenity->name), ['safe', 'security']))
                                         bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200
-                                    @elseif(Str::contains(Str::lower($amenity->name), ['kitchen', 'cooking']))
+                                    @elseif (Str::contains(Str::lower($amenity->name), ['kitchen', 'cooking']))
                                         bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200
-                                    @elseif(Str::contains(Str::lower($amenity->name), ['living', 'room', 'space']))
+                                    @elseif (Str::contains(Str::lower($amenity->name), ['living', 'room', 'space']))
                                         bg-lime-100 text-lime-800 dark:bg-lime-900 dark:text-lime-200
                                     @else
                                         bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-200
@@ -99,7 +99,7 @@
                                 </span>
                             @endforeach
 
-                            @if($roomType->amenities->count() > 4)
+                            @if ($roomType->amenities->count() > 4)
                                 <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-200">
                                     +{{ $roomType->amenities->count() - 4 }}
                                 </span>

@@ -28,9 +28,19 @@ enum RoomAmenity: string implements HasIcon
     case JACUZZI = 'Jacuzzi';
 
     /**
-     * Get the Heroicon name for this amenity
+     * Get all enum values as an array suitable for select options
      *
-     * @return string
+     * @return array<string, string>
+     */
+    public static function options(): array
+    {
+        return collect(self::cases())
+            ->mapWithKeys(fn (self $amenity) => [$amenity->value => $amenity->value])
+            ->toArray();
+    }
+
+    /**
+     * Get the Heroicon name for this amenity
      */
     public function getHeroicon(): string
     {
@@ -59,8 +69,6 @@ enum RoomAmenity: string implements HasIcon
 
     /**
      * Get the icon name for this amenity
-     *
-     * @return string
      */
     public function getIcon(): string
     {
@@ -69,8 +77,6 @@ enum RoomAmenity: string implements HasIcon
 
     /**
      * Get a description for this amenity
-     *
-     * @return string
      */
     public function getDescription(): string
     {
@@ -96,17 +102,5 @@ enum RoomAmenity: string implements HasIcon
             self::CHILDREN_AMENITIES => 'Child-friendly facilities and items',
             self::JACUZZI => 'Private jacuzzi or hot tub',
         };
-    }
-
-    /**
-     * Get all enum values as an array suitable for select options
-     *
-     * @return array<string, string>
-     */
-    public static function options(): array
-    {
-        return collect(self::cases())
-            ->mapWithKeys(fn(self $amenity) => [$amenity->value => $amenity->value])
-            ->toArray();
     }
 }

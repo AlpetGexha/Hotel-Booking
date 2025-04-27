@@ -9,12 +9,12 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/search-rooms', SearchRoomsController::class)->name('search.rooms');
+Route::get('search-rooms', SearchRoomsController::class)->name('search.rooms');
 
 // Booking routes
-Route::get('/booking', [BookingController::class, 'create'])->name('bookings.create');
-Route::post('/booking', [BookingController::class, 'store'])->name('bookings.store');
-Route::get('/booking/confirmation/{booking}', [BookingController::class, 'confirmation'])->name('bookings.confirmation');
+Route::get('booking', [BookingController::class, 'create'])->name('bookings.create');
+Route::post('booking', [BookingController::class, 'store'])->name('bookings.store');
+Route::get('booking/confirmation/{booking}', [BookingController::class, 'confirmation'])->name('bookings.confirmation');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -28,4 +28,4 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

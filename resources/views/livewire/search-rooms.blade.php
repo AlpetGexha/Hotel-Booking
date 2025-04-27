@@ -64,7 +64,7 @@
                         wire:model.live="guests"
                         class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                     >
-                        @foreach(range(1, 10) as $i)
+                        @foreach (range(1, 10) as $i)
                             <option value="{{ $i }}">{{ $i }} {{ Str::plural('Person', $i) }}</option>
                         @endforeach
                     </select>
@@ -153,7 +153,7 @@
                         </label>
 
                         <div class="grid grid-cols-2 gap-2">
-                            @foreach($amenities as $amenity)
+                            @foreach ($amenities as $amenity)
                                 <div class="flex items-center">
                                     <input
                                         type="checkbox"
@@ -205,7 +205,7 @@
                 </span>
             </h2>
             <p class="text-sm text-slate-600 dark:text-slate-400">
-                @if($roomTypes && $roomTypes->count() > 0)
+                @if ($roomTypes && $roomTypes->count() > 0)
                     Showing {{ $roomTypes->count() }} {{ Str::plural('room type', $roomTypes->count()) }}
                     for {{ $guests }} {{ Str::plural('guest', $guests) }} · {{ $nights }} {{ Str::plural('night', $nights) }}
                 @else
@@ -215,9 +215,9 @@
         </div>
 
         <!-- Room Types Grid -->
-        @if($roomTypes && $roomTypes->count() > 0)
+        @if ($roomTypes && $roomTypes->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach($roomTypes as $roomType)
+                @foreach ($roomTypes as $roomType)
                     <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden">
                         <!-- Room Image -->
                         <div class="h-48 bg-slate-300 dark:bg-slate-700">
@@ -242,7 +242,7 @@
                                 </div>
 
                                 <!-- Room Size -->
-                                @if($roomType->size)
+                                @if ($roomType->size)
                                 <div class="flex items-center text-slate-600 dark:text-slate-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
@@ -253,17 +253,17 @@
                             </div>
 
                             <!-- Amenities -->
-                            @if($roomType->amenities->count() > 0)
+                            @if ($roomType->amenities->count() > 0)
                                 <div class="mb-4">
                                     <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Amenities</h4>
                                     <div class="flex flex-wrap gap-2">
-                                        @foreach($roomType->amenities->take(4) as $amenity)
+                                        @foreach ($roomType->amenities->take(4) as $amenity)
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-800 dark:text-indigo-100">
                                                 {{ $amenity->name }}
                                             </span>
                                         @endforeach
 
-                                        @if($roomType->amenities->count() > 4)
+                                        @if ($roomType->amenities->count() > 4)
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-300">
                                                 +{{ $roomType->amenities->count() - 4 }} more
                                             </span>

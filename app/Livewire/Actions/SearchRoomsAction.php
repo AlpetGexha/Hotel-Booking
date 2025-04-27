@@ -12,14 +12,6 @@ class SearchRoomsAction
 {
     /**
      * Execute the room search.
-     *
-     * @param string $checkInDate
-     * @param string $checkOutDate
-     * @param int $guests
-     * @param array|null $amenityIds
-     * @param float|null $minPrice
-     * @param float|null $maxPrice
-     * @return Collection
      */
     public function execute(
         string $checkInDate,
@@ -51,14 +43,6 @@ class SearchRoomsAction
 
     /**
      * Find available room types based on the given criteria.
-     *
-     * @param Carbon $checkIn
-     * @param Carbon $checkOut
-     * @param int $guests
-     * @param array|null $amenityIds
-     * @param float|null $minPrice
-     * @param float|null $maxPrice
-     * @return Collection
      */
     private function findAvailableRoomTypes(
         Carbon $checkIn,
@@ -101,14 +85,6 @@ class SearchRoomsAction
 
     /**
      * Generate a unique cache key for the search parameters.
-     *
-     * @param Carbon $checkIn
-     * @param Carbon $checkOut
-     * @param int $guests
-     * @param array|null $amenityIds
-     * @param float|null $minPrice
-     * @param float|null $maxPrice
-     * @return string
      */
     private function generateCacheKey(
         Carbon $checkIn,

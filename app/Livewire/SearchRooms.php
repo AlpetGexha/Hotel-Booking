@@ -2,10 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Enum\RoomAmenity;
 use App\Livewire\Actions\SearchRoomsAction;
 use App\Models\Amenity;
-use App\Models\RoomType;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
@@ -39,11 +37,11 @@ class SearchRooms extends Component
     public function mount(): void
     {
         // Set default dates if not provided
-        if (!isset($this->checkInDate)) {
+        if (! isset($this->checkInDate)) {
             $this->checkInDate = now()->format('Y-m-d');
         }
 
-        if (!isset($this->checkOutDate)) {
+        if (! isset($this->checkOutDate)) {
             $this->checkOutDate = now()->addDay()->format('Y-m-d');
         }
 
@@ -103,13 +101,13 @@ class SearchRooms extends Component
             'guests' => ['required', 'integer', 'min:1', 'max:10'],
         ]);
 
-        $searchAction = new SearchRoomsAction();
+        $searchAction = new SearchRoomsAction;
 
         $this->roomTypes = $searchAction->execute(
             $this->checkInDate,
             $this->checkOutDate,
             $this->guests,
-            !empty($this->selectedAmenities) ? $this->selectedAmenities : null,
+            ! empty($this->selectedAmenities) ? $this->selectedAmenities : null,
             $this->minPrice,
             $this->maxPrice
         );

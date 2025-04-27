@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BookingFormRequest;
 use App\Models\RoomType;
 use App\Services\PricingService;
+use DB;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -34,7 +36,7 @@ class BookingController extends Controller
         $roomTypeId = $validated['room_type_id'];
         $roomType = RoomType::find($roomTypeId);
 
-        if (!$roomType) {
+        if (! $roomType) {
             abort(404, 'Room type not found');
         }
 
@@ -75,7 +77,7 @@ class BookingController extends Controller
         $roomTypeId = $validated['room_type_id'];
         $roomType = RoomType::find($roomTypeId);
 
-        if (!$roomType) {
+        if (! $roomType) {
             abort(404, 'Room type not found');
         }
 
@@ -92,7 +94,7 @@ class BookingController extends Controller
             $validated['check_out_date']
         );
 
-        if (!$availableRoom) {
+        if (! $availableRoom) {
             return back()
                 ->withErrors(['room_availability' => 'No rooms of this type are available for the selected dates'])
                 ->withInput();
@@ -100,7 +102,7 @@ class BookingController extends Controller
 
         // Use database transaction for consistency
         try {
-            $booking = \DB::transaction(function () use ($validated, $totalPrice, $availableRoom) {
+            $booking = DB::transaction(function () use ($validated, $totalPrice, $availableRoom) {
                 // Find or create customer
                 $customer = \App\Models\Customer::firstOrCreate(
                     ['email' => $validated['email']],
@@ -125,7 +127,7 @@ class BookingController extends Controller
 
             // Redirect to booking confirmation page
             return redirect()->route('bookings.confirmation', $booking)->with('success', 'Your booking has been confirmed!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()
                 ->withErrors(['booking_error' => 'An error occurred while processing your booking. Please try again.'])
                 ->withInput();

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Booking;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -27,8 +26,6 @@ class DatabaseSeeder extends Seeder
             CustomerSeeder::class,
             BookingSeeder::class,
         ]);
-
-
 
         // \App\Models\User::factory(10)->create();
     }

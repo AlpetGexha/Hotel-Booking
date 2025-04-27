@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -46,14 +46,12 @@ class RoomType extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('room_photo')
-            ->useFallbackUrl("https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80")
+            ->useFallbackUrl('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')
             ->singleFile();
     }
 
     /**
      * Register media conversions.
-     *
-     * @param Media|null $media
      */
     public function registerMediaConversions(?Media $media = null): void
     {
@@ -86,7 +84,7 @@ class RoomType extends Model implements HasMedia
         return $this->getFirstMediaUrl('room_photo', 'thumbnail');
     }
 
-    //https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80
+    // https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80
 
     /**
      * Get the rooms for this room type.
@@ -110,7 +108,7 @@ class RoomType extends Model implements HasMedia
     protected function formattedSize(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->size ? "{$this->size} m²" : null,
+            get: fn () => $this->size ? "{$this->size} m²" : null,
         );
     }
 }

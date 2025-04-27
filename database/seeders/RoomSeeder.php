@@ -6,7 +6,6 @@ use App\Models\Room;
 use App\Models\RoomType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class RoomSeeder extends Seeder
 {
@@ -40,7 +39,7 @@ class RoomSeeder extends Seeder
 
                 // Add to rooms array for bulk insert
                 $rooms[] = [
-                    'room_number' => (string)$roomNumber,
+                    'room_number' => (string) $roomNumber,
                     'floor' => $floor,
                     'room_type_id' => $randomRoomTypeId,
                     'is_available' => rand(1, 100) <= 90, // 90% chance of being available

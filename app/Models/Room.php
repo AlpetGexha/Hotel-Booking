@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Carbon\Carbon;
 
 class Room extends Model
 {
@@ -43,7 +43,7 @@ class Room extends Model
     /**
      * Scope a query to only include available rooms.
      */
-    public function scopeAvailable($query, Carbon $checkIn = null, Carbon $checkOut = null)
+    public function scopeAvailable($query, ?Carbon $checkIn = null, ?Carbon $checkOut = null)
     {
         $query->where('is_available', true);
 

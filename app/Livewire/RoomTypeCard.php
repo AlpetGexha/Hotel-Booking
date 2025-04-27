@@ -3,10 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\RoomType;
-use Illuminate\Support\Facades\Str;
-use Illuminate\Support\Carbon;
-use Livewire\Component;
 use Livewire\Attributes\Lazy;
+use Livewire\Component;
 
 #[Lazy]
 class RoomTypeCard extends Component

@@ -6,7 +6,6 @@ use App\Enum\RoomAmenity;
 use App\Models\Amenity;
 use App\Models\RoomType;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Collection;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\RoomType>
@@ -29,14 +28,14 @@ class RoomTypeFactory extends Factory
                 'Penthouse',
                 'Family Room',
                 'Single Room',
-                'Double Room'
+                'Double Room',
             ]),
             'description' => fake()->paragraph(),
             'price_per_night' => fake()->randomFloat(2, 100, 1000),
             'capacity' => fake()->numberBetween(1, 6),
             'size' => function (array $attributes) {
                 // Set size based on room type and capacity
-                $baseSize = match($attributes['name']) {
+                $baseSize = match ($attributes['name']) {
                     'Standard', 'Single Room' => 15,
                     'Deluxe', 'Double Room' => 25,
                     'Suite', 'Family Room' => 35,
@@ -83,8 +82,7 @@ class RoomTypeFactory extends Factory
     /**
      * Indicate that the room type should have specific amenities.
      *
-     * @param array<int, RoomAmenity|string> $amenities
-     * @return static
+     * @param  array<int, RoomAmenity|string>  $amenities
      */
     public function withAmenities(array $amenities): static
     {

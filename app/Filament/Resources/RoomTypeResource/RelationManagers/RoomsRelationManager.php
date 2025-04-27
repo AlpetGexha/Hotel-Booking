@@ -82,6 +82,7 @@ class RoomsRelationManager extends RelationManager
                     ->mutateFormDataUsing(function (array $data): array {
                         // Automatically set the room_type_id to the current room type
                         $data['room_type_id'] = $this->getOwnerRecord()->id;
+
                         return $data;
                     }),
             ])
@@ -93,7 +94,7 @@ class RoomsRelationManager extends RelationManager
                     ->icon(fn ($record): string => $record->is_available ? 'heroicon-m-x-mark' : 'heroicon-m-check')
                     ->color(fn ($record): string => $record->is_available ? 'danger' : 'success')
                     ->action(function ($record): void {
-                        $record->update(['is_available' => !$record->is_available]);
+                        $record->update(['is_available' => ! $record->is_available]);
                     }),
             ])
             ->bulkActions([

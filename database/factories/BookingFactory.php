@@ -36,11 +36,8 @@ class BookingFactory extends Factory
         ];
     }
 
-
     /**
      * Assign an available room to the booking.
-     *
-     * @return static
      */
     public function withAssignedRoom(): static
     {

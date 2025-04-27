@@ -35,7 +35,7 @@ class SpatieMediaLibraryExtensionServiceProvider extends ServiceProvider
             /** @var SpatieMediaLibraryImageColumn $this */
             $record = $this->getRecord();
 
-            if (!$record instanceof Model || !$record->exists) {
+            if (! $record instanceof Model || ! $record->exists) {
                 return $callback();
             }
 

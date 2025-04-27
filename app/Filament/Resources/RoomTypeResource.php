@@ -7,15 +7,13 @@ use App\Filament\Resources\RoomTypeResource\RelationManagers;
 use App\Models\Amenity;
 use App\Models\RoomType;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
-
-
 
 class RoomTypeResource extends Resource
 {
@@ -105,7 +103,7 @@ class RoomTypeResource extends Resource
                     ->square()
                     ->defaultImageUrl('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=420&h=280&q=80')
                     ->label('Photo'),
-                    
+
                 Tables\Columns\TextColumn::make('price_per_night')
                     ->money('USD')
                     ->sortable(),

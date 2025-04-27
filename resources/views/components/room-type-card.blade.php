@@ -57,17 +57,17 @@
                         <span
                             class="px-2.5 py-0.5 rounded-full text-xs font-medium
                             @if (Str::contains(Str::lower($amenity->name), ['wifi', 'internet'])) bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
-                            @elseif(Str::contains(Str::lower($amenity->name), ['tv', 'television', 'entertainment']))
+                            @elseif (Str::contains(Str::lower($amenity->name), ['tv', 'television', 'entertainment']))
                                 bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200
-                            @elseif(Str::contains(Str::lower($amenity->name), ['air', 'conditioning', 'climate']))
+                            @elseif (Str::contains(Str::lower($amenity->name), ['air', 'conditioning', 'climate']))
                                 bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200
-                            @elseif(Str::contains(Str::lower($amenity->name), ['bar', 'drink', 'minibar']))
+                            @elseif (Str::contains(Str::lower($amenity->name), ['bar', 'drink', 'minibar']))
                                 bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200
-                            @elseif(Str::contains(Str::lower($amenity->name), ['safe', 'security']))
+                            @elseif (Str::contains(Str::lower($amenity->name), ['safe', 'security']))
                                 bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200
-                            @elseif(Str::contains(Str::lower($amenity->name), ['kitchen', 'cooking']))
+                            @elseif (Str::contains(Str::lower($amenity->name), ['kitchen', 'cooking']))
                                 bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200
-                            @elseif(Str::contains(Str::lower($amenity->name), ['living', 'room', 'space']))
+                            @elseif (Str::contains(Str::lower($amenity->name), ['living', 'room', 'space']))
                                 bg-lime-100 text-lime-800 dark:bg-lime-900 dark:text-lime-200
                             @else
                                 bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-200 @endif">

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Enum\RoomAmenity;
 use App\Models\Amenity;
 use App\Models\RoomType;
+use Exception;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
@@ -33,7 +34,7 @@ class RoomTypeSeeder extends Seeder
                     RoomAmenity::TV,
                     RoomAmenity::AIR_CONDITIONING,
                     RoomAmenity::PRIVATE_BATHROOM,
-                    RoomAmenity::DESK
+                    RoomAmenity::DESK,
                 ],
             ],
             [
@@ -49,7 +50,7 @@ class RoomTypeSeeder extends Seeder
                     RoomAmenity::AIR_CONDITIONING,
                     RoomAmenity::COFFEE_MACHINE,
                     RoomAmenity::SAFE,
-                    RoomAmenity::DESK
+                    RoomAmenity::DESK,
                 ],
             ],
             [
@@ -67,7 +68,7 @@ class RoomTypeSeeder extends Seeder
                     RoomAmenity::SAFE,
                     RoomAmenity::SOFA,
                     RoomAmenity::DINING_AREA,
-                    RoomAmenity::PREMIUM_TOILETRIES
+                    RoomAmenity::PREMIUM_TOILETRIES,
                 ],
             ],
             [
@@ -83,7 +84,7 @@ class RoomTypeSeeder extends Seeder
                     RoomAmenity::AIR_CONDITIONING,
                     RoomAmenity::SAFE,
                     RoomAmenity::EXTRA_BEDS,
-                    RoomAmenity::CHILDREN_AMENITIES
+                    RoomAmenity::CHILDREN_AMENITIES,
                 ],
             ],
             [
@@ -102,7 +103,7 @@ class RoomTypeSeeder extends Seeder
                     RoomAmenity::BALCONY,
                     RoomAmenity::JACUZZI,
                     RoomAmenity::PREMIUM_TOILETRIES,
-                    RoomAmenity::CITY_VIEW
+                    RoomAmenity::CITY_VIEW,
                 ],
             ],
         ];
@@ -143,7 +144,7 @@ class RoomTypeSeeder extends Seeder
             DB::table('amenity_room_type')->insert($pivotData);
 
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error('Failed to seed room types: ' . $e->getMessage());
             throw $e;
@@ -152,11 +153,6 @@ class RoomTypeSeeder extends Seeder
 
     /**
      * Prepare pivot table data for bulk insert.
-     *
-     * @param array $roomTypesData
-     * @param Collection $roomTypes
-     * @param Collection $amenities
-     * @return array
      */
     private function preparePivotData(array $roomTypesData, Collection $roomTypes, Collection $amenities): array
     {
@@ -169,8 +165,9 @@ class RoomTypeSeeder extends Seeder
             foreach ($data['amenities'] as $amenity) {
                 $amenityName = $amenity->value;
 
-                if (!$amenities->has($amenityName)) {
+                if (! $amenities->has($amenityName)) {
                     Log::warning("Amenity not found: {$amenityName}");
+
                     continue;
                 }
 

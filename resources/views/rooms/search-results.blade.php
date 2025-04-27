@@ -127,7 +127,7 @@
                                     <div>
                                         <label for="guests" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Guests</label>
                                         <select id="guests" name="guests" class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                            @foreach(range(1, 10) as $i)
+                                            @foreach (range(1, 10) as $i)
                                                 <option value="{{ $i }}" {{ $guests == $i ? 'selected' : '' }}>
                                                     {{ $i }} {{ Str::plural('Person', $i) }}
                                                 </option>
@@ -149,7 +149,7 @@
                     <!-- Results Count -->
                     <div class="mb-6">
                         <p class="text-sm text-slate-600 dark:text-slate-400">
-                            @if($roomTypes->count() > 0)
+                            @if ($roomTypes->count() > 0)
                                 Showing {{ $roomTypes->count() }} {{ Str::plural('room type', $roomTypes->count()) }}
                             @else
                                 No room types available for your search criteria
@@ -159,7 +159,7 @@
 
                     <!-- Room Types Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        @forelse($roomTypes as $roomType)
+                        @forelse ($roomTypes as $roomType)
                             <x-room-type-card
                                 :room-type="$roomType"
                                 :check-in-date="$check_in_date"
@@ -186,7 +186,7 @@
                     </div>
 
                     <!-- Return Link -->
-                    @if($roomTypes->count() > 0)
+                    @if ($roomTypes->count() > 0)
                         <div class="mt-8 text-center">
                             <a href="{{ route('home') }}" class="text-indigo-600 dark:text-indigo-500 hover:text-indigo-500 dark:hover:text-indigo-400 inline-flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
