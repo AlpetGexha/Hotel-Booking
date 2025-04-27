@@ -8,14 +8,14 @@ uses(RefreshDatabase::class);
 
 test('contact page loads successfully', function () {
     $response = $this->get(route('contact'));
-    
+
     $response->assertStatus(200);
     $response->assertViewIs('contact');
 });
 
 test('contact page contains the contact form component', function () {
     $response = $this->get(route('contact'));
-    
+
     $response->assertSeeLivewire('contact-form');
 });
 
@@ -26,7 +26,7 @@ test('contact form can be submitted successfully', function () {
         ->set('message', 'This is a test message.')
         ->call('submit')
         ->assertHasNoErrors();
-        
+
     $this->assertDatabaseHas('contacts', [
         'email' => 'test@example.com',
         'subject' => 'Test Subject',

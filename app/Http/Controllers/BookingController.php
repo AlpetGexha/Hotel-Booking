@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Actions\AvaibleRoomAction;
-use App\Http\Requests\BookingFormRequest;
-use App\Http\Requests\MultiRoomBookingRequest;
+use App\Actions\CreateBookingAction;
+use App\Actions\CreateMultipleBookingsAction;
+use App\Actions\StoreBookingAction;
+use App\Actions\StoreMultipleBookingsAction;
+use App\Http\Requests\StoreBookingRequest;
+use App\Http\Requests\StoreMultipleBookingsRequest;
 use App\Models\Booking;
-use App\Models\Customer;
 use App\Models\Room;
 use App\Models\RoomType;
 use App\Services\PricingService;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class BookingController extends Controller
@@ -27,7 +29,7 @@ class BookingController extends Controller
     /**
      * Show the booking form.
      */
-    public function create(Request $request): View
+    public function create(Request $request, CreateBookingAction $action): View
     {
         // Validate required parameters
         $validated = $request->validate([
@@ -37,18 +39,8 @@ class BookingController extends Controller
             'guests' => ['required', 'integer', 'min:1', 'max:10'],
         ]);
 
-        // Get the room type - make sure we're getting a single model instance, not a collection
-        $roomTypeId = $validated['room_type_id'];
-        $roomType = RoomType::find($roomTypeId);
-
-        if (! $roomType) {
-            abort(404, 'Room type not found');
-        }
-
-        // Load amenities relationship
-        $roomType->load('amenities');
-
-        // Calculate nights and total price
+        // Calculate nights and total price using PricingService
+        $roomType = RoomType::findOrFail($validated['room_type_id']);
         $nights = $this->pricingService->getNightsCount(
             $validated['check_in_date'],
             $validated['check_out_date']
@@ -60,91 +52,43 @@ class BookingController extends Controller
             $validated['check_out_date']
         );
 
-        return view('bookings.create', [
-            'roomType' => $roomType,
-            'checkInDate' => $validated['check_in_date'],
-            'checkOutDate' => $validated['check_out_date'],
-            'guests' => $validated['guests'],
-            'nights' => $nights,
-            'totalPrice' => $totalPrice,
-        ]);
+        // Pass pre-calculated values to the action
+        $viewData = $action->handle($validated, $totalPrice, $nights);
+
+        return view('bookings.create', $viewData);
     }
 
     /**
      * Store a new booking.
      */
-    public function store(BookingFormRequest $request, AvaibleRoomAction $action)
+    public function store(StoreBookingRequest $request, StoreBookingAction $bookingAction)
     {
-        // Get validated data
-        $validated = $request->validated();
-
-        // Get the room type
-        $roomTypeId = $validated['room_type_id'];
-        $roomType = RoomType::find($roomTypeId);
-
-        if (! $roomType) {
-            abort(404, 'Room type not found');
-        }
-
-        // Calculate price using the service
+        // Calculate the total price using PricingService
+        $roomType = RoomType::findOrFail($request->room_type_id);
+        
         $totalPrice = $this->pricingService->calculateTotalPrice(
             $roomType,
-            $validated['check_in_date'],
-            $validated['check_out_date']
-        );
-        // Find an available room for this room type within requested dates
-        $availableRoom = $action->handle(
-            $roomTypeId,
-            $validated['check_in_date'],
-            $validated['check_out_date']
+            $request->check_in_date,
+            $request->check_out_date
         );
 
-        if (! $availableRoom) {
+        // Pass request and pre-calculated price to the action
+        $booking = $bookingAction->handle($request, $totalPrice);
+
+        if (!$booking) {
             return back()
                 ->withErrors(['room_availability' => 'No rooms of this type are available for the selected dates'])
                 ->withInput();
         }
 
-        // Use database transaction for consistency
-        try {
-            $booking = DB::transaction(function () use ($validated, $totalPrice, $availableRoom) {
-                // Find or create customer
-                $customer = Customer::firstOrCreate(
-                    [
-                        'email' => $validated['email'],
-                    ],
-                    [
-                        'name' => $validated['name'],
-                        // 'phone' => $validated['phone'],
-                    ]
-                );
-
-                // Create booking
-                return Booking::create([
-                    'room_type_id' => $validated['room_type_id'],
-                    'room_id' => $availableRoom->id,
-                    'customer_id' => $customer->id,
-                    'guests' => $validated['guests'],
-                    'check_in' => $validated['check_in_date'],
-                    'check_out' => $validated['check_out_date'],
-                    'total_price' => $totalPrice,
-                    'special_requests' => $validated['special_requests'] ?? null,
-                ]);
-            });
-
-            // Redirect to booking confirmation page
-            return redirect()->route('bookings.confirmation', $booking)->with('success', 'Your booking has been confirmed!');
-        } catch (Exception $e) {
-            return back()
-                ->withErrors(['booking_error' => 'An error occurred while processing your booking. Please try again.'])
-                ->withInput();
-        }
+        return redirect()->route('bookings.confirmation', $booking)
+            ->with('success', 'Your booking has been confirmed!');
     }
 
     /**
      * Show booking confirmation.
      */
-    public function confirmation(\App\Models\Booking $booking)
+    public function confirmation(Booking $booking)
     {
         return view('bookings.confirmation', [
             'booking' => $booking,
@@ -154,7 +98,7 @@ class BookingController extends Controller
     /**
      * Show the form for creating multiple room bookings.
      */
-    public function createMultipleRooms(Request $request): View
+    public function createMultipleRooms(Request $request, CreateMultipleBookingsAction $action): View
     {
         // Validate required parameters
         $validated = $request->validate([
@@ -165,17 +109,16 @@ class BookingController extends Controller
             'guests' => ['required', 'integer', 'min:1', 'max:20'],
         ]);
 
-        // Load rooms with their room types
-        $roomIds = $validated['room_ids'];
-        $rooms = Room::with('roomType.amenities')
-            ->whereIn('id', $roomIds)
-            ->get();
-
-        // Calculate nights and individual room prices
+        // Calculate nights using PricingService
         $nights = $this->pricingService->getNightsCount(
             $validated['check_in_date'],
             $validated['check_out_date']
         );
+
+        // Load rooms
+        $rooms = Room::with('roomType.amenities')
+            ->whereIn('id', $validated['room_ids'])
+            ->get();
 
         // Calculate individual and total prices
         $roomPrices = [];
@@ -197,100 +140,47 @@ class BookingController extends Controller
             $totalPrice += $price;
         }
 
-        return view('bookings.create-multiple', [
-            'rooms' => $rooms,
-            'roomPrices' => $roomPrices,
-            'checkInDate' => $validated['check_in_date'],
-            'checkOutDate' => $validated['check_out_date'],
-            'guests' => $validated['guests'],
-            'nights' => $nights,
-            'totalPrice' => $totalPrice,
-        ]);
+        // Pass pre-calculated values to the action
+        $viewData = $action->handle($validated, $roomPrices, $nights, $totalPrice);
+
+        return view('bookings.create-multiple', $viewData);
     }
 
     /**
      * Store multiple room bookings.
      */
-    public function storeMultipleRooms(Request $request, AvaibleRoomAction $action)
+    public function storeMultipleRooms(StoreMultipleBookingsRequest $request, StoreMultipleBookingsAction $action)
     {
-        // Validate request
-        $validated = $request->validate([
-            'room_ids' => ['required', 'array', 'min:1'],
-            'room_ids.*' => ['required', 'exists:rooms,id'],
-            'check_in_date' => ['required', 'date', 'after_or_equal:today'],
-            'check_out_date' => ['required', 'date', 'after:check_in_date'],
-            'guests' => ['required', 'integer', 'min:1', 'max:20'],
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:20'],
-            'special_requests' => ['nullable', 'string'],
-        ]);
+        // Load rooms
+        $rooms = Room::whereIn('id', $request->room_ids)->with('roomType')->get();
 
-        // Start DB transaction for multiple bookings
-        try {
-            DB::beginTransaction();
-
-            // Find or create customer
-            $customer = Customer::firstOrCreate(
-                ['email' => $validated['email']],
-                [
-                    'name' => $validated['first_name'] . ' ' . $validated['last_name'],
-                    // 'last_name' => $validated['last_name'],
-                    // 'phone' => $validated['phone'],
-                ]
+        // Calculate room prices
+        $roomPrices = [];
+        foreach ($rooms as $room) {
+            $price = $this->pricingService->calculateTotalPrice(
+                $room->roomType,
+                $request->check_in_date,
+                $request->check_out_date
             );
 
-            $bookings = [];
-            $rooms = Room::whereIn('id', $validated['room_ids'])->with('roomType')->get();
-
-            // Create a booking for each room
-            foreach ($rooms as $room) {
-                // Verify room availability again
-                $availableRoom = $action->handle(
-                    $room->room_type_id,
-                    $validated['check_in_date'],
-                    $validated['check_out_date']
-                );
-
-                if (!$availableRoom) {
-                    throw new Exception("Room {$room->room_number} is no longer available.");
-                }
-
-                // Calculate pricing
-                $totalPrice = $this->pricingService->calculateTotalPrice(
-                    $room->roomType,
-                    $validated['check_in_date'],
-                    $validated['check_out_date']
-                );
-
-                // Create booking record
-                $booking = Booking::create([
-                    'room_id' => $room->id,
-                    'room_type_id' => $room->room_type_id, // Add the room_type_id field
-                    'customer_id' => $customer->id,
-                    'check_in' => $validated['check_in_date'],
-                    'check_out' => $validated['check_out_date'],
-                    'guests' => min($validated['guests'], $room->roomType->capacity),
-                    'total_price' => $totalPrice,
-                    'special_requests' => $validated['special_requests'] ?? null,
-                    // 'status' => 'confirmed',
-                ]);
-
-                $bookings[] = $booking;
-            }
-
-            DB::commit();
-
-            // Redirect to confirmation page with the primary booking ID
-            return redirect()->route('bookings.confirmation', [
-                'booking' => $bookings[0],
-                'multiple' => true,
-                'booking_count' => count($bookings),
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return back()->withErrors(['message' => $e->getMessage()])->withInput();
+            $roomPrices[$room->id] = [
+                'total_price' => $price,
+            ];
         }
+
+        // Pass request and pre-calculated prices to the action
+        $bookings = $action->handle($request, $roomPrices);
+
+        if (!$bookings) {
+            return back()
+                ->withErrors(['message' => 'An error occurred while processing your booking.'])
+                ->withInput();
+        }
+
+        return redirect()->route('bookings.confirmation', [
+            'booking' => $bookings->first(),
+            'multiple' => true,
+            'booking_count' => $bookings->count(),
+        ]);
     }
 }

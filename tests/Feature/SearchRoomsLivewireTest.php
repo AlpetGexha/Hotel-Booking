@@ -20,10 +20,10 @@ test('search rooms component can filter by check-in and check-out dates', functi
         'room_type_id' => $roomType->id,
         'status' => \App\Enum\RoomStatus::Available,
     ]);
-    
+
     $checkIn = now()->addDay()->format('Y-m-d');
     $checkOut = now()->addDays(3)->format('Y-m-d');
-    
+
     Livewire::test(SearchRooms::class)
         ->set('checkIn', $checkIn)
         ->set('checkOut', $checkOut)
@@ -44,7 +44,7 @@ test('search rooms component validates inputs', function () {
 test('search rooms component handles invalid date ranges', function () {
     $checkIn = now()->addDays(5)->format('Y-m-d');
     $checkOut = now()->addDays(2)->format('Y-m-d'); // Before check-in
-    
+
     Livewire::test(SearchRooms::class)
         ->set('checkIn', $checkIn)
         ->set('checkOut', $checkOut)
