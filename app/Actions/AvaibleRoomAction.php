@@ -7,6 +7,7 @@ use App\Models\RoomType;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
+// for this much code the best apporach is to use a Sercvice class but this is fine for me now
 class AvaibleRoomAction
 {
     /**
