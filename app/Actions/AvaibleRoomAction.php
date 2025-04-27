@@ -50,7 +50,7 @@ class AvaibleRoomAction
 
         // Handle multiple guests
         $this->findAlternativesForMultipleGuests($result, $guests, $checkInDate, $checkOutDate);
-        
+
         return $result;
     }
 
@@ -81,9 +81,9 @@ class AvaibleRoomAction
      */
     private function findExactCapacityRooms(array &$result, int $guests, string $checkInDate, string $checkOutDate): bool
     {
-        $exactCapacityRooms = Room::whereHas('roomType', function($query) use ($guests) {
-                $query->where('capacity', '=', $guests);
-            })
+        $exactCapacityRooms = Room::whereHas('roomType', function ($query) use ($guests) {
+            $query->where('capacity', '=', $guests);
+        })
             ->with('roomType')
             ->availableForBooking($checkInDate, $checkOutDate)
             ->get();
@@ -101,9 +101,9 @@ class AvaibleRoomAction
      */
     private function findLargerRoomsForSingleGuest(array &$result, string $checkInDate, string $checkOutDate): void
     {
-        $largerRooms = Room::whereHas('roomType', function($query) {
-                $query->where('capacity', '>', 1)->orderBy('capacity', 'asc');
-            })
+        $largerRooms = Room::whereHas('roomType', function ($query) {
+            $query->where('capacity', '>', 1)->orderBy('capacity', 'asc');
+        })
             ->with('roomType')
             ->availableForBooking($checkInDate, $checkOutDate)
             ->get();
@@ -133,9 +133,9 @@ class AvaibleRoomAction
      */
     private function findLargerRoomForMultipleGuests(array &$result, int $guests, string $checkInDate, string $checkOutDate): void
     {
-        $largerRooms = Room::whereHas('roomType', function($query) use ($guests) {
-                $query->where('capacity', '>=', $guests);
-            })
+        $largerRooms = Room::whereHas('roomType', function ($query) use ($guests) {
+            $query->where('capacity', '>=', $guests);
+        })
             ->with('roomType')
             ->availableForBooking($checkInDate, $checkOutDate)
             ->get();
@@ -155,7 +155,7 @@ class AvaibleRoomAction
         $availableRooms = Room::with('roomType')
             ->availableForBooking($checkInDate, $checkOutDate)
             ->get()
-            ->sortByDesc(function($room) {
+            ->sortByDesc(function ($room) {
                 return $room->roomType->capacity;
             });
 
@@ -176,7 +176,7 @@ class AvaibleRoomAction
      */
     private function calculateTotalCapacity(Collection $rooms): int
     {
-        return $rooms->sum(function($room) {
+        return $rooms->sum(function ($room) {
             return $room->roomType->capacity;
         });
     }
