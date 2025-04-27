@@ -29,16 +29,16 @@ class SearchRoomsAction
         $cacheKey = $this->generateCacheKey($checkIn, $checkOut, $guests, $amenityIds, $minPrice, $maxPrice);
 
         // Cache the results for 10 minutes to improve performance
-        return Cache::remember($cacheKey, now()->addMinutes(10), function () use (
-            $checkIn,
-            $checkOut,
-            $guests,
-            $amenityIds,
-            $minPrice,
-            $maxPrice
-        ) {
+        // return Cache::remember($cacheKey, now()->addMinutes(10), function () use (
+        //     $checkIn,
+        //     $checkOut,
+        //     $guests,
+        //     $amenityIds,
+        //     $minPrice,
+        //     $maxPrice
+        // ) {
             return $this->findAvailableRoomTypes($checkIn, $checkOut, $guests, $amenityIds, $minPrice, $maxPrice);
-        });
+        // });
     }
 
     /**
