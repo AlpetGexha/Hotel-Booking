@@ -22,16 +22,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
         $this->configurateModels();
         $this->configurateCommands();
-        $this->configurateURL();
+        // $this->configurateURL();
     }
 
     private function configurateModels(): void
     {
         Model::automaticallyEagerLoadRelationships();
-        Model::unguard();
+        // Model::unguard();
         Model::shouldBeStrict(!app()->isProduction());
         Model::preventLazyLoading(!app()->isProduction());
     }
