@@ -25,11 +25,10 @@ class DatabaseSeeder extends Seeder
             RoomTypeSeeder::class,
             RoomSeeder::class,
             CustomerSeeder::class,
+            BookingSeeder::class,
         ]);
 
-        Booking::factory(20)
-            ->withAssignedRoom()
-            ->create();
+
 
         // \App\Models\User::factory(10)->create();
     }
