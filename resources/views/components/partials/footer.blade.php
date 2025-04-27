@@ -3,7 +3,7 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <!-- Column 1: About -->
             <div>
-                <h3 class="text-lg font-semibold mb-4">{{ config('app.name', 'Luxury Hotel') }}</h3>
+                <h3 class="text-lg font-semibold mb-4">{{ config('app.name') }}</h3>
                 <p class="text-slate-300 text-sm">
                     Experience the pinnacle of luxury and comfort at our premium hotel. Our dedicated staff is committed to making your stay unforgettable.
                 </p>
@@ -74,7 +74,7 @@
         </div>
 
         <div class="mt-8 pt-8 border-t border-slate-700 text-sm text-slate-400 text-center">
-            <p>&copy; {{ date('Y') }} {{ config('app.name', 'Luxury Hotel') }}. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
         </div>
     </div>
 </footer>
