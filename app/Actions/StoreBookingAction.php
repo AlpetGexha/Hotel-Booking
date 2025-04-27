@@ -22,7 +22,7 @@ class StoreBookingAction
     {
         // Call validated() to ensure validation has run
         $request->validated();
-        
+
         // Find an available room for this room type within requested dates
         $availableRoom = $this->availableRoomAction->handle(
             $request->room_type_id,

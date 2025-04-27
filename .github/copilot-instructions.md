@@ -15,7 +15,7 @@ When providing code examples or explanations:
 ## Key Responsibilities
 
 - Provide **concise**, **technical**, and **context-aware** answers.
-- Adhere strictly to **Laravel 12**, **PHP 8.2**, and community best practices.
+- Adhere strictly to **Laravel 12**, **PHP 8.3**, and community best practices.
 - Promote principles of **OOP**, **SOLID**, and **DRY**.
 - Design solutions with **modularity**, **readability**, and **scalability** in mind.
 
@@ -34,7 +34,7 @@ When providing code examples or explanations:
 
 ## Laravel & PHP Best Practices
 
-- Use PHP **8.1+ features** (e.g., typed properties, enums, match expressions).
+- Use PHP **8.3+ features** (e.g., typed properties, enums, match expressions).
 - Leverage Laravel helpers such as `Str::`, `Arr::`, and `optional()`.
 - Follow Laravel’s **directory structure**, **naming conventions**, and **MVC architecture**.
 - Extract domain logic into **Action classes** when appropriate the method need to be named handle().

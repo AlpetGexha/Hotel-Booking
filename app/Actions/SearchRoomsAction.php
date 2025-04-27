@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Http\Requests\SearchRoomsRequest;
 use App\Models\RoomType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,31 +21,35 @@ class SearchRoomsAction
     /**
      * Execute the room search.
      */
-    public function handle(
-        string $checkInDate,
-        string $checkOutDate,
-        int $guests,
-        ?array $amenityIds = null,
-        ?float $minPrice = null,
-        ?float $maxPrice = null
-    ): array {
+    public function handle(SearchRoomsRequest $request): array 
+    {
+        // Call validated() to ensure validation has run
+        $request->validated();
+        
         // Parse dates
-        $checkIn = Carbon::parse($checkInDate)->startOfDay();
-        $checkOut = Carbon::parse($checkOutDate)->startOfDay();
+        $checkIn = Carbon::parse($request->check_in_date)->startOfDay();
+        $checkOut = Carbon::parse($request->check_out_date)->startOfDay();
 
         // Create a cache key for this search
-        $cacheKey = $this->generateCacheKey($checkIn, $checkOut, $guests, $amenityIds, $minPrice, $maxPrice);
+        $cacheKey = $this->generateCacheKey(
+            $checkIn, 
+            $checkOut, 
+            $request->guests, 
+            $request->amenities ?? null, 
+            $request->price_min ?? null, 
+            $request->price_max ?? null
+        );
 
         // Cache the results for 10 minutes to improve performance
-        // return Cache::remember($cacheKey, now()->addMinutes(10), function () use (
-        //     $checkIn,
-        //     $checkOut,
-        //     $guests,
-        //     $amenityIds,
-        //     $minPrice,
-        //     $maxPrice
-        // ) {
-        $roomTypes = $this->findAvailableRoomTypes($checkIn, $checkOut, $guests, $amenityIds, $minPrice, $maxPrice);
+        // return Cache::remember($cacheKey, now()->addMinutes(10), function () use ($request, $checkIn, $checkOut) {
+        $roomTypes = $this->findAvailableRoomTypes(
+            $checkIn,
+            $checkOut,
+            $request->guests,
+            $request->amenities ?? null,
+            $request->price_min ?? null,
+            $request->price_max ?? null
+        );
 
         // Prepare the result array
         $result = [
@@ -56,9 +61,9 @@ class SearchRoomsAction
         // If no exact matches found, look for alternatives
         if ($roomTypes->isEmpty()) {
             $alternatives = $this->availableRoomAction->findAlternatives(
-                $guests,
-                $checkInDate,
-                $checkOutDate
+                $request->guests,
+                $request->check_in_date,
+                $request->check_out_date
             );
 
             $result['alternatives'] = $alternatives;
