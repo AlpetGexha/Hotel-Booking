@@ -53,7 +53,7 @@ final class SearchRoomsRequest extends FormRequest
     /**
      * Calculate the number of nights for this search request.
      */
-    public function getNightsCount(): int
+    public function getNightsCount(): int|float
     {
         $checkIn = Carbon::parse($this->check_in_date);
         $checkOut = Carbon::parse($this->check_out_date);

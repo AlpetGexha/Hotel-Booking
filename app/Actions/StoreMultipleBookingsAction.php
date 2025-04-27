@@ -61,7 +61,7 @@ final class StoreMultipleBookingsAction
                     'customer_id' => $customer->id,
                     'check_in' => $request->check_in_date,
                     'check_out' => $request->check_out_date,
-                    'guests' => min($request->guests, $room->roomType->capacity),
+                    'guests' => min((int)$request->guests, $room->roomType->capacity),
                     'total_price' => $totalPrice,
                     'special_requests' => $request->special_requests,
                 ]);

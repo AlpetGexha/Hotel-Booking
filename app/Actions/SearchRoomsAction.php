@@ -31,12 +31,11 @@ final class SearchRoomsAction
         // Parse dates
         $checkIn = Carbon::parse($request->check_in_date)->startOfDay();
         $checkOut = Carbon::parse($request->check_out_date)->startOfDay();
-
         // Create a cache key for this search
         $cacheKey = $this->generateCacheKey(
             $checkIn,
             $checkOut,
-            $request->guests,
+            (int)(int)$request->guests,
             $request->amenities ?? null,
             $request->price_min ?? null,
             $request->price_max ?? null
@@ -47,7 +46,7 @@ final class SearchRoomsAction
         $roomTypes = $this->findAvailableRoomTypes(
             $checkIn,
             $checkOut,
-            $request->guests,
+            (int)$request->guests,
             $request->amenities ?? null,
             $request->price_min ?? null,
             $request->price_max ?? null
@@ -63,7 +62,7 @@ final class SearchRoomsAction
         // If no exact matches found, look for alternatives
         if ($roomTypes->isEmpty()) {
             $alternatives = $this->availableRoomAction->findAlternatives(
-                $request->guests,
+                (int)$request->guests,
                 $request->check_in_date,
                 $request->check_out_date
             );

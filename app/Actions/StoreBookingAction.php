@@ -45,7 +45,7 @@ final class StoreBookingAction
                 'room_type_id' => $request->room_type_id,
                 'room_id' => $availableRoom->id,
                 'customer_id' => $customer->id,
-                'guests' => $request->guests,
+                'guests' => (int)$request->guests,
                 'check_in' => $request->check_in_date,
                 'check_out' => $request->check_out_date,
                 'total_price' => $totalPrice,

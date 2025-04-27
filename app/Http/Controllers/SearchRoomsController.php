@@ -31,7 +31,7 @@ final class SearchRoomsController extends Controller
             'roomTypes' => $roomTypes,
             'check_in_date' => $request->check_in_date,
             'check_out_date' => $request->check_out_date,
-            'guests' => $request->guests,
+            'guests' => (int)$request->guests,
             'nights' => $nights,
             'alternatives' => $alternatives,
             'suggestion' => $suggestion,
