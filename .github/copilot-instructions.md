@@ -49,6 +49,7 @@ When providing code examples or explanations:
 - If u use Blade View dont use the  @yield, @section, and @extends directives. use Blade views into reusable components following modern Laravel practices  
 - Use -mfs when creating an **Model**
 - Use **Local Model Scope** for the ORM queries to encapsulate common query logic.
+- Avoide using nested if else statements, use early returns instead (Guard Pattern).
 
 ---
 

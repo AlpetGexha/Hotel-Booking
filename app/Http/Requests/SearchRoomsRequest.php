@@ -55,7 +55,7 @@ class SearchRoomsRequest extends FormRequest
     {
         $checkIn = Carbon::parse($this->check_in_date);
         $checkOut = Carbon::parse($this->check_out_date);
-        
+
         return $checkIn->diffInDays($checkOut);
     }
 }

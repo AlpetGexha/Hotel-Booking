@@ -21,22 +21,22 @@ class SearchRoomsAction
     /**
      * Execute the room search.
      */
-    public function handle(SearchRoomsRequest $request): array 
+    public function handle(SearchRoomsRequest $request): array
     {
         // Call validated() to ensure validation has run
         $request->validated();
-        
+
         // Parse dates
         $checkIn = Carbon::parse($request->check_in_date)->startOfDay();
         $checkOut = Carbon::parse($request->check_out_date)->startOfDay();
 
         // Create a cache key for this search
         $cacheKey = $this->generateCacheKey(
-            $checkIn, 
-            $checkOut, 
-            $request->guests, 
-            $request->amenities ?? null, 
-            $request->price_min ?? null, 
+            $checkIn,
+            $checkOut,
+            $request->guests,
+            $request->amenities ?? null,
+            $request->price_min ?? null,
             $request->price_max ?? null
         );
 
@@ -85,9 +85,9 @@ class SearchRoomsAction
         ?float $minPrice,
         ?float $maxPrice
     ): Collection {
-        // Start with a base query for room types
+
         $query = RoomType::query()
-            ->with(['amenities']) // Eager load amenities to avoid N+1 problems
+            ->with(['amenities'])
             ->where('capacity', '>=', $guests);
 
         // Apply price filters if provided

@@ -2,28 +2,26 @@
 
 namespace App\Actions;
 
+use App\Exceptions\BookingException;
 use App\Http\Requests\StoreMultipleBookingsRequest;
 use App\Models\Booking;
 use App\Models\Customer;
 use App\Models\Room;
-use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class StoreMultipleBookingsAction
 {
-    protected AvaibleRoomAction $availableRoomAction;
-
-    public function __construct(AvaibleRoomAction $availableRoomAction)
-    {
-        $this->availableRoomAction = $availableRoomAction;
-    }
+    public function __construct(
+        protected readonly AvaibleRoomAction $availableRoomAction
+    ) {}
 
     public function handle(StoreMultipleBookingsRequest $request, array $roomPrices): Collection
     {
         // Call validated() to ensure validation has run
         $request->validated();
-        
+
         try {
             DB::beginTransaction();
 
@@ -34,7 +32,9 @@ class StoreMultipleBookingsAction
             );
 
             $bookings = new Collection();
-            $rooms = Room::whereIn('id', $request->room_ids)->with('roomType')->get();
+            $rooms = Room::whereIn('id', $request->room_ids)
+                ->with('roomType')
+                ->get();
 
             // Create a booking for each room
             foreach ($rooms as $room) {
@@ -46,7 +46,7 @@ class StoreMultipleBookingsAction
                 );
 
                 if (!$availableRoom) {
-                    throw new Exception("Room {$room->room_number} is no longer available.");
+                    throw new BookingException("Room {$room->room_number} is no longer available.");
                 }
 
                 // Get the pre-calculated price for this room
@@ -70,10 +70,10 @@ class StoreMultipleBookingsAction
             DB::commit();
 
             return $bookings;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             DB::rollBack();
             report($e);
-            throw $e;
+            throw $e instanceof BookingException ? $e : new BookingException($e->getMessage(), 0, $e);
         }
     }
 }

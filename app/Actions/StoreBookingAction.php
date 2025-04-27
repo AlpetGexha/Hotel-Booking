@@ -3,20 +3,17 @@
 namespace App\Actions;
 
 use App\Enum\RoomStatus;
+use App\Exceptions\BookingException;
 use App\Http\Requests\StoreBookingRequest;
 use App\Models\Booking;
 use App\Models\Customer;
-use Exception;
 use Illuminate\Support\Facades\DB;
 
 class StoreBookingAction
 {
-    protected AvaibleRoomAction $availableRoomAction;
-
-    public function __construct(AvaibleRoomAction $availableRoomAction)
-    {
-        $this->availableRoomAction = $availableRoomAction;
-    }
+    public function __construct(
+        protected readonly AvaibleRoomAction $availableRoomAction
+    ) {}
 
     public function handle(StoreBookingRequest $request, float $totalPrice): Booking
     {
@@ -31,7 +28,7 @@ class StoreBookingAction
         );
 
         if (!$availableRoom) {
-            throw new Exception("No rooms of this type are available for the selected dates");
+            throw new BookingException("No rooms of this type are available for the selected dates");
         }
 
         // Use database transaction for consistency

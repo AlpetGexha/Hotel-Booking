@@ -6,25 +6,23 @@ use App\Actions\CreateBookingAction;
 use App\Actions\CreateMultipleBookingsAction;
 use App\Actions\StoreBookingAction;
 use App\Actions\StoreMultipleBookingsAction;
+use App\Exceptions\BookingException;
 use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\StoreMultipleBookingsRequest;
 use App\Models\Booking;
 use App\Models\Room;
 use App\Models\RoomType;
 use App\Services\PricingService;
-use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Throwable;
 
 class BookingController extends Controller
 {
-    protected PricingService $pricingService;
-
-    public function __construct(PricingService $pricingService)
-    {
-        $this->pricingService = $pricingService;
-    }
+    public function __construct(
+        protected readonly PricingService $pricingService
+    ) {}
 
     /**
      * Show the booking form.
@@ -54,7 +52,7 @@ class BookingController extends Controller
 
         // Pass request and pre-calculated values to the action
         $viewData = $action->handle($request, $totalPrice, $nights);
-        
+
         return view('bookings.create', $viewData);
     }
 
@@ -78,9 +76,14 @@ class BookingController extends Controller
             return redirect()
                 ->route('bookings.confirmation', $booking)
                 ->with('success', 'Your booking has been confirmed!');
-        } catch (Exception $e) {
+        } catch (BookingException $e) {
             return back()
                 ->withErrors(['room_availability' => $e->getMessage()])
+                ->withInput();
+        } catch (Throwable $e) {
+            report($e);
+            return back()
+                ->withErrors(['message' => 'An unexpected error occurred. Please try again.'])
                 ->withInput();
         }
     }
@@ -115,7 +118,7 @@ class BookingController extends Controller
             $request->check_out_date
         );
 
-        // Load rooms
+        // Load rooms with eager loading to avoid N+1 query problem
         $rooms = Room::with('roomType.amenities')
             ->whereIn('id', $request->room_ids)
             ->get();
@@ -142,7 +145,7 @@ class BookingController extends Controller
 
         // Pass request and pre-calculated values to the action
         $viewData = $action->handle($request, $roomPrices, $nights, $totalPrice);
-        
+
         return view('bookings.create-multiple', $viewData);
     }
 
@@ -152,9 +155,11 @@ class BookingController extends Controller
     public function storeMultipleRooms(StoreMultipleBookingsRequest $request, StoreMultipleBookingsAction $action): RedirectResponse
     {
         try {
-            // Load rooms
-            $rooms = Room::whereIn('id', $request->room_ids)->with('roomType')->get();
-            
+            // Load rooms with eager loading
+            $rooms = Room::whereIn('id', $request->room_ids)
+                ->with('roomType')
+                ->get();
+
             // Calculate room prices
             $roomPrices = [];
             foreach ($rooms as $room) {
@@ -177,9 +182,14 @@ class BookingController extends Controller
                 'multiple' => true,
                 'booking_count' => $bookings->count(),
             ])->with('success', 'Your multiple room booking has been confirmed!');
-        } catch (Exception $e) {
+        } catch (BookingException $e) {
             return back()
                 ->withErrors(['message' => $e->getMessage()])
+                ->withInput();
+        } catch (Throwable $e) {
+            report($e);
+            return back()
+                ->withErrors(['message' => 'An unexpected error occurred. Please try again.'])
                 ->withInput();
         }
     }
