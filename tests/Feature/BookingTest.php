@@ -21,7 +21,7 @@ test('booking can be stored successfully', function () {
     $roomType = RoomType::factory()->create();
     $room = Room::factory()->create([
         'room_type_id' => $roomType->id,
-        'status' => \App\Enum\RoomStatus::Available,
+        'status' => App\Enum\RoomStatus::Available,
     ]);
 
     $bookingData = [
@@ -100,11 +100,11 @@ test('multiple rooms booking can be stored successfully', function () {
     $roomType2 = RoomType::factory()->create();
     $room1 = Room::factory()->create([
         'room_type_id' => $roomType1->id,
-        'status' => \App\Enum\RoomStatus::Available,
+        'status' => App\Enum\RoomStatus::Available,
     ]);
     $room2 = Room::factory()->create([
         'room_type_id' => $roomType2->id,
-        'status' => \App\Enum\RoomStatus::Available,
+        'status' => App\Enum\RoomStatus::Available,
     ]);
 
     $bookingData = [

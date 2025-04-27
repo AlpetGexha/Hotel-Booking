@@ -8,7 +8,7 @@ return [
      * put them (manually) here.
      */
     'settings' => [
-        \App\Settings\HotelSettings::class,
+        App\Settings\HotelSettings::class,
     ],
 
     /*

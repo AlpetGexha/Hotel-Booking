@@ -20,7 +20,7 @@ test('search rooms component can filter by check-in and check-out dates', functi
     $roomType = RoomType::factory()->create();
     $room = Room::factory()->create([
         'room_type_id' => $roomType->id,
-        'status' => \App\Enum\RoomStatus::Available,
+        'status' => App\Enum\RoomStatus::Available,
     ]);
 
     $checkIn = now()->addDay()->format('Y-m-d');

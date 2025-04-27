@@ -19,7 +19,7 @@ test('search rooms with query parameters returns filtered results', function () 
     $roomType = RoomType::factory()->create();
     $room = Room::factory()->create([
         'room_type_id' => $roomType->id,
-        'status' => \App\Enum\RoomStatus::Available,
+        'status' => App\Enum\RoomStatus::Available,
     ]);
 
     $response = $this->get(route('search.rooms', [

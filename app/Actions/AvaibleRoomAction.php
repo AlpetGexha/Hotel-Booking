@@ -77,7 +77,7 @@ final class AvaibleRoomAction
     {
         $result['exact'] = $this->handle($roomTypeId, $checkInDate, $checkOutDate);
 
-        return $result['exact'] instanceof \App\Models\Room;
+        return $result['exact'] instanceof Room;
     }
 
     /**
