@@ -122,7 +122,7 @@ final class ContactResource extends Resource
                                 $schema = [];
 
                                 foreach ($mediaItems as $index => $media) {
-                                    $extension = strtolower(pathinfo($media->file_name, PATHINFO_EXTENSION));
+                                    $extension = mb_strtolower(pathinfo($media->file_name, PATHINFO_EXTENSION));
                                     $isImage = in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
 
                                     $schema[] = Infolists\Components\Section::make("attachment_{$index}")
