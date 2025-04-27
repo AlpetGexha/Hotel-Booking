@@ -28,13 +28,25 @@
 
                     <h2 class="text-2xl font-semibold text-slate-800 dark:text-white mb-4">Booking Successful!</h2>
 
-                    <p class="text-slate-600 dark:text-slate-300 mb-8">
-                        Your booking has been confirmed and is now reserved. A confirmation email has been sent to your email address with all the details.
-                    </p>
+                    @if(request()->has('multiple') && request('multiple'))
+                        <p class="text-slate-600 dark:text-slate-300 mb-8">
+                            Your {{ request('booking_count', 2) }} room bookings have been confirmed and are now reserved.
+                            A confirmation email has been sent to your email address with all the details.
+                        </p>
+                    @else
+                        <p class="text-slate-600 dark:text-slate-300 mb-8">
+                            Your booking has been confirmed and is now reserved. A confirmation email has been sent to your email address with all the details.
+                        </p>
+                    @endif
 
                     <div class="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg mb-8 inline-block">
                         <p class="text-slate-700 dark:text-slate-300">
                             <span class="font-medium">Booking Reference:</span> #{{ $booking->id }}
+                            @if(request()->has('multiple') && request('multiple'))
+                                <span class="text-sm text-slate-500 dark:text-slate-400">
+                                    (Primary booking, {{ request('booking_count', 2) - 1 }} additional bookings created)
+                                </span>
+                            @endif
                         </p>
                     </div>
 

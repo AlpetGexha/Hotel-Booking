@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Cache;
 
 class SearchRoomsAction
 {
+    protected AvaibleRoomAction $availableRoomAction;
+
+    public function __construct(AvaibleRoomAction $availableRoomAction)
+    {
+        $this->availableRoomAction = $availableRoomAction;
+    }
+
     /**
      * Execute the room search.
      */
@@ -20,7 +27,7 @@ class SearchRoomsAction
         ?array $amenityIds = null,
         ?float $minPrice = null,
         ?float $maxPrice = null
-    ): Collection {
+    ): array {
         // Parse dates
         $checkIn = Carbon::parse($checkInDate)->startOfDay();
         $checkOut = Carbon::parse($checkOutDate)->startOfDay();
@@ -37,7 +44,28 @@ class SearchRoomsAction
         //     $minPrice,
         //     $maxPrice
         // ) {
-        return $this->findAvailableRoomTypes($checkIn, $checkOut, $guests, $amenityIds, $minPrice, $maxPrice);
+        $roomTypes = $this->findAvailableRoomTypes($checkIn, $checkOut, $guests, $amenityIds, $minPrice, $maxPrice);
+
+        // Prepare the result array
+        $result = [
+            'roomTypes' => $roomTypes,
+            'alternatives' => null,
+            'suggestion' => null,
+        ];
+
+        // If no exact matches found, look for alternatives
+        if ($roomTypes->isEmpty()) {
+            $alternatives = $this->availableRoomAction->findAlternatives(
+                $guests,
+                $checkInDate,
+                $checkOutDate
+            );
+
+            $result['alternatives'] = $alternatives;
+            $result['suggestion'] = $alternatives['message'];
+        }
+
+        return $result;
         // });
     }
 

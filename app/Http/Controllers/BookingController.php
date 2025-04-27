@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Actions\AvaibleRoomAction;
 use App\Http\Requests\BookingFormRequest;
+use App\Http\Requests\MultiRoomBookingRequest;
 use App\Models\Booking;
 use App\Models\Customer;
+use App\Models\Room;
 use App\Models\RoomType;
 use App\Services\PricingService;
 use Exception;
@@ -147,5 +149,147 @@ class BookingController extends Controller
         return view('bookings.confirmation', [
             'booking' => $booking,
         ]);
+    }
+
+    /**
+     * Show the form for creating multiple room bookings.
+     */
+    public function createMultipleRooms(Request $request): View
+    {
+        // Validate required parameters
+        $validated = $request->validate([
+            'room_ids' => ['required', 'array', 'min:1'],
+            'room_ids.*' => ['required', 'exists:rooms,id'],
+            'check_in_date' => ['required', 'date', 'after_or_equal:today'],
+            'check_out_date' => ['required', 'date', 'after:check_in_date'],
+            'guests' => ['required', 'integer', 'min:1', 'max:20'],
+        ]);
+
+        // Load rooms with their room types
+        $roomIds = $validated['room_ids'];
+        $rooms = Room::with('roomType.amenities')
+            ->whereIn('id', $roomIds)
+            ->get();
+
+        // Calculate nights and individual room prices
+        $nights = $this->pricingService->getNightsCount(
+            $validated['check_in_date'],
+            $validated['check_out_date']
+        );
+
+        // Calculate individual and total prices
+        $roomPrices = [];
+        $totalPrice = 0;
+
+        foreach ($rooms as $room) {
+            $price = $this->pricingService->calculateTotalPrice(
+                $room->roomType,
+                $validated['check_in_date'],
+                $validated['check_out_date']
+            );
+
+            $roomPrices[$room->id] = [
+                'room' => $room,
+                'price_per_night' => $room->roomType->price_per_night,
+                'total_price' => $price,
+            ];
+
+            $totalPrice += $price;
+        }
+
+        return view('bookings.create-multiple', [
+            'rooms' => $rooms,
+            'roomPrices' => $roomPrices,
+            'checkInDate' => $validated['check_in_date'],
+            'checkOutDate' => $validated['check_out_date'],
+            'guests' => $validated['guests'],
+            'nights' => $nights,
+            'totalPrice' => $totalPrice,
+        ]);
+    }
+
+    /**
+     * Store multiple room bookings.
+     */
+    public function storeMultipleRooms(Request $request, AvaibleRoomAction $action)
+    {
+        // Validate request
+        $validated = $request->validate([
+            'room_ids' => ['required', 'array', 'min:1'],
+            'room_ids.*' => ['required', 'exists:rooms,id'],
+            'check_in_date' => ['required', 'date', 'after_or_equal:today'],
+            'check_out_date' => ['required', 'date', 'after:check_in_date'],
+            'guests' => ['required', 'integer', 'min:1', 'max:20'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'special_requests' => ['nullable', 'string'],
+        ]);
+
+        // Start DB transaction for multiple bookings
+        try {
+            DB::beginTransaction();
+
+            // Find or create customer
+            $customer = Customer::firstOrCreate(
+                ['email' => $validated['email']],
+                [
+                    'name' => $validated['firt_name'] . ' ' . $validated['last_name'],
+                    // 'last_name' => $validated['last_name'],
+                    // 'phone' => $validated['phone'],
+                ]
+            );
+
+            $bookings = [];
+            $rooms = Room::whereIn('id', $validated['room_ids'])->with('roomType')->get();
+
+            // Create a booking for each room
+            foreach ($rooms as $room) {
+                // Verify room availability again
+                $availableRoom = $action->handle(
+                    $room->room_type_id,
+                    $validated['check_in_date'],
+                    $validated['check_out_date']
+                );
+
+                if (!$availableRoom) {
+                    throw new Exception("Room {$room->room_number} is no longer available.");
+                }
+
+                // Calculate pricing
+                $totalPrice = $this->pricingService->calculateTotalPrice(
+                    $room->roomType,
+                    $validated['check_in_date'],
+                    $validated['check_out_date']
+                );
+
+                // Create booking record
+                $booking = Booking::create([
+                    'room_id' => $room->id,
+                    'customer_id' => $customer->id,
+                    'check_in' => $validated['check_in_date'],
+                    'check_out' => $validated['check_out_date'],
+                    'guests' => min($validated['guests'], $room->roomType->capacity),
+                    'total_price' => $totalPrice,
+                    'special_requests' => $validated['special_requests'] ?? null,
+                    'status' => 'confirmed',
+                ]);
+
+                $bookings[] = $booking;
+            }
+
+            DB::commit();
+
+            // Redirect to confirmation page with the primary booking ID
+            return redirect()->route('bookings.confirmation', [
+                'booking' => $bookings[0],
+                'multiple' => true,
+                'booking_count' => count($bookings),
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['message' => $e->getMessage()])->withInput();
+        }
     }
 }

@@ -16,16 +16,20 @@ Route::get('booking', [BookingController::class, 'create'])->name('bookings.crea
 Route::post('booking', [BookingController::class, 'store'])->name('bookings.store');
 Route::get('booking/confirmation/{booking}', [BookingController::class, 'confirmation'])->name('bookings.confirmation');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+// Multiple room booking routes
+Route::get('booking/multiple', [BookingController::class, 'createMultipleRooms'])->name('bookings.create-multiple');
+Route::post('booking/multiple', [BookingController::class, 'storeMultipleRooms'])->name('bookings.store-multiple');
 
-Route::middleware(['auth'])->group(function () {
-    Route::redirect('settings', 'settings/profile');
+// Route::view('dashboard', 'dashboard')
+//     ->middleware(['auth', 'verified'])
+//     ->name('dashboard');
 
-    Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
-    Volt::route('settings/password', 'settings.password')->name('settings.password');
-    Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
-});
+// Route::middleware(['auth'])->group(function () {
+//     Route::redirect('settings', 'settings/profile');
 
-require __DIR__ . '/auth.php';
+//     Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
+//     Volt::route('settings/password', 'settings.password')->name('settings.password');
+//     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
+// });
+
+// require __DIR__ . '/auth.php';

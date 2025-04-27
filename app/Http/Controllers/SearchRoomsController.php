@@ -20,7 +20,7 @@ class SearchRoomsController extends Controller
         // Get search results using the action class
         $searchAction = App::make(SearchRoomsAction::class);
 
-        $roomTypes = $searchAction->handle(
+        $searchResults = $searchAction->handle(
             $validated['check_in_date'],
             $validated['check_out_date'],
             $validated['guests'],
@@ -28,6 +28,11 @@ class SearchRoomsController extends Controller
             $validated['price_min'] ?? null,
             $validated['price_max'] ?? null
         );
+
+        // Extract the room types from the search results
+        $roomTypes = $searchResults['roomTypes'];
+        $alternatives = $searchResults['alternatives'] ?? null;
+        $suggestion = $searchResults['suggestion'] ?? null;
 
         // Calculate nights
         $nights = $request->getNightsCount();
@@ -39,6 +44,8 @@ class SearchRoomsController extends Controller
             'check_out_date' => $validated['check_out_date'],
             'guests' => $validated['guests'],
             'nights' => $nights,
+            'alternatives' => $alternatives,
+            'suggestion' => $suggestion,
         ]);
     }
 }
