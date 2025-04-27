@@ -45,7 +45,7 @@
                     </div>
                     <div class="text-right">
                         <p class="text-sm text-gray-600 dark:text-gray-400">Total Price</p>
-                        <p class="text-xl font-bold text-indigo-600 dark:text-indigo-500">${{ number_format($totalPrice, 2) }}</p>
+                        <p class="text-xl font-bold text-indigo-600 dark:text-indigo-500">${{ number_format($totalPrice, decimals: 2) }}</p>
                     </div>
                 </div>
             </div>

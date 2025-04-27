@@ -17,7 +17,8 @@ class PricingService
         $checkIn = Carbon::parse($checkInDate);
         $checkOut = Carbon::parse($checkOutDate);
 
-        return $checkOut->diffInDays($checkIn);
+        // Using abs() to ensure positive value or correct parameter order
+        return $checkIn->diffInDays($checkOut);
     }
 
     /**
