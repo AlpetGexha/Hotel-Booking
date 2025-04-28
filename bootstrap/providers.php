@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 return [
     App\Providers\AppServiceProvider::class,
+    App\Providers\FilamentServiceProvider::class,
     App\Providers\Filament\AdminPanelProvider::class,
+    App\Providers\HotelSettingsServiceProvider::class,
     App\Providers\SpatieMediaLibraryExtensionServiceProvider::class,
     App\Providers\VoltServiceProvider::class,
-    App\Providers\HotelSettingsServiceProvider::class,
 ];

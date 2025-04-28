@@ -47,7 +47,7 @@ enum BookingStatus: string implements HasColor
             self::CHECKED_IN => 'success',
             self::CHECKED_OUT => 'info',
             self::CANCELLED => 'danger',
-            self::NO_SHOW => 'dark',
+            self::NO_SHOW => 'purple',
         };
     }
 }
