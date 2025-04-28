@@ -1,174 +1,239 @@
-1.
+# Hotel Management System Prompts
 
-You're creating a Hotel management system in Laravel for a single hotel. Create the database files for Room and
-RoomType models:
+## 1. Create Database Files for Room and RoomType Models
 
-Models
-—
-Migrations with typical columns for hotel rooms and room types, each room type should have a different price per night. -
-Factories using faker library and Laravel fake() helper and not $this->faker
-also use the most optimize way to get the query faster
-—
-Seeders for typical Room types for a hotel and 10-20 rooms for each type
-—
-on larvel migration whenever u have e foreignId use foreignIdFor() and whenever u have onDelete('cascade') use onDeleteCascade
-—
-if u have an enum type also make that enum file on App\Enum and use the enum for value
+- **Models**:
+  - Create models for `Room` and `RoomType`.
 
-2.
+- **Migrations**:
+  - Add typical columns for hotel rooms and room types.
+  - Each room type should have a different price per night.
 
-Change column status in rooms to boolean column is_available, default true. Change migrations, models, factories and seeders accordingly. In seeder, 90% of rooms should be available.
-Also, in seeders for room numbers and floors, use a proper logical sequence instead of fake data. Room numbers should go in incremental order, and the first digit should correspond to their floor number. Assign room type to each room randomly.
+- **Factories**:
+  - Use the `fake()` helper (not `$this->faker`).
+  - Optimize queries for better performance.
 
-3.
+- **Seeders**:
+  - Add typical room types for a hotel.
+  - Create 10-20 rooms for each type.
 
-Generate Filament resource to manage Room Types. Show table columns name, price per night, capacity. For the Form, for amenities use CheckboxList.
-when using the php artisan make:filament-resource use the flag "--generate"
+- **Best Practices**:
+  - Use `foreignIdFor()` instead of `foreignId()` in migrations.
+  - Use `onDeleteCascade()` instead of `onDelete('cascade')`.
+  - If you have an enum type, create an enum file in `App\Enum` and use it for values.
 
-4.
+---
 
-Change RoomType amenities from json to be a separate Model Amenity with a many- to-many relationship to RoomType.
-Also, generate a Seeder for Amenities and change the factory of RoomType accordingly to use the values from that Seeder.
-Also, change Filament Resource form method to use CheckboxList with multiple relationship.
+## 2. Change Room Status Column to `is_available`
 
-5.
+- Change the `status` column in the `rooms` table to a boolean column `is_available` with a default value of `true`.
+- Update migrations, models, factories, and seeders accordingly.
+- In the seeder:
+  - Ensure 90% of rooms are available.
+  - Use a logical sequence for room numbers and floors:
+    - Room numbers should increment.
+    - The first digit should correspond to the floor number.
+  - Assign room types to rooms randomly.
 
-Generate a Tailwind homepage for a hotel and place it into welcome.blade.php instead of the default Laravel homepage.
-Elements of the page:
+---
 
-- A big photo background: use some free image from Unsplash or other platform
-- Form to search the room by fields of date from (default tomorrow) and date to (default today + 5 days) and number of people staying
-- A footer with main information like email, phone number and links to social profiles
-- Use the existing component as much as u can
-In Blade, use Vite with Laravel 12 syntax and not Tailwind from CDN
+## 3. Generate Filament Resource for Room Types
 
-6.
+- Use the command:  
+  `php artisan make:filament-resource --generate`
+- **Table Columns**:
+  - Name
+  - Price per night
+  - Capacity
+- **Form**:
+  - Use `CheckboxList` for amenities.
 
-Create a Search RoomsController invokable controller, change the search-rooms route to use it.
-In Controller method, return all Room Type records with amenities that fit the capacity of guests requested, ordered by room type price per night, ascending.
-Build Blade View file to show all those room types, in separate blocks/sections. Use Tailwind and re-use header/ footer from welcome.blade.php. On that page, for each room type, show name, price per night, list of amenities and a link "Book Now" that leads to the new route of "booking" with the parameters of date from/to, guests (from requests) and room type ID. Create that new Route with dosent return anything yet
+---
 
-7.
+## 4. Change RoomType Amenities to a Separate Model
 
-Add a column of "size" (in square meters) to RoomType. Add appropriate values to the seeder. Show that size in the rooms search results, near amenities list.
+- Create a new `Amenity` model.
+- Establish a many-to-many relationship between `RoomType` and `Amenity`.
+- Generate a seeder for amenities.
+- Update the `RoomType` factory to use values from the amenities seeder.
+- Update the Filament resource form to use `CheckboxList` for multiple relationships.
 
-8.
+---
 
-We need a photo field for Room Type to replace the placeholder we have. For that,let's use a package Spatie Media Library.
+## 5. Generate a Tailwind Homepage
 
-In the Model, specify media thumbnail size so it would fit nicely on the rooms-search results list.
+- Replace the default Laravel homepage with a new `welcome.blade.php`.
+- **Page Elements**:
+  - A big photo background (use a free image from Unsplash or similar).
+  - A form to search for rooms:
+    - Fields: `date_from` (default: tomorrow), `date_to` (default: today + 5 days), and `number_of_people`.
+  - A footer with:
+    - Email
+    - Phone number
+    - Links to social profiles
+- Use existing components wherever possible.
+- Use Vite with Laravel 12 syntax (not Tailwind from CDN).
 
-In Filament, add the form field in the Room Type resource to manage this photo.
+---
 
-In the search-rooms results, add the code for some placeholder thumbnail no-photo, if there's no photo uploaded for the room type.
+## 6. Create a Search RoomsController
 
-9.
+- Create an invokable `SearchRoomsController`.
+- Update the `search-rooms` route to use this controller.
+- **Controller Method**:
+  - Return all `RoomType` records with amenities that fit the requested guest capacity.
+  - Order results by price per night (ascending).
+- **Blade View**:
+  - Display room types in separate blocks/sections.
+  - For each room type, show:
+    - Name
+    - Price per night
+    - List of amenities
+    - A "Book Now" link leading to a new `booking` route with parameters:
+      - `date_from`
+      - `date_to`
+      - `guests`
+      - `room_type_id`
+  - Reuse the header/footer from `welcome.blade.php`.
 
-Create a BookingController with methods create() and store(). Replace
-the "booking" route with create() method of this Controller.
+---
 
-Use te Requsts Class to make the validation
+## 7. Add a "Size" Column to RoomType
 
-That method should return the Blade view with the form for the
-booking, with layout almost identical to the welcome.blade.php, re-
-using the same header/footer and background image component.
+- Add a `size` column (in square meters) to the `RoomType` table.
+- Update the seeder with appropriate values.
+- Display the size in the room search results near the amenities list.
 
-That form should contain fields: check-in and check-out date, number
-of guests (all three disabled but with hidden input values), and then
-non-disabled fields of customer name and email.
+---
 
-Also, somewhere on the page, there should be a calculation of how
-many nights and how much price to pay, multiplying the date range by
-the price per night. Specify on the page that the payment is made upon
-arrival. Calculate the price in a specific PricingService, used in the
-Controller.
+## 8. Add a Photo Field to RoomType
 
-Move the getNightsCount() from request into PricingService, and reuse the Service to replace the $request->getNightsCount()
+- Use the `Spatie Media Library` package.
+- **Model**:
+  - Specify a media thumbnail size for room types.
+- **Filament Resource**:
+  - Add a form field to manage photos.
+- **Search Results**:
+  - Display a placeholder thumbnail if no photo is uploaded.
 
-Form action should be the store() method of the Controller, empty for
-now, will build its code later.
+---
 
-10.
+## 9. Create a BookingController
 
-Fill in the store() method of BookingController, creating the
-new Customer (firstOrCreate) with name and email, and
-then creating the Booking assigned to that customer. Use
-Laravel validation and database transaction.
+- **Methods**:
+  - `create()`:  
+    - Return a Blade view with a booking form.
+    - Reuse the header/footer and background image from `welcome.blade.php`.
+    - **Form Fields**:
+      - Check-in and check-out dates (disabled, with hidden input values).
+      - Number of guests (disabled, with hidden input values).
+      - Customer name and email (editable).
+    - **Price Calculation**:
+      - Calculate the total price based on the date range and price per night.
+      - Display the total price with a note that payment is made upon arrival.
+      - Use a `PricingService` for calculations.
+  - `store()`:  
+    - Validate the request using a `Request` class.
+    - Create a new `Customer` (use `firstOrCreate`).
+    - Create a `Booking` assigned to the customer.
+    - Select the first available room for the requested room type and dates.
+    - If no room is available, return with a validation error.
+    - On success, redirect to a confirmation page.
 
-For the Booking room_id, choose the first room for that
-room_type_id, available within the requested dates. Make
-that request outside of database transaction, if no room
-found - return back with a validation error.
+---
 
-If booking successful, redirect to a new confirmation page.
-Add the booking confirmation method in the Controller and
-the Routes. It should just show text page, with the same
-header, footer and background image as the
-welcome.blade.php. In the middle section, it should just say
-"Booking successful" and add a link to the homepage.
+## 10. Handle Booking Confirmation
 
-11.
+- Add a confirmation method to the `BookingController`.
+- Create a confirmation route.
+- **Confirmation Page**:
+  - Reuse the header/footer and background image from `welcome.blade.php`.
+  - Display a message: "Booking successful."
+  - Add a link to the homepage.
 
-If the booking is for 1 guest and no room with capacity = 1 is available, suggest a room with capacity > 1 and display a message like: "No rooms for 1 guest, but we found a larger room."
+---
 
-If the booking is for more than 1 guest and no single room can fit all guests (capacity >= guest_count), suggest booking multiple available rooms to fit the total number of guests. Display a message like: "No single room available for X guests. You can book multiple rooms to fit everyone."
+## 11. Suggest Alternative Booking Options
 
-Use clean Eloquent queries, modular if possible.
+- If no room is available for 1 guest:
+  - Suggest a larger room.
+  - Display a message: "No rooms for 1 guest, but we found a larger room."
+- If no single room can fit all guests:
+  - Suggest booking multiple rooms.
+  - Display a message: "No single room available for X guests. You can book multiple rooms to fit everyone."
+- Ensure proper handling of booking logic and pricing calculations.
 
-12.
+---
 
-When u show the Alternative Options Available
-make a option in the end to book the rooms (this need to be a minimal guest opstions)
+## 12. Multiple Room Booking Enhancement
 
-That go to create rooms with mulultiple rooms, same date, same customer just with more then 1 rooms book,
+- Allow booking multiple rooms for the same date and customer.
+- Display the price per night for each room.
+- Calculate and display the total cost for all selected rooms.
 
-For multiple rooms, display the price per night for each room and calculate the total cost for all selected rooms based on the chosen dates.
-Ensure that the total sum of the rooms' prices for the selected nights is calculated correctly and displayed.
+---
 
-Use clean Eloquent queries and ensure proper handling of booking logic, including the calculation of total pricing.
+## 13. Manage Hotel Settings
 
-13.
+- Use the `spatie/laravel-settings` package to manage:
+  - Hotel name
+  - Email
+  - Phone number
+  - Address
+  - Social links (Facebook, Instagram, Twitter)
+- Create a Filament page (not a resource) to edit these settings.
+- Use these settings in the footer for email, phone, address, and social links.
 
-I need to manage hotel fields: hotel name, email, phone number, address, and social links for facebook, instagram and twitter.
+---
 
-Use a spatie/laravel-settings for this - publish the config as needed
+## 14. Generate Pest Tests
 
-Also create a Filament page (not resource, just the edit page) with the form to manage the values of those fields. But first Filament Plugin: Spatie Settings
+- Write Pest tests for all routes in `routes/web.php`.
+- Divide tests into separate files based on their purpose.
+- For routes with parameters:
+  - Test various parameter combinations and expected results.
+  - Include validation tests.
+- Use `RefreshDatabase` for all tests.
+- Update `phpunit.xml` to use an SQLite in-memory database.
 
-Finally, use the values of those fields in the footer for email chone addre dress and so social links
+---
 
-14.
+## 15. Create a Contact Page
 
-Generate Pest tests for all the routes in the routes/web.php. Divide those tests into separate Pest files by their purpose. If some route has parameters, create different Pest methods forchecking various combinations of those parameters and expected results, including validation.
+- **Model**:
+  - Create a `Contact` model with fields:
+    - Subject
+    - Email
+    - Message
+    - File upload (use `Spatie Media Library`).
+- **Page**:
+  - Create a contact page with the same header/footer as the search-room page.
+  - Register the page in the web routes.
+  - **Form Fields**:
+    - Email
+    - Subject
+    - Message
+    - File upload
+  - Use a Livewire component for the form.
+  - Add a rate limit: 5 contacts per hour.
+- **Filament Resource**:
+  - Add a resource to list and view contacts with `Infolist` components.
 
-Use RefreshDatabase for all tests, but change phpunit.xml to use SQLite memory database.
+---
 
-15.
+## 16. Write a README.md File
 
-Make a Model for Contact with filed subject,email,message this contain Spaie media libraty
-Create a contact page with same header and footer like search-room from component, register on web route, the form have a field email, subject, and message, and upload file (spatie media library) the form need to be a livewire component
-
-Form has a rate limit of 5 contact per 1 hour
-
-Add a Filament resouce just the list and view with nice looking infolist compoents
-
-16.
-
-Write a professional, well-structured README.md file for my project.
-The README should follow best practices: include a Project Title, a friendly Introduction explaining what the project does and why it matters, a clear list of Features, detailed Installation Instructions, Usage examples with commands or code snippets, an optional Demo/Screenshot section, a list of Technologies Used, guidelines for Contributing, the License, and a Contact section.
-
-Here's important information about my project:
-
-- Project Name: Hotel-Booking
-
-- Short description: [A 2-3 sentence intro]
-
-- Main features: [List all the major features]
-
-- Installation steps: [Leve this as a placeholder I deal with this]
-
-- Technologies/libraries used: []
-
-- Screenshots [Use the /screenshot folder on the root of the proejct to insert the image, order by the olders one]
-
-- License: [MIT]
+- **Structure**:
+  - Project Title
+  - Introduction (2-3 sentences)
+  - Features
+  - Installation Instructions (placeholder for now)
+  - Usage Examples
+  - Demo/Screenshots (use the `/screenshot` folder for images)
+  - Technologies Used
+  - Contributing Guidelines
+  - License
+  - Contact Information
+- **Project Details**:
+  - Name: Hotel-Booking
+  - License: MIT
