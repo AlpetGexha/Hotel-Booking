@@ -9,10 +9,10 @@
                 </div>
             </div>
             <div class="hidden sm:flex sm:items-center sm:ml-6 space-x-8">
-                <a href="{{ route('rooms') }}" class="font-medium text-slate-600 hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400 transition duration-150">Rooms</a>
-                <a href="{{ route('amenities') }}" class="font-medium text-slate-600 hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400 transition duration-150">Amenities</a>
+                <a href="{{ route('rooms') }}" class="font-medium transition duration-150 {{ request()->is('rooms*') ? 'text-indigo-500 dark:text-indigo-400 font-bold' : 'text-slate-600 hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400' }}">Rooms</a>
+                <a href="{{ route('amenities') }}" class="font-medium transition duration-150 {{ request()->is('amenities*') ? 'text-indigo-500 dark:text-indigo-400 font-bold' : 'text-slate-600 hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400' }}">Amenities</a>
                 <a href="#" class="font-medium text-slate-600 hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400 transition duration-150">Gallery</a>
-                <a href="{{ route('contact') }}" class="font-medium text-slate-600 hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400 transition duration-150">Contact</a>
+                <a href="{{ route('contact') }}" class="font-medium transition duration-150 {{ request()->is('contact*') ? 'text-indigo-500 dark:text-indigo-400 font-bold' : 'text-slate-600 hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400' }}">Contact</a>
 
                 {{-- @if (Route::has('login'))
                     @auth
