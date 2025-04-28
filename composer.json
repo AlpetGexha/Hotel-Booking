@@ -19,6 +19,7 @@
         "spatie/laravel-settings": "^3.4"
     },
     "require-dev": {
+        "driftingly/rector-laravel": "^2.0",
         "fakerphp/faker": "^1.23",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.18",
@@ -28,7 +29,7 @@
         "pestphp/pest": "^3.8",
         "pestphp/pest-plugin-drift": "^3.0",
         "pestphp/pest-plugin-laravel": "^3.2",
-        "rector/rector": "^2.0",
+        "rector/rector": "*",
         "tightenco/duster": "*"
     },
     "autoload": {

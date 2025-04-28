@@ -6,6 +6,11 @@ use Rector\Config\RectorConfig;
 use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 
 return RectorConfig::configure()
+    ->withConfiguredRule(\RectorLaravel\Rector\StaticCall\EloquentMagicMethodToQueryBuilderRector::class, [
+        'exclude_methods' => [
+            '*',
+        ]
+    ])
     ->withPaths([
         __DIR__ . '/app',
         __DIR__ . '/bootstrap/app.php',
@@ -17,12 +22,13 @@ return RectorConfig::configure()
     ->withSkip([
         AddOverrideAttributeToOverriddenMethodsRector::class,
     ])
+
     ->withPreparedSets(
-        deadCode: true,
-        codeQuality: true,
-        typeDeclarations: true,
-        privatization: true,
-        earlyReturn: true,
-        strictBooleans: true,
+        // deadCode: true,
+        // codeQuality: true,
+        // typeDeclarations: true,
+        // privatization: true,
+        // earlyReturn: true,
+        // strictBooleans: true,
     )
     ->withPhpSets();
