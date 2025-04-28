@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\AmenitiesController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\MyBookingsController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SearchRoomsController;
 use Illuminate\Support\Facades\Route;
@@ -28,11 +29,13 @@ Route::post('booking/multiple', [BookingController::class, 'storeMultipleRooms']
 
 // Rooms route
 
-Route::view('dashboard', 'dashboard')
+Route::redirect('dashboard', 'my-bookings')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('my-bookings', MyBookingsController::class)->name('my.bookings');
+
     Route::redirect('settings', 'settings/profile');
 
     Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
