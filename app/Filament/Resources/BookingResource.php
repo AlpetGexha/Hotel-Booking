@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Actions\Filament\ChangeBookingStatusAction;
+use App\Actions\Filament\ProcessPaymentAction;
 use App\Filament\Resources\BookingResource\Pages;
 use App\Models\Booking;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -107,63 +110,10 @@ final class BookingResource extends Resource
                     ->label('Past Bookings'),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\Action::make('changeStatus')
-                    ->label('Change Status')
-                    ->color('warning')
-                    ->form([
-                        \Filament\Forms\Components\Select::make('status')
-                            ->label('Booking Status')
-                            ->options(\App\Enum\BookingStatus::class)
-                            ->required(),
-                    ])
-                    ->action(function (Booking $record, array $data): void {
-                        $record->status = $data['status'];
-                        $record->save();
-
-                        \Filament\Notifications\Notification::make()
-                            ->title('Booking status updated')
-                            ->success()
-                            ->send();
-                    }),
-                Tables\Actions\Action::make('processPayment')
-                    ->label('Process Payment')
-                    // ->visible(fn(Booking $record): bool => $record->getBalanceDue() > 0)
-                    ->color('success')
-                    ->form([
-                        \Filament\Forms\Components\TextInput::make('amount')
-                            ->label('Payment Amount')
-                            ->default(fn (Booking $record) => $record->getBalanceDue())
-                            ->numeric()
-                            ->prefix('$')
-                            ->required(),
-                        \Filament\Forms\Components\Select::make('payment_method')
-                            ->label('Payment Method')
-                            ->options(\App\Enum\PaymentMethod::class)
-                            ->default(fn (Booking $record) => $record->payment_method ?? \App\Enum\PaymentMethod::CASH)
-                            ->required(),
-                    ])
-                    ->action(function (Booking $record, array $data): void {
-                        // Update payment information
-                        $record->total_payed = ($record->total_payed ?? 0) + $data['amount'];
-                        $record->payment_method = $data['payment_method'];
-
-                        // Update payment status based on payment amount
-                        if ($record->isFullyPaid()) {
-                            $record->payment_status = \App\Enum\PaymentStatus::PAID;
-                        } elseif ($record->total_payed > 0) {
-                            $record->payment_status = \App\Enum\PaymentStatus::PARTIAL;
-                        } else {
-                            $record->payment_status = \App\Enum\PaymentStatus::PENDING;
-                        }
-
-                        $record->save();
-
-                        \Filament\Notifications\Notification::make()
-                            ->title('Payment processed successfully')
-                            ->success()
-                            ->send();
-                    }),
+                ActionGroup::make([
+                    ChangeBookingStatusAction::make('table'),
+                    ProcessPaymentAction::make('table'),
+                ]),
             ])
             ->bulkActions([
                 // Removed bulk actions as per requirements
