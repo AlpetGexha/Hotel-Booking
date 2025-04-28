@@ -7,8 +7,8 @@ includes:
 parameters:
     paths:
         - app
-        - bootstrap
-        - config
+   #     - bootstrap
+  #      - config
     level: 5
 
 #    ignoreErrors:
