@@ -237,3 +237,15 @@
 - **Project Details**:
   - Name: Hotel-Booking
   - License: MIT
+
+17
+
+```text
+Lets create user behaver on existign register add the phone field, add a foregnid on customer (nullable) for User this relationship is one to one, 
+
+Now when booking a single or multiple room while booking make a opstion if the user want to book that for himself or for the others 
+if he book for himself use the user if they book for others let the filed they are now full name,email, Special Requests (Optional), phone (Optional)
+
+if user register and the customer email exsit assign the user_id to customer 
+```
+
