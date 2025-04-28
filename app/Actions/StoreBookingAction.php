@@ -74,6 +74,8 @@ final class StoreBookingAction
                 'check_out' => $request->check_out_date,
                 'total_price' => $totalPrice,
                 'special_requests' => $request->special_requests,
+                'payment_method' => $request->payment_method,
+                'payment_status' => \App\Enum\PaymentStatus::PENDING,
             ]);
         });
     }

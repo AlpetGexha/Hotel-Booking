@@ -87,6 +87,8 @@ final class StoreMultipleBookingsAction
                     'guests' => min((int) $request->guests, $room->roomType->capacity),
                     'total_price' => $totalPrice,
                     'special_requests' => $request->special_requests,
+                    'payment_method' => $request->payment_method,
+                    'payment_status' => \App\Enum\PaymentStatus::PENDING,
                 ]);
 
                 $bookings->push($booking);

@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enum\BookingStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 final class Booking extends Model
 {
@@ -28,8 +30,11 @@ final class Booking extends Model
         'check_in',
         'check_out',
         'total_price',
+        'total_payed',
         'special_requests',
-        // 'status',
+        'status',
+        'payment_method',
+        'payment_status',
     ];
 
     /**
@@ -41,6 +46,10 @@ final class Booking extends Model
         'check_in' => 'datetime',
         'check_out' => 'datetime',
         'total_price' => 'decimal:2',
+        'total_payed' => 'decimal:2',
+        'status' => BookingStatus::class,
+        'payment_method' => \App\Enum\PaymentMethod::class,
+        'payment_status' => \App\Enum\PaymentStatus::class,
     ];
 
     /**
@@ -132,5 +141,30 @@ final class Booking extends Model
     public function isUpcoming(): bool
     {
         return $this->check_in->gt(Carbon::now());
+    }
+
+    /**
+     * Get all payments for this booking.
+     */
+    public function payments(): MorphMany
+    {
+        return $this->morphMany(Payment::class, 'paymentable');
+    }
+
+    /**
+     * Check if booking is fully paid.
+     */
+    public function isFullyPaid(): bool
+    {
+        return $this->total_payed >= $this->total_price;
+    }
+
+    /**
+     * Get the balance due for this booking.
+     */
+    public function getBalanceDue(): float
+    {
+        $balance = $this->total_price - ($this->total_payed ?? 0);
+        return max(0, $balance);
     }
 }

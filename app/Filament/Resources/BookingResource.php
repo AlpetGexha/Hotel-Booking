@@ -82,6 +82,21 @@ final class BookingResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (Booking $record): string => $record->status->color())
+                    ->formatStateUsing(fn (Booking $record): string => $record->status->label())
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('payment_status')
+                    ->badge()
+                    ->color(fn (Booking $record): ?string => $record->payment_status?->color())
+                    ->formatStateUsing(fn (Booking $record): ?string => $record->payment_status?->label())
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('payment_method')
+                    ->icon(fn (Booking $record): ?string => $record->payment_method?->icon())
+                    ->color(fn (Booking $record): ?string => $record->payment_method?->color())
+                    ->formatStateUsing(fn (Booking $record): ?string => $record->payment_method?->label())
+                    ->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
@@ -97,6 +112,63 @@ final class BookingResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\Action::make('changeStatus')
+                    ->label('Change Status')
+                    ->icon('heroicon-o-arrow-path')
+                    ->color('warning')
+                    ->form([
+                        \Filament\Forms\Components\Select::make('status')
+                            ->label('Booking Status')
+                            ->options(\App\Enum\BookingStatus::class)
+                            ->required()
+                    ])
+                    ->action(function (Booking $record, array $data): void {
+                        $record->status = $data['status'];
+                        $record->save();
+
+                        \Filament\Notifications\Notification::make()
+                            ->title('Booking status updated')
+                            ->success()
+                            ->send();
+                    }),
+                Tables\Actions\Action::make('processPayment')
+                    ->label('Process Payment')
+                    ->icon('heroicon-o-banknotes')
+                    ->color('success')
+                    ->form([
+                        \Filament\Forms\Components\TextInput::make('amount')
+                            ->label('Payment Amount')
+                            ->default(fn (Booking $record) => $record->getBalanceDue())
+                            ->numeric()
+                            ->prefix('$')
+                            ->required(),
+                        \Filament\Forms\Components\Select::make('payment_method')
+                            ->label('Payment Method')
+                            ->options(\App\Enum\PaymentMethod::class)
+                            ->default(fn (Booking $record) => $record->payment_method ?? \App\Enum\PaymentMethod::CASH)
+                            ->required(),
+                    ])
+                    ->action(function (Booking $record, array $data): void {
+                        // Update payment information
+                        $record->total_payed = ($record->total_payed ?? 0) + $data['amount'];
+                        $record->payment_method = $data['payment_method'];
+
+                        // Update payment status based on payment amount
+                        if ($record->isFullyPaid()) {
+                            $record->payment_status = \App\Enum\PaymentStatus::PAID;
+                        } elseif ($record->total_payed > 0) {
+                            $record->payment_status = \App\Enum\PaymentStatus::PARTIAL;
+                        } else {
+                            $record->payment_status = \App\Enum\PaymentStatus::PENDING;
+                        }
+
+                        $record->save();
+
+                        \Filament\Notifications\Notification::make()
+                            ->title('Payment processed successfully')
+                            ->success()
+                            ->send();
+                    }),
             ])
             ->bulkActions([
                 // Removed bulk actions as per requirements

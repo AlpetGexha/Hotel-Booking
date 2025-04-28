@@ -201,6 +201,36 @@
                         >{{ old('special_requests') }}</textarea>
                     </div>
 
+                    <!-- Payment Method Selection -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Payment Method</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            @foreach (\App\Enum\PaymentMethod::cases() as $method)
+                            <div class="relative flex items-start">
+                                <div class="flex h-6 items-center">
+                                    <input
+                                        id="payment_method_{{ $method->value }}"
+                                        name="payment_method"
+                                        type="radio"
+                                        value="{{ $method->value }}"
+                                        {{ old('payment_method', \App\Enum\PaymentMethod::CASH->value) === $method->value ? 'checked' : '' }}
+                                        class="h-4 w-4 rounded-full border-gray-300 text-indigo-600 focus:ring-indigo-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
+                                    >
+                                </div>
+                                <div class="ml-3 text-sm leading-6">
+                                    <label for="payment_method_{{ $method->value }}" class="flex items-center font-medium text-gray-700 dark:text-gray-300">
+                                        <i class="{{ $method->icon() }} w-5 h-5 mr-2 text-{{ $method->color() }}-500"></i>
+                                        {{ $method->label() }}
+                                    </label>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                        @error('payment_method')
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <!-- Payment Notice -->
                     <div class="mb-8 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-md">
                         <div class="flex">
