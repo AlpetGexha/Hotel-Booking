@@ -181,6 +181,7 @@ final class BookingResource extends Resource
     {
         return [
             'index' => Pages\ListBookings::route('/'),
+            'view' => Pages\ViewBooking::route('/{record}'),
         ];
     }
 }
