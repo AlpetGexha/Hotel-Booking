@@ -81,6 +81,7 @@ final class StoreMultipleBookingsAction
                     'room_id' => $room->id,
                     'room_type_id' => $room->room_type_id,
                     'customer_id' => $customer->id,
+                    'booker_id' => ($request->booking_for === 'other' && Auth::check()) ? Auth::id() : null,
                     'check_in' => $request->check_in_date,
                     'check_out' => $request->check_out_date,
                     'guests' => min((int) $request->guests, $room->roomType->capacity),

@@ -68,6 +68,7 @@ final class StoreBookingAction
                 'room_type_id' => $request->room_type_id,
                 'room_id' => $availableRoom->id,
                 'customer_id' => $customer->id,
+                'booker_id' => ($request->booking_for === 'other' && Auth::check()) ? Auth::id() : null,
                 'guests' => (int) $request->guests,
                 'check_in' => $request->check_in_date,
                 'check_out' => $request->check_out_date,
