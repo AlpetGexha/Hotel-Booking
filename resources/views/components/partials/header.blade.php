@@ -17,16 +17,16 @@
                 @if (Route::has('login'))
                     @auth
                         <!-- Profile dropdown -->
-                        <div 
-                            x-data="{ open: false }" 
+                        <div
+                            x-data="{ open: false }"
                             @keydown.escape.stop="open = false"
                             @click.away="open = false"
                             class="relative ml-3"
                         >
                             <div>
-                                <button 
-                                    type="button" 
-                                    @click="open = !open" 
+                                <button
+                                    type="button"
+                                    @click="open = !open"
                                     class="flex items-center gap-x-1 rounded-full bg-white dark:bg-slate-700 p-1.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-600 transition duration-150 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                     aria-expanded="false"
                                     aria-haspopup="true"
@@ -43,15 +43,15 @@
                                     </svg>
                                 </button>
                             </div>
-                            
+
                             <!-- Dropdown menu -->
-                            <div 
-                                x-show="open" 
-                                x-transition:enter="transition ease-out duration-200" 
-                                x-transition:enter-start="transform opacity-0 scale-95" 
-                                x-transition:enter-end="transform opacity-100 scale-100" 
-                                x-transition:leave="transition ease-in duration-75" 
-                                x-transition:leave-start="transform opacity-100 scale-100" 
+                            <div
+                                x-show="open"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="transform opacity-0 scale-95"
+                                x-transition:enter-end="transform opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-75"
+                                x-transition:leave-start="transform opacity-100 scale-100"
                                 x-transition:leave-end="transform opacity-0 scale-95"
                                 class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-slate-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                                 role="menu"
@@ -65,10 +65,10 @@
                                     <div class="font-medium text-gray-900 dark:text-white">{{ Auth::user()->name }}</div>
                                     <div class="truncate">{{ Auth::user()->email }}</div>
                                 </div>
-                                
+
                                 <!-- Dropdown menu items -->
-                                <a 
-                                    href="{{ route('my.bookings') }}" 
+                                <a
+                                    href="{{ route('my.bookings') }}"
                                     class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition duration-150"
                                     role="menuitem"
                                     tabindex="-1"
@@ -78,9 +78,9 @@
                                     </svg>
                                     My Bookings
                                 </a>
-                                
-                                <a 
-                                    href="{{ route('settings.profile') }}" 
+
+                                <a
+                                    href="{{ route('settings.profile') }}"
                                     class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition duration-150"
                                     role="menuitem"
                                     tabindex="-1"
@@ -90,9 +90,9 @@
                                     </svg>
                                     Settings
                                 </a>
-                                
-                                <a 
-                                    href="{{ route('settings.appearance') }}" 
+
+                                <a
+                                    href="{{ route('settings.appearance') }}"
                                     class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition duration-150"
                                     role="menuitem"
                                     tabindex="-1"
@@ -102,13 +102,13 @@
                                     </svg>
                                     Appearance
                                 </a>
-                                
+
                                 <div class="border-t border-gray-100 dark:border-gray-700 my-1"></div>
-                                
+
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button 
-                                        type="submit" 
+                                    <button
+                                        type="submit"
                                         class="flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-red-500 dark:hover:text-red-400 transition duration-150"
                                         role="menuitem"
                                         tabindex="-1"

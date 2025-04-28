@@ -27,7 +27,6 @@ Route::get('booking/confirmation/{booking}', [BookingController::class, 'confirm
 Route::get('booking/multiple', [BookingController::class, 'createMultipleRooms'])->name('bookings.create-multiple');
 Route::post('booking/multiple', [BookingController::class, 'storeMultipleRooms'])->name('bookings.store-multiple');
 
-// Rooms route
 
 Route::redirect('dashboard', 'my-bookings')
     ->middleware(['auth', 'verified'])
