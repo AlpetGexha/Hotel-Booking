@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Enum;
 
-enum PaymentStatus: string
+use Filament\Support\Contracts\HasIcon;
+use Filament\Support\Contracts\HasColor;
+
+enum PaymentStatus: string implements HasColor, HasIcon
 {
     case PENDING = 'pending';
     case PARTIAL = 'partial';
@@ -17,7 +20,7 @@ enum PaymentStatus: string
      */
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::PENDING => 'Pending Payment',
             self::PARTIAL => 'Partially Paid',
             self::PAID => 'Fully Paid',
@@ -29,23 +32,23 @@ enum PaymentStatus: string
     /**
      * Get a color associated with this payment status
      */
-    public function color(): string
+    public function getColor(): string
     {
-        return match($this) {
-            self::PENDING => 'yellow',
-            self::PARTIAL => 'blue',
-            self::PAID => 'green',
-            self::REFUNDED => 'purple',
-            self::FAILED => 'red',
+        return match ($this) {
+            self::PENDING => 'warning',
+            self::PARTIAL => 'warning',
+            self::PAID => 'success',
+            self::REFUNDED => 'info',
+            self::FAILED => 'danger',
         };
     }
 
     /**
      * Get an icon for this payment status
      */
-    public function icon(): string
+    public function getIcon(): string
     {
-        return match($this) {
+        return match ($this) {
             self::PENDING => 'heroicon-o-clock',
             self::PARTIAL => 'heroicon-o-currency-dollar',
             self::PAID => 'heroicon-o-check-circle',
@@ -62,7 +65,7 @@ enum PaymentStatus: string
     public static function options(): array
     {
         return collect(self::cases())
-            ->mapWithKeys(fn (self $status) => [$status->value => $status->label()])
+            ->mapWithKeys(fn(self $status) => [$status->value => $status->label()])
             ->toArray();
     }
 }
