@@ -84,37 +84,32 @@ final class BookingResource extends Resource
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn (Booking $record): string => $record->status->color())
-                    ->formatStateUsing(fn (Booking $record): string => $record->status->label())
+                    ->formatStateUsing(fn(Booking $record): string => $record->status->label())
                     ->sortable(),
                 Tables\Columns\TextColumn::make('payment_status')
                     ->badge()
-                    ->color(fn (Booking $record): ?string => $record->payment_status?->color())
-                    ->formatStateUsing(fn (Booking $record): ?string => $record->payment_status?->label())
+                    ->formatStateUsing(fn(Booking $record): ?string => $record->payment_status?->label())
                     ->sortable(),
                 Tables\Columns\TextColumn::make('payment_method')
-                    ->icon(fn (Booking $record): ?string => $record->payment_method?->icon())
-                    ->color(fn (Booking $record): ?string => $record->payment_method?->color())
-                    ->formatStateUsing(fn (Booking $record): ?string => $record->payment_method?->label())
+                    ->formatStateUsing(fn(Booking $record): ?string => $record->payment_method?->label())
                     ->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\Filter::make('upcoming')
-                    ->query(fn (Builder $query): Builder => $query->where('check_in', '>=', now()))
+                    ->query(fn(Builder $query): Builder => $query->where('check_in', '>=', now()))
                     ->label('Upcoming Bookings'),
                 Tables\Filters\Filter::make('current')
-                    ->query(fn (Builder $query): Builder => $query->where('check_in', '<=', now())->where('check_out', '>=', now()))
+                    ->query(fn(Builder $query): Builder => $query->where('check_in', '<=', now())->where('check_out', '>=', now()))
                     ->label('Current Stays'),
                 Tables\Filters\Filter::make('past')
-                    ->query(fn (Builder $query): Builder => $query->where('check_out', '<', now()))
+                    ->query(fn(Builder $query): Builder => $query->where('check_out', '<', now()))
                     ->label('Past Bookings'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\Action::make('changeStatus')
                     ->label('Change Status')
-                    ->icon('heroicon-o-arrow-path')
                     ->color('warning')
                     ->form([
                         \Filament\Forms\Components\Select::make('status')
@@ -133,19 +128,19 @@ final class BookingResource extends Resource
                     }),
                 Tables\Actions\Action::make('processPayment')
                     ->label('Process Payment')
-                    ->icon('heroicon-o-banknotes')
+                    // ->visible(fn(Booking $record): bool => $record->getBalanceDue() > 0)
                     ->color('success')
                     ->form([
                         \Filament\Forms\Components\TextInput::make('amount')
                             ->label('Payment Amount')
-                            ->default(fn (Booking $record) => $record->getBalanceDue())
+                            ->default(fn(Booking $record) => $record->getBalanceDue())
                             ->numeric()
                             ->prefix('$')
                             ->required(),
                         \Filament\Forms\Components\Select::make('payment_method')
                             ->label('Payment Method')
                             ->options(\App\Enum\PaymentMethod::class)
-                            ->default(fn (Booking $record) => $record->payment_method ?? \App\Enum\PaymentMethod::CASH)
+                            ->default(fn(Booking $record) => $record->payment_method ?? \App\Enum\PaymentMethod::CASH)
                             ->required(),
                     ])
                     ->action(function (Booking $record, array $data): void {
