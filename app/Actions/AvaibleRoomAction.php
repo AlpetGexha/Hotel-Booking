@@ -164,7 +164,7 @@ final class AvaibleRoomAction
         $availableRooms = Room::with('roomType')
             ->availableForBooking($checkInDate, $checkOutDate)
             ->get()
-            ->sortByDesc(fn($room) => $room->roomType->capacity);
+            ->sortByDesc(fn ($room) => $room->roomType->capacity);
 
         if ($availableRooms->isEmpty()) {
             return;
@@ -183,6 +183,6 @@ final class AvaibleRoomAction
      */
     private function calculateTotalCapacity(Collection $rooms): int
     {
-        return $rooms->sum(fn($room) => $room->roomType->capacity);
+        return $rooms->sum(fn ($room) => $room->roomType->capacity);
     }
 }

@@ -6,10 +6,10 @@ use Rector\Config\RectorConfig;
 use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 
 return RectorConfig::configure()
-    ->withConfiguredRule(\RectorLaravel\Rector\StaticCall\EloquentMagicMethodToQueryBuilderRector::class, [
+    ->withConfiguredRule(RectorLaravel\Rector\StaticCall\EloquentMagicMethodToQueryBuilderRector::class, [
         'exclude_methods' => [
             '*',
-        ]
+        ],
     ])
     ->withPaths([
         __DIR__ . '/app',
