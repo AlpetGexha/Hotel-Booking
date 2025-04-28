@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Actions\CreateBookingAction;
@@ -20,7 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Throwable;
 
-class BookingController extends Controller
+final class BookingController extends Controller
 {
     public function __construct(
         protected readonly PricingService $pricingService

@@ -38,7 +38,7 @@
                                         </div>
                                     </div>
 
-                                    @if($roomType->description)
+                                    @if ($roomType->description)
                                         <p class="text-slate-600 dark:text-slate-300 mb-6">
                                             {{ $roomType->description }}
                                         </p>
@@ -46,7 +46,7 @@
 
                                     <div class="mb-6">
                                         <div class="flex flex-wrap items-center gap-3 mb-4">
-                                            @if($roomType->size)
+                                            @if ($roomType->size)
                                                 <span class="flex items-center text-sm bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 px-3 py-1 rounded-full">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
@@ -65,7 +65,7 @@
                                         <!-- Amenities -->
                                         <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Amenities:</h3>
                                         <div class="grid grid-cols-2 gap-2 mb-8">
-                                            @forelse($roomType->amenities as $amenity)
+                                            @forelse ($roomType->amenities as $amenity)
                                                 <span class="flex items-center text-sm text-slate-700 dark:text-slate-300">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
                                                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />

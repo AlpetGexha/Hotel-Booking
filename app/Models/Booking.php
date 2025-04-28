@@ -89,7 +89,7 @@ final class Booking extends Model
      */
     public function scopeForUser(Builder $query, User $user): Builder
     {
-        return $query->whereHas('customer', fn(Builder $q) => $q->where('user_id', $user->id));
+        return $query->whereHas('customer', fn (Builder $q) => $q->where('user_id', $user->id));
     }
 
     /**
@@ -122,8 +122,9 @@ final class Booking extends Model
     public function scopeCurrentStay(Builder $query): Builder
     {
         $now = Carbon::now();
+
         return $query->where('check_in', '<=', $now)
-                     ->where('check_out', '>=', $now);
+            ->where('check_out', '>=', $now);
     }
 
     /**
@@ -132,6 +133,7 @@ final class Booking extends Model
     public function isCurrentStay(): bool
     {
         $now = Carbon::now();
+
         return $this->check_in->lte($now) && $this->check_out->gte($now);
     }
 
@@ -165,6 +167,7 @@ final class Booking extends Model
     public function getBalanceDue(): float
     {
         $balance = $this->total_price - ($this->total_payed ?? 0);
+
         return max(0, $balance);
     }
 }

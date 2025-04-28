@@ -18,7 +18,7 @@ final class CreateBookingAction
             'roomType' => $roomType,
             'checkInDate' => $request->check_in_date,
             'checkOutDate' => $request->check_out_date,
-            'guests' => (int)$request->guests,
+            'guests' => (int) $request->guests,
             'nights' => $nights,
             'totalPrice' => $totalPrice,
         ];

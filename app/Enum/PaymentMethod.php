@@ -14,6 +14,18 @@ enum PaymentMethod: string implements HasColor, HasIcon
     case PAYPAL = 'paypal';
 
     /**
+     * Get all enum values as an array suitable for select options
+     *
+     * @return array<string, string>
+     */
+    public static function options(): array
+    {
+        return collect(self::cases())
+            ->mapWithKeys(fn (self $method) => [$method->value => $method->label()])
+            ->toArray();
+    }
+
+    /**
      * Get a display label for the enum value
      */
     public function label(): string
@@ -51,17 +63,5 @@ enum PaymentMethod: string implements HasColor, HasIcon
             // self::BANK_TRANSFER => 'heroicon-o-building-library',
             self::PAYPAL => 'heroicon-o-currency-dollar',
         };
-    }
-
-    /**
-     * Get all enum values as an array suitable for select options
-     *
-     * @return array<string, string>
-     */
-    public static function options(): array
-    {
-        return collect(self::cases())
-            ->mapWithKeys(fn(self $method) => [$method->value => $method->label()])
-            ->toArray();
     }
 }

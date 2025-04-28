@@ -18,12 +18,12 @@
     <div class="p-6">
         <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">{{ $roomType->name }}</h3>
 
-        @if($roomType->description)
+        @if ($roomType->description)
             <p class="text-slate-600 dark:text-slate-300 mb-4 line-clamp-2">{{ $roomType->description }}</p>
         @endif
 
         <div class="flex flex-wrap gap-2 mb-4">
-            @forelse($roomType->amenities->take(3) as $amenity)
+            @forelse ($roomType->amenities->take(3) as $amenity)
                 <span class="inline-flex items-center text-xs bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 px-2 py-1 rounded">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -33,7 +33,7 @@
             @empty
             @endforelse
 
-            @if($roomType->amenities->count() > 3)
+            @if ($roomType->amenities->count() > 3)
                 <span class="inline-flex items-center text-xs bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 px-2 py-1 rounded">
                     +{{ $roomType->amenities->count() - 3 }} more
                 </span>

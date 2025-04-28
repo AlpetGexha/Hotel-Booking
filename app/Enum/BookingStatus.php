@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Enum;
 
 use Filament\Support\Contracts\HasColor;
-use Filament\Support\Contracts\HasIcon;
 
 enum BookingStatus: string implements HasColor
 {
@@ -15,6 +14,18 @@ enum BookingStatus: string implements HasColor
     case CHECKED_OUT = 'checked_out';
     case CANCELLED = 'cancelled';
     case NO_SHOW = 'no_show';
+
+    public static function options(): array
+    {
+        return [
+            self::PENDING->value => 'Pending',
+            self::CONFIRMED->value => 'Confirmed',
+            self::CHECKED_IN->value => 'Checked In',
+            self::CHECKED_OUT->value => 'Checked Out',
+            self::CANCELLED->value => 'Cancelled',
+            self::NO_SHOW->value => 'No Show',
+        ];
+    }
 
     public function label(): string
     {
@@ -38,17 +49,5 @@ enum BookingStatus: string implements HasColor
             self::CANCELLED => 'danger',
             self::NO_SHOW => 'dark',
         };
-    }
-
-    public static function options(): array
-    {
-        return [
-            self::PENDING->value => 'Pending',
-            self::CONFIRMED->value => 'Confirmed',
-            self::CHECKED_IN->value => 'Checked In',
-            self::CHECKED_OUT->value => 'Checked Out',
-            self::CANCELLED->value => 'Cancelled',
-            self::NO_SHOW->value => 'No Show',
-        ];
     }
 }

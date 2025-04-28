@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Enum;
 
-use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasIcon;
 
 enum PaymentStatus: string implements HasColor, HasIcon
 {
@@ -14,6 +14,18 @@ enum PaymentStatus: string implements HasColor, HasIcon
     case PAID = 'paid';
     case REFUNDED = 'refunded';
     case FAILED = 'failed';
+
+    /**
+     * Get all enum values as an array suitable for select options
+     *
+     * @return array<string, string>
+     */
+    public static function options(): array
+    {
+        return collect(self::cases())
+            ->mapWithKeys(fn (self $status) => [$status->value => $status->label()])
+            ->toArray();
+    }
 
     /**
      * Get a display label for the enum value
@@ -55,17 +67,5 @@ enum PaymentStatus: string implements HasColor, HasIcon
             self::REFUNDED => 'heroicon-o-arrow-path',
             self::FAILED => 'heroicon-o-x-circle',
         };
-    }
-
-    /**
-     * Get all enum values as an array suitable for select options
-     *
-     * @return array<string, string>
-     */
-    public static function options(): array
-    {
-        return collect(self::cases())
-            ->mapWithKeys(fn(self $status) => [$status->value => $status->label()])
-            ->toArray();
     }
 }

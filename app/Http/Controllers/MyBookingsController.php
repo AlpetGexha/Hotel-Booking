@@ -10,7 +10,6 @@ use Illuminate\View\View;
 
 final class MyBookingsController extends Controller
 {
-
     /**
      * Handle the incoming request.
      */
@@ -18,7 +17,7 @@ final class MyBookingsController extends Controller
     {
         $user = $request->user();
 
-        if (!$user) {
+        if (! $user) {
             return view('bookings.my-bookings', [
                 'upcomingSelfBookings' => collect(),
                 'upcomingOthersBookings' => collect(),

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\RoomType;
 use Illuminate\View\View;
 
-class RoomController extends Controller
+final class RoomController extends Controller
 {
     /**
      * Display a listing of the room types.

@@ -6,7 +6,6 @@ namespace App\Actions;
 
 use App\Models\Booking;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
@@ -15,7 +14,7 @@ final class FetchUserBookingsAction
     public function handle(User $user): array
     {
         // Early return if no user
-        if (!$user) {
+        if (! $user) {
             return $this->emptyBookingsResult();
         }
 
@@ -38,7 +37,7 @@ final class FetchUserBookingsAction
     {
         return Booking::query()
             ->forUser($user)
-            ->when($upcoming, fn(Builder $q) => $q->upcoming(), fn(Builder $q) => $q->past())
+            ->when($upcoming, fn (Builder $q) => $q->upcoming(), fn (Builder $q) => $q->past())
             ->with(['roomType', 'room', 'customer'])
             ->orderBy($upcoming ? 'check_in' : 'check_out', $upcoming ? 'asc' : 'desc')
             ->get();
@@ -51,7 +50,7 @@ final class FetchUserBookingsAction
     {
         return Booking::query()
             ->bookedByUserForOthers($user)
-            ->when($upcoming, fn(Builder $q) => $q->upcoming(), fn(Builder $q) => $q->past())
+            ->when($upcoming, fn (Builder $q) => $q->upcoming(), fn (Builder $q) => $q->past())
             ->with(['roomType', 'room', 'customer', 'booker'])
             ->orderBy($upcoming ? 'check_in' : 'check_out', $upcoming ? 'asc' : 'desc')
             ->get();
