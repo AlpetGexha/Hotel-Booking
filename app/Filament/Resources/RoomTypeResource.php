@@ -82,7 +82,9 @@ final class RoomTypeResource extends Resource
                     ->schema([
                         Forms\Components\CheckboxList::make('amenities')
                             ->relationship('amenities', 'name')
-                            ->options(Amenity::all()->pluck('name', 'id'))
+                            ->options(function() {
+                                return Amenity::query()->pluck('name', 'id');
+                            })
                             ->columns(3)
                             ->searchable()
                             ->gridDirection('row')

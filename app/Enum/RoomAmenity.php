@@ -65,7 +65,6 @@ enum RoomAmenity: string implements HasIcon
             self::EXTRA_BEDS => 'heroicon-o-queue-list',
             self::CHILDREN_AMENITIES => 'heroicon-o-user-group',
             self::JACUZZI => 'heroicon-o-fire',
-            default => 'heroicon-o-check',
         };
     }
 

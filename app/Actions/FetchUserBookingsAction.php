@@ -13,11 +13,6 @@ final class FetchUserBookingsAction
 {
     public function handle(User $user): array
     {
-        // Early return if no user
-        if (! $user) {
-            return $this->emptyBookingsResult();
-        }
-
         // Use optimized queries with eager loading to prevent N+1 issues
         return [
             // Self bookings - using the forUser local scope
@@ -56,13 +51,13 @@ final class FetchUserBookingsAction
             ->get();
     }
 
-    private function emptyBookingsResult(): array
-    {
-        return [
-            'upcomingSelfBookings' => collect(),
-            'upcomingOthersBookings' => collect(),
-            'pastSelfBookings' => collect(),
-            'pastOthersBookings' => collect(),
-        ];
-    }
+    // private function emptyBookingsResult(): array
+    // {
+    //     return [
+    //         'upcomingSelfBookings' => collect(),
+    //         'upcomingOthersBookings' => collect(),
+    //         'pastSelfBookings' => collect(),
+    //         'pastOthersBookings' => collect(),
+    //     ];
+    // }
 }

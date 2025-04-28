@@ -43,7 +43,8 @@ final class BookingsRelationManager extends RelationManager
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nights')
                     ->label('Nights')
-                    ->state(function ($record): int {
+                    ->state(function ($record): float {
+                        // diffInDays always returns an integer
                         return Carbon::parse($record->check_in)->diffInDays(Carbon::parse($record->check_out));
                     }),
                 Tables\Columns\TextColumn::make('room.room_number')

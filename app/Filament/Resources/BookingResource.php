@@ -53,7 +53,7 @@ final class BookingResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nights')
                     ->label('Nights')
-                    ->state(function (Booking $record): int|float {
+                    ->state(function (Booking $record): float {
                         return Carbon::parse($record->check_in)->diffInDays(Carbon::parse($record->check_out));
                     })
                     ->sortable(query: function (Builder $query, string $direction): Builder {
@@ -88,7 +88,7 @@ final class BookingResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('payment_status')
                     ->badge()
-                    ->formatStateUsing(fn (Booking $record): ?string => $record->payment_status?->label())
+                    ->formatStateUsing(fn (Booking $record): string => $record->payment_status?->label())
                     ->sortable(),
                 Tables\Columns\TextColumn::make('payment_method')
                     ->formatStateUsing(fn (Booking $record): ?string => $record->payment_method?->label())

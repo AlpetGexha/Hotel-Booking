@@ -26,7 +26,7 @@ final class AppServiceProvider extends ServiceProvider
     {
         $this->configurateModels();
         $this->configurateCommands();
-        // $this->configurateURL();
+        $this->configurateURL();
     }
 
     private function configurateModels(): void
@@ -46,11 +46,8 @@ final class AppServiceProvider extends ServiceProvider
 
     private function configurateURL(): void
     {
-        URL::forceScheme('https');
-    }
-
-    private function configurateTime()
-    {
-        //
+        if (app()->isProduction()) {
+            URL::forceScheme('https');
+        }
     }
 }
