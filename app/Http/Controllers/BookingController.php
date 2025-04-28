@@ -37,7 +37,8 @@ final class BookingController extends Controller
         $request->validated();
 
         // Calculate nights and total price using PricingService
-        $roomType = RoomType::findOrFail($request->room_type_id);
+        $roomType = RoomType::query()
+            ->findOrFail($request->room_type_id);
         $nights = $this->pricingService->getNightsCount(
             $request->check_in_date,
             $request->check_out_date
@@ -61,7 +62,8 @@ final class BookingController extends Controller
     {
         try {
             // Calculate the total price using PricingService
-            $roomType = RoomType::findOrFail($request->room_type_id);
+            $roomType = RoomType::query()
+                ->findOrFail($request->room_type_id);
             $totalPrice = $this->pricingService->calculateTotalPrice(
                 $roomType,
                 $request->check_in_date,
@@ -147,7 +149,8 @@ final class BookingController extends Controller
     {
         try {
             // Load rooms with eager loading
-            $rooms = Room::whereIn('id', $request->room_ids)
+            $rooms = Room::query()
+                ->whereIn('id', $request->room_ids)
                 ->with('roomType')
                 ->get();
 
