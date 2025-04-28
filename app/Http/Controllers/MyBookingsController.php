@@ -10,14 +10,11 @@ use Illuminate\View\View;
 
 final class MyBookingsController extends Controller
 {
-    public function __construct(
-        private readonly FetchUserBookingsAction $fetchUserBookingsAction
-    ) {}
 
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request): View
+    public function __invoke(Request $request, FetchUserBookingsAction $fetchUserBookingsAction): View
     {
         $user = $request->user();
 
@@ -30,7 +27,7 @@ final class MyBookingsController extends Controller
             ]);
         }
 
-        $bookings = $this->fetchUserBookingsAction->handle($user);
+        $bookings = $fetchUserBookingsAction->handle($user);
 
         return view('bookings.my-bookings', $bookings);
     }
