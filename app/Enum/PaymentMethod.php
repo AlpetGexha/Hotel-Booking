@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Enum;
 
-enum PaymentMethod: string
+use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasIcon;
+
+enum PaymentMethod: string implements HasColor, HasIcon
 {
     case CASH = 'cash';
     case CREDIT_CARD = 'credit_card';
@@ -15,7 +18,7 @@ enum PaymentMethod: string
      */
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::CASH => 'Cash',
             self::CREDIT_CARD => 'Credit Card',
             self::PAYPAL => 'PayPal',
@@ -25,23 +28,23 @@ enum PaymentMethod: string
     /**
      * Get a color associated with this payment method
      */
-    public function color(): string
+    public function getColor(): string
     {
-        return match($this) {
-            self::CASH => 'emerald',
-            self::CREDIT_CARD => 'indigo',
+        return match ($this) {
+            self::CASH => 'success',
+            self::CREDIT_CARD => 'primary',
             // self::DEBIT_CARD => 'blue',
             // self::BANK_TRANSFER => 'cyan',
-            self::PAYPAL => 'violet',
+            self::PAYPAL => 'info',
         };
     }
 
     /**
      * Get an icon for this payment method
      */
-    public function icon(): string
+    public function getIcon(): string
     {
-        return match($this) {
+        return match ($this) {
             self::CASH => 'heroicon-o-banknotes',
             self::CREDIT_CARD => 'heroicon-o-credit-card',
             // self::DEBIT_CARD => 'heroicon-o-credit-card',
@@ -58,7 +61,7 @@ enum PaymentMethod: string
     public static function options(): array
     {
         return collect(self::cases())
-            ->mapWithKeys(fn (self $method) => [$method->value => $method->label()])
+            ->mapWithKeys(fn(self $method) => [$method->value => $method->label()])
             ->toArray();
     }
 }
