@@ -35,6 +35,7 @@ final class BookingFactory extends Factory
             'check_out' => $checkOut,
             'total_price' => fake()->randomFloat(2, 100, 5000),
             'special_requests' => fake()->optional(0.7)->text(200),
+            'created_at' => Carbon::now()->subDays(fake()->numberBetween(0, 30)),
         ];
     }
 

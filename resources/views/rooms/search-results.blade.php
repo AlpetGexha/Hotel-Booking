@@ -30,7 +30,7 @@
 
         <!-- Search Form -->
         <div x-data="{ showFilters: false }" class="p-6 bg-slate-50 dark:bg-slate-900/50">
-            <button @click="showFilters = !showFilters"
+            {{-- <button @click="showFilters = !showFilters"
                 class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-slate-800">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -38,7 +38,7 @@
                         d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                 </svg>
                 Modify Search
-            </button>
+            </button> --}}
 
             <!-- Expanded Form -->
             <div x-show="showFilters" x-transition:enter="transition ease-out duration-200"
@@ -47,7 +47,7 @@
                 x-transition:leave="transition ease-in duration-150"
                 x-transition:leave-start="opacity-100 transform translate-y-0"
                 x-transition:leave-end="opacity-0 transform -translate-y-2"
-                class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700">
+                class="pt-6 border-t border-slate-200 dark:border-slate-700">
                 <form method="GET" action="{{ route('search.rooms') }}" class="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <!-- Check-in Date -->
                     <div>
