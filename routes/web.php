@@ -7,19 +7,16 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SearchRoomsController;
 use Illuminate\Support\Facades\Route;
-use Livewire\Volt\Volt;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
 
+Route::view('/', 'welcome')->name('home');
 Route::get('search-rooms', SearchRoomsController::class)->name('search.rooms');
 
-// Contact route
+// Pages
 Route::view('contact', 'contact')->name('contact');
-
-// Amenities route
 Route::get('amenities', [AmenitiesController::class, 'index'])->name('amenities');
+Route::get('rooms', [RoomController::class, 'index'])->name('rooms');
+
 
 // Booking routes
 Route::get('booking', [BookingController::class, 'create'])->name('bookings.create');
@@ -31,7 +28,6 @@ Route::get('booking/multiple', [BookingController::class, 'createMultipleRooms']
 Route::post('booking/multiple', [BookingController::class, 'storeMultipleRooms'])->name('bookings.store-multiple');
 
 // Rooms route
-Route::get('rooms', [RoomController::class, 'index'])->name('rooms');
 
 // Route::view('dashboard', 'dashboard')
 //     ->middleware(['auth', 'verified'])
