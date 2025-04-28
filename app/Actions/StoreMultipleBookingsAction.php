@@ -10,6 +10,7 @@ use App\Models\Booking;
 use App\Models\Customer;
 use App\Models\Room;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -27,11 +28,32 @@ final class StoreMultipleBookingsAction
         try {
             DB::beginTransaction();
 
-            // Find or create customer
-            $customer = Customer::firstOrCreate(
-                ['email' => $request->email],
-                ['name' => $request->first_name . ' ' . $request->last_name]
-            );
+            // Determine customer based on booking_for
+            $customer = null;
+
+            if ($request->booking_for === 'self' && Auth::check()) {
+                // User is booking for themselves
+                $user = Auth::user();
+
+                // Find or create customer record for this user
+                $customer = Customer::firstOrCreate(
+                    ['user_id' => $user->id],
+                    [
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'phone' => $user->phone,
+                    ]
+                );
+            } else {
+                // User is booking for someone else or is a guest
+                $customer = Customer::firstOrCreate(
+                    ['email' => $request->email],
+                    [
+                        'name' => $request->first_name . ' ' . $request->last_name,
+                        'phone' => $request->phone ?? null,
+                    ]
+                );
+            }
 
             $bookings = new Collection;
             $rooms = Room::whereIn('id', $request->room_ids)
@@ -61,7 +83,7 @@ final class StoreMultipleBookingsAction
                     'customer_id' => $customer->id,
                     'check_in' => $request->check_in_date,
                     'check_out' => $request->check_out_date,
-                    'guests' => min((int)$request->guests, $room->roomType->capacity),
+                    'guests' => min((int) $request->guests, $room->roomType->capacity),
                     'total_price' => $totalPrice,
                     'special_requests' => $request->special_requests,
                 ]);

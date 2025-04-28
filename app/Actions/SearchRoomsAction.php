@@ -13,11 +13,9 @@ use Illuminate\Support\Facades\Cache;
 
 final class SearchRoomsAction
 {
-    protected AvaibleRoomAction $availableRoomAction;
-
-    public function __construct(AvaibleRoomAction $availableRoomAction)
+    public function __construct(protected AvaibleRoomAction $availableRoomAction)
     {
-        $this->availableRoomAction = $availableRoomAction;
+        //
     }
 
     /**
@@ -35,7 +33,7 @@ final class SearchRoomsAction
         $cacheKey = $this->generateCacheKey(
             $checkIn,
             $checkOut,
-            (int)(int)$request->guests,
+            (int) $request->guests,
             $request->amenities ?? null,
             $request->price_min ?? null,
             $request->price_max ?? null
@@ -46,7 +44,7 @@ final class SearchRoomsAction
         $roomTypes = $this->findAvailableRoomTypes(
             $checkIn,
             $checkOut,
-            (int)$request->guests,
+            (int) $request->guests,
             $request->amenities ?? null,
             $request->price_min ?? null,
             $request->price_max ?? null
@@ -62,7 +60,7 @@ final class SearchRoomsAction
         // If no exact matches found, look for alternatives
         if ($roomTypes->isEmpty()) {
             $alternatives = $this->availableRoomAction->findAlternatives(
-                (int)$request->guests,
+                (int) $request->guests,
                 $request->check_in_date,
                 $request->check_out_date
             );

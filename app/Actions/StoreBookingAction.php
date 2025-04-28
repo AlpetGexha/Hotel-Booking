@@ -8,6 +8,8 @@ use App\Exceptions\BookingException;
 use App\Http\Requests\StoreBookingRequest;
 use App\Models\Booking;
 use App\Models\Customer;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 final class StoreBookingAction
@@ -34,18 +36,39 @@ final class StoreBookingAction
 
         // Use database transaction for consistency
         return DB::transaction(function () use ($request, $totalPrice, $availableRoom) {
-            // Find or create customer
-            $customer = Customer::firstOrCreate(
-                ['email' => $request->email],
-                ['name' => $request->name]
-            );
+            // Determine customer based on booking_for
+            $customer = null;
+
+            if ($request->booking_for === 'self' && Auth::check()) {
+                // User is booking for themselves
+                $user = Auth::user();
+
+                // Find or create customer record for this user
+                $customer = Customer::firstOrCreate(
+                    ['user_id' => $user->id],
+                    [
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'phone' => $user->phone,
+                    ]
+                );
+            } else {
+                // User is booking for someone else or is a guest
+                $customer = Customer::firstOrCreate(
+                    ['email' => $request->email],
+                    [
+                        'name' => $request->name,
+                        'phone' => $request->phone ?? null,
+                    ]
+                );
+            }
 
             // Create booking
             return Booking::create([
                 'room_type_id' => $request->room_type_id,
                 'room_id' => $availableRoom->id,
                 'customer_id' => $customer->id,
-                'guests' => (int)$request->guests,
+                'guests' => (int) $request->guests,
                 'check_in' => $request->check_in_date,
                 'check_out' => $request->check_out_date,
                 'total_price' => $totalPrice,

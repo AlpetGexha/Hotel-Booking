@@ -14,17 +14,13 @@
                 <a href="#" class="font-medium text-slate-600 hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400 transition duration-150">Gallery</a>
                 <a href="{{ route('contact') }}" class="font-medium transition duration-150 {{ request()->is('contact*') ? 'text-indigo-500 dark:text-indigo-400 font-bold' : 'text-slate-600 hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400' }}">Contact</a>
 
-                {{-- @if (Route::has('login'))
+                @if (Route::has('login'))
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="font-medium text-slate-600 hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400 transition duration-150">Dashboard</a>
+                        <a href="{{ url('/dashboard') }}" class="font-medium text-slate-600 hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400 transition duration-150">My booking</a>
                     @else
                         <a href="{{ route('login') }}" class="font-medium text-slate-600 hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400 transition duration-150">Log in</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-500 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800 transition ease-in-out duration-150">Register</a>
-                        @endif
                     @endauth
-                @endif --}}
+                @endif
             </div>
         </div>
     </div>

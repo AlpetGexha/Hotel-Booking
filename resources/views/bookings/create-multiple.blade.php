@@ -127,7 +127,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('bookings.store-multiple') }}">
+                    <form method="POST" action="{{ route('bookings.store-multiple') }}" x-data="{ bookingFor: '{{ old('booking_for', 'self') }}' }">
                         @csrf
                         <!-- Hidden fields -->
                         @foreach ($rooms as $room)
@@ -137,15 +137,55 @@
                         <input type="hidden" name="check_out_date" value="{{ $checkOutDate }}">
                         <input type="hidden" name="guests" value="{{ $guests }}">
 
+                        <!-- Booking Options Section -->
+                        @auth
+                        <div class="mb-6">
+                            <h3 class="text-base font-medium text-slate-900 dark:text-white mb-4">Booking Options</h3>
+                            <div class="flex flex-col space-y-3">
+                                <div class="flex items-center">
+                                    <input
+                                        type="radio"
+                                        id="booking_self"
+                                        name="booking_for"
+                                        value="self"
+                                        x-model="bookingFor"
+                                        {{ old('booking_for', 'self') === 'self' ? 'checked' : '' }}
+                                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600"
+                                    >
+                                    <label for="booking_self" class="ml-2 block text-sm text-slate-700 dark:text-slate-300">
+                                        Book for myself
+                                    </label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input
+                                        type="radio"
+                                        id="booking_other"
+                                        name="booking_for"
+                                        value="other"
+                                        x-model="bookingFor"
+                                        {{ old('booking_for') === 'other' ? 'checked' : '' }}
+                                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600"
+                                    >
+                                    <label for="booking_other" class="ml-2 block text-sm text-slate-700 dark:text-slate-300">
+                                        Book for someone else
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        @else
+                            <input type="hidden" name="booking_for" value="other">
+                        @endauth
+
                         <!-- Guest Information -->
-                        <div class="space-y-4 mb-6">
+                        <div class="space-y-4 mb-6" x-show="bookingFor === 'other'" x-transition>
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label for="first_name"
                                         class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">First
                                         Name</label>
                                     <input type="text" id="first_name" name="first_name"
-                                        value="{{ old('first_name') }}" required
+                                        value="{{ old('first_name') }}"
+                                        x-bind:required="bookingFor === 'other'"
                                         class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                     @error('first_name')
                                         <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
@@ -156,7 +196,8 @@
                                         class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Last
                                         Name</label>
                                     <input type="text" id="last_name" name="last_name"
-                                        value="{{ old('last_name') }}" required
+                                        value="{{ old('last_name') }}"
+                                        x-bind:required="bookingFor === 'other'"
                                         class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                     @error('last_name')
                                         <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
@@ -168,7 +209,7 @@
                                 <label for="email"
                                     class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Email</label>
                                 <input type="email" id="email" name="email" value="{{ old('email') }}"
-                                    required
+                                    x-bind:required="bookingFor === 'other'"
                                     class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 @error('email')
                                     <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
@@ -177,25 +218,52 @@
 
                             <div>
                                 <label for="phone"
-                                    class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Phone</label>
+                                    class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Phone (Optional)</label>
                                 <input type="tel" id="phone" name="phone" value="{{ old('phone') }}"
-                                    required
                                     class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 @error('phone')
                                     <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                                 @enderror
                             </div>
+                        </div>
 
-                            <div>
-                                <label for="special_requests"
-                                    class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Special
-                                    Requests</label>
-                                <textarea id="special_requests" name="special_requests" rows="3"
-                                    class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('special_requests') }}</textarea>
-                                @error('special_requests')
-                                    <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
-                                @enderror
+                        <!-- User Information Display (when booking for self) -->
+                        @auth
+                        <div class="mb-6" x-show="bookingFor === 'self'" x-transition>
+                            <h3 class="text-base font-medium text-slate-900 dark:text-white mb-4">Your Information</h3>
+
+                            <div class="bg-slate-50 dark:bg-slate-700/30 rounded-lg p-4">
+                                <div class="grid grid-cols-1 gap-4">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm font-medium text-slate-500 dark:text-slate-400">Name</span>
+                                        <span class="text-slate-900 dark:text-white">{{ auth()->user()->name }}</span>
+                                    </div>
+
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm font-medium text-slate-500 dark:text-slate-400">Email</span>
+                                        <span class="text-slate-900 dark:text-white">{{ auth()->user()->email }}</span>
+                                    </div>
+
+                                    @if(auth()->user()->phone)
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm font-medium text-slate-500 dark:text-slate-400">Phone</span>
+                                        <span class="text-slate-900 dark:text-white">{{ auth()->user()->phone }}</span>
+                                    </div>
+                                    @endif
+                                </div>
                             </div>
+                        </div>
+                        @endauth
+
+                        <div class="mb-6">
+                            <label for="special_requests"
+                                class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Special
+                                Requests (Optional)</label>
+                            <textarea id="special_requests" name="special_requests" rows="3"
+                                class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('special_requests') }}</textarea>
+                            @error('special_requests')
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- Price Summary -->

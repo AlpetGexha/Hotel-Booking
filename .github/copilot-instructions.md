@@ -16,7 +16,7 @@ When providing code examples or explanations:
 
 - Provide **concise**, **technical**, and **context-aware** answers.
 - Adhere strictly to **Laravel 12**, **PHP 8.3**, and community best practices.
-- Promote principles of **OOP**, **SOLID**, and **DRY**.
+- Promote principles of **OOP**, **SOLID**, and **DRY**, **Action Pattern**, **Guard Pattern**.
 - Design solutions with **modularity**, **readability**, and **scalability** in mind.
 
 ---
