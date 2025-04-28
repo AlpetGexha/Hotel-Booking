@@ -47,7 +47,8 @@ final class BookingResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('Booking ID')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault : true),
                 Tables\Columns\TextColumn::make('check_in')
                     ->date('M d, Y')
                     ->sortable(),
@@ -61,20 +62,18 @@ final class BookingResource extends Resource
                     })
                     ->sortable(query: function (Builder $query, string $direction): Builder {
                         return $query->orderByRaw("DATEDIFF(check_out, check_in) {$direction}");
-                    }),
+                    })
+                    ->toggleable(isToggledHiddenByDefault : true),
                 Tables\Columns\TextColumn::make('customer.name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('customer.email')
-                    ->searchable()
-                    ->sortable()
-                    ->toggleable(),
                 Tables\Columns\TextColumn::make('room.room_number')
-                    ->label('Room Number')
+                    ->label('RN')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('roomType.name')
                     ->label('Room Type')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault : true),
                 Tables\Columns\TextColumn::make('guests')
                     ->label('Guests')
                     ->sortable(),
@@ -84,7 +83,7 @@ final class BookingResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault : true),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->formatStateUsing(fn (Booking $record): string => $record->status->label())
@@ -94,6 +93,7 @@ final class BookingResource extends Resource
                     ->formatStateUsing(fn (Booking $record): string => $record->payment_status?->label())
                     ->sortable(),
                 Tables\Columns\TextColumn::make('payment_method')
+                ->label('P Method')
                     ->formatStateUsing(fn (Booking $record): ?string => $record->payment_method?->label())
                     ->sortable(),
             ])
