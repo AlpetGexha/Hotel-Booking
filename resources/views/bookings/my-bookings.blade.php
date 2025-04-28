@@ -9,7 +9,7 @@
         </div>
 
         <!-- Main Tabs: Upcoming & Past -->
-        <div x-data="{ 
+        <div x-data="{
             mainTab: 'upcoming',
             subTab: {
                 upcoming: 'self',
@@ -19,16 +19,16 @@
             <!-- Main Tabs Navigation -->
             <div class="border-b border-gray-200 dark:border-gray-700">
                 <nav class="flex -mb-px space-x-8">
-                    <button 
-                        @click="mainTab = 'upcoming'" 
-                        :class="{'border-indigo-500 text-indigo-600 dark:text-indigo-400': mainTab === 'upcoming', 
+                    <button
+                        @click="mainTab = 'upcoming'"
+                        :class="{'border-indigo-500 text-indigo-600 dark:text-indigo-400': mainTab === 'upcoming',
                                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300': mainTab !== 'upcoming'}"
                         class="py-4 px-1 border-b-2 font-medium text-sm">
                         {{ __('Upcoming Stays') }}
                     </button>
-                    <button 
-                        @click="mainTab = 'past'" 
-                        :class="{'border-indigo-500 text-indigo-600 dark:text-indigo-400': mainTab === 'past', 
+                    <button
+                        @click="mainTab = 'past'"
+                        :class="{'border-indigo-500 text-indigo-600 dark:text-indigo-400': mainTab === 'past',
                                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300': mainTab !== 'past'}"
                         class="py-4 px-1 border-b-2 font-medium text-sm">
                         {{ __('Past Stays') }}
@@ -39,8 +39,8 @@
             <!-- Secondary Tabs: My Bookings & Bookings for Others -->
             <div x-show="mainTab === 'upcoming' || mainTab === 'past'" class="mt-4 mb-6">
                 <div class="bg-gray-100 dark:bg-slate-700 rounded-lg p-1 inline-flex">
-                    <button 
-                        @click="subTab[mainTab] = 'self'" 
+                    <button
+                        @click="subTab[mainTab] = 'self'"
                         :class="{
                             'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow': subTab[mainTab] === 'self',
                             'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300': subTab[mainTab] !== 'self'
@@ -48,8 +48,8 @@
                         class="px-4 py-2 text-sm font-medium rounded-md">
                         {{ __('My Stays') }}
                     </button>
-                    <button 
-                        @click="subTab[mainTab] = 'others'" 
+                    <button
+                        @click="subTab[mainTab] = 'others'"
                         :class="{
                             'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow': subTab[mainTab] === 'others',
                             'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300': subTab[mainTab] !== 'others'
@@ -78,8 +78,8 @@
                                         </p>
                                     </div>
                                     <div class="flex items-center bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 px-3 py-1 rounded-full text-sm font-medium">
-                                        {{ Carbon\Carbon::parse($booking->check_in)->isPast() && Carbon\Carbon::parse($booking->check_out)->isFuture() 
-                                            ? __('Current Stay') 
+                                        {{ Carbon\Carbon::parse($booking->check_in)->isPast() && Carbon\Carbon::parse($booking->check_out)->isFuture()
+                                            ? __('Current Stay')
                                             : __('Upcoming') }}
                                     </div>
                                 </div>
@@ -127,7 +127,7 @@
                                         <span class="text-sm text-gray-500 dark:text-gray-400">{{ __('Total Price') }}</span>
                                         <span class="ml-1 text-lg font-semibold text-gray-900 dark:text-white">${{ number_format($booking->total_price, 2) }}</span>
                                     </div>
-                                    
+
                                     @if($booking->special_requests)
                                     <div class="text-right flex items-center text-sm text-gray-500 dark:text-gray-400">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -174,8 +174,8 @@
                                         </p>
                                     </div>
                                     <div class="flex items-center bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 px-3 py-1 rounded-full text-sm font-medium">
-                                        {{ Carbon\Carbon::parse($booking->check_in)->isPast() && Carbon\Carbon::parse($booking->check_out)->isFuture() 
-                                            ? __('Current Stay') 
+                                        {{ Carbon\Carbon::parse($booking->check_in)->isPast() && Carbon\Carbon::parse($booking->check_out)->isFuture()
+                                            ? __('Current Stay')
                                             : __('Upcoming') }}
                                     </div>
                                 </div>
@@ -223,7 +223,7 @@
                                         <span class="text-sm text-gray-500 dark:text-gray-400">{{ __('Total Price') }}</span>
                                         <span class="ml-1 text-lg font-semibold text-gray-900 dark:text-white">${{ number_format($booking->total_price, 2) }}</span>
                                     </div>
-                                    
+
                                     @if($booking->special_requests)
                                     <div class="text-right flex items-center text-sm text-gray-500 dark:text-gray-400">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -20,7 +20,7 @@ final class MyBookingsController extends Controller
     public function __invoke(Request $request): View
     {
         $user = $request->user();
-        
+
         if (!$user) {
             return view('bookings.my-bookings', [
                 'upcomingSelfBookings' => collect(),
@@ -29,9 +29,9 @@ final class MyBookingsController extends Controller
                 'pastOthersBookings' => collect(),
             ]);
         }
-        
+
         $bookings = $this->fetchUserBookingsAction->handle($user);
-        
+
         return view('bookings.my-bookings', $bookings);
     }
 }
