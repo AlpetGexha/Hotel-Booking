@@ -139,39 +139,30 @@
 
                         <!-- Booking Options Section -->
                         @auth
-                        <div class="mb-6">
-                            <h3 class="text-base font-medium text-slate-900 dark:text-white mb-4">Booking Options</h3>
-                            <div class="flex flex-col space-y-3">
-                                <div class="flex items-center">
-                                    <input
-                                        type="radio"
-                                        id="booking_self"
-                                        name="booking_for"
-                                        value="self"
-                                        x-model="bookingFor"
-                                        {{ old('booking_for', 'self') === 'self' ? 'checked' : '' }}
-                                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600"
-                                    >
-                                    <label for="booking_self" class="ml-2 block text-sm text-slate-700 dark:text-slate-300">
-                                        Book for myself
-                                    </label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input
-                                        type="radio"
-                                        id="booking_other"
-                                        name="booking_for"
-                                        value="other"
-                                        x-model="bookingFor"
-                                        {{ old('booking_for') === 'other' ? 'checked' : '' }}
-                                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600"
-                                    >
-                                    <label for="booking_other" class="ml-2 block text-sm text-slate-700 dark:text-slate-300">
-                                        Book for someone else
-                                    </label>
+                            <div class="mb-6">
+                                <h3 class="text-base font-medium text-slate-900 dark:text-white mb-4">Booking Options</h3>
+                                <div class="flex flex-col space-y-3">
+                                    <div class="flex items-center">
+                                        <input type="radio" id="booking_self" name="booking_for" value="self"
+                                            x-model="bookingFor"
+                                            {{ old('booking_for', 'self') === 'self' ? 'checked' : '' }}
+                                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600">
+                                        <label for="booking_self"
+                                            class="ml-2 block text-sm text-slate-700 dark:text-slate-300">
+                                            Book for myself
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input type="radio" id="booking_other" name="booking_for" value="other"
+                                            x-model="bookingFor" {{ old('booking_for') === 'other' ? 'checked' : '' }}
+                                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600">
+                                        <label for="booking_other"
+                                            class="ml-2 block text-sm text-slate-700 dark:text-slate-300">
+                                            Book for someone else
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         @else
                             <input type="hidden" name="booking_for" value="other">
                         @endauth
@@ -184,8 +175,7 @@
                                         class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">First
                                         Name</label>
                                     <input type="text" id="first_name" name="first_name"
-                                        value="{{ old('first_name') }}"
-                                        x-bind:required="bookingFor === 'other'"
+                                        value="{{ old('first_name') }}" x-bind:required="bookingFor === 'other'"
                                         class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                     @error('first_name')
                                         <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
@@ -196,8 +186,7 @@
                                         class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Last
                                         Name</label>
                                     <input type="text" id="last_name" name="last_name"
-                                        value="{{ old('last_name') }}"
-                                        x-bind:required="bookingFor === 'other'"
+                                        value="{{ old('last_name') }}" x-bind:required="bookingFor === 'other'"
                                         class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                     @error('last_name')
                                         <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
@@ -218,7 +207,8 @@
 
                             <div>
                                 <label for="phone"
-                                    class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Phone (Optional)</label>
+                                    class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Phone
+                                    (Optional)</label>
                                 <input type="tel" id="phone" name="phone" value="{{ old('phone') }}"
                                     class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 @error('phone')
@@ -229,30 +219,35 @@
 
                         <!-- User Information Display (when booking for self) -->
                         @auth
-                        <div class="mb-6" x-show="bookingFor === 'self'" x-transition>
-                            <h3 class="text-base font-medium text-slate-900 dark:text-white mb-4">Your Information</h3>
+                            <div class="mb-6" x-show="bookingFor === 'self'" x-transition>
+                                <h3 class="text-base font-medium text-slate-900 dark:text-white mb-4">Your Information</h3>
 
-                            <div class="bg-slate-50 dark:bg-slate-700/30 rounded-lg p-4">
-                                <div class="grid grid-cols-1 gap-4">
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-sm font-medium text-slate-500 dark:text-slate-400">Name</span>
-                                        <span class="text-slate-900 dark:text-white">{{ auth()->user()->name }}</span>
-                                    </div>
+                                <div class="bg-slate-50 dark:bg-slate-700/30 rounded-lg p-4">
+                                    <div class="grid grid-cols-1 gap-4">
+                                        <div class="flex justify-between items-center">
+                                            <span
+                                                class="text-sm font-medium text-slate-500 dark:text-slate-400">Name</span>
+                                            <span class="text-slate-900 dark:text-white">{{ auth()->user()->name }}</span>
+                                        </div>
 
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-sm font-medium text-slate-500 dark:text-slate-400">Email</span>
-                                        <span class="text-slate-900 dark:text-white">{{ auth()->user()->email }}</span>
-                                    </div>
+                                        <div class="flex justify-between items-center">
+                                            <span
+                                                class="text-sm font-medium text-slate-500 dark:text-slate-400">Email</span>
+                                            <span
+                                                class="text-slate-900 dark:text-white">{{ auth()->user()->email }}</span>
+                                        </div>
 
-                                    @if(auth()->user()->phone)
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-sm font-medium text-slate-500 dark:text-slate-400">Phone</span>
-                                        <span class="text-slate-900 dark:text-white">{{ auth()->user()->phone }}</span>
+                                        @if (auth()->user()->phone)
+                                            <div class="flex justify-between items-center">
+                                                <span
+                                                    class="text-sm font-medium text-slate-500 dark:text-slate-400">Phone</span>
+                                                <span
+                                                    class="text-slate-900 dark:text-white">{{ auth()->user()->phone }}</span>
+                                            </div>
+                                        @endif
                                     </div>
-                                    @endif
                                 </div>
                             </div>
-                        </div>
                         @endauth
 
                         <div class="mb-6">
@@ -267,7 +262,7 @@
                         </div>
 
                         <!-- Payment Method Selection -->
-                        <div class="mb-6">
+                        {{-- <div class="mb-6">
                             <h3 class="text-base font-medium text-slate-900 dark:text-white mb-4">Payment Method</h3>
                             <div class="grid grid-cols-1 gap-3">
                                 @foreach (\App\Enum\PaymentMethod::cases() as $method)
@@ -284,7 +279,7 @@
                                     </div>
                                     <div class="ml-3 text-sm leading-6">
                                         <label for="payment_method_{{ $method->value }}" class="flex items-center font-medium text-gray-700 dark:text-gray-300">
-                                            <i class="{{ $method->icon() }} w-5 h-5 mr-2 text-{{ $method->color() }}-500"></i>
+                                            <i class="{{ $method->getIcon() }} w-5 h-5 mr-2 text-{{ $method->getColor() }}-500"></i>
                                             {{ $method->label() }}
                                         </label>
                                     </div>
@@ -294,7 +289,7 @@
                             @error('payment_method')
                                 <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         <!-- Price Summary -->
                         <div class="bg-slate-50 dark:bg-slate-700/30 rounded-lg p-4 mb-6">
