@@ -7,6 +7,7 @@ namespace App\Filament\Resources;
 use App\Actions\Filament\ChangeBookingStatusAction;
 use App\Actions\Filament\ProcessPaymentAction;
 use App\Filament\Resources\BookingResource\Pages;
+use App\Filament\Resources\BookingResource\RelationManagers\PaymentsRelationManager;
 use App\Models\Booking;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -123,7 +124,7 @@ final class BookingResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            PaymentsRelationManager::class,
         ];
     }
 

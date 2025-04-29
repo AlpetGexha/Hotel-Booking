@@ -21,7 +21,7 @@ final class Payment extends Model
      */
     protected $fillable = [
         'amount',
-        'payment_method',
+        'method',
         'reference',
         'paymentable_id',
         'paymentable_type',
