@@ -78,9 +78,10 @@ composer run dev
 #### Booking Process
 
 ![Single Booking Page](Screenshot/Single-booking-page.png)
-![Multi Booking Page](Screenshot/Multi-Booking-Page.png)
+![Multi Booking Page](Screenshot/MullitBooking.png)
 ![Confirm Booking Page](Screenshot/Confirm-Booking-Page.png)
 ![Alternative Room Choice](Screenshot/Alternative-Room-Choise.png)
+![My Bookings](Screenshot/MyBooking.png)
 
 #### Contact Page
 
@@ -93,7 +94,8 @@ composer run dev
 ### Administrator Dashboard
 
 ![Admin Dashboard](Screenshot/AdminDashboard.png)
-![Admin Bookings](Screenshot/Admin-Booking.png)
+![Admin Bookings](Screenshot/AdminBooking.png)
+![Admin Booking Details](Screenshot/AdminViewBookingDetails.png)
 ![Admin Rooms](Screenshot/Admin-Room.png)
 ![Admin Room Types](Screenshot/admin-RoomType.png)
 ![Create Room Type](Screenshot/Create-Room-Type.png)
