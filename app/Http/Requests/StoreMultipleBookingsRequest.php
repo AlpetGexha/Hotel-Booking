@@ -32,7 +32,7 @@ final class StoreMultipleBookingsRequest extends FormRequest
             'guests' => ['required', 'integer', 'min:1', 'max:20'],
             'booking_for' => ['required', Rule::in(['self', 'other'])],
             'special_requests' => ['nullable', 'string'],
-            'payment_method' => ['required', Rule::enum(\App\Enum\PaymentMethod::class)],
+            'payment_method' => ['nullable', Rule::enum(\App\Enum\PaymentMethod::class)],
         ];
 
         // If booking for others, require their details

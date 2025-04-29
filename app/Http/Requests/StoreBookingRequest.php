@@ -31,7 +31,7 @@ final class StoreBookingRequest extends FormRequest
             'guests' => ['required', 'integer', 'min:1', 'max:10'],
             'booking_for' => ['required', Rule::in(['self', 'other'])],
             'special_requests' => ['nullable', 'string', 'max:1000'],
-            'payment_method' => ['required', Rule::enum(\App\Enum\PaymentMethod::class)],
+            'payment_method' => ['nullable', Rule::enum(\App\Enum\PaymentMethod::class)],
         ];
 
         if ($this->booking_for !== 'other') {
