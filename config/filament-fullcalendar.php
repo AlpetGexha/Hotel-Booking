@@ -66,6 +66,8 @@ return [
         'dayGrid',
         'timeGrid',
         'interaction',
+        'resourceTimeline',
+        'multiMonthYear',
     ],
 
     /**
