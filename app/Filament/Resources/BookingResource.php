@@ -6,7 +6,6 @@ namespace App\Filament\Resources;
 
 use App\Actions\Filament\ChangeBookingStatusAction;
 use App\Actions\Filament\ProcessPaymentAction;
-use App\Filament\Pages\CalendarBooking;
 use App\Filament\Resources\BookingResource\Pages;
 use App\Filament\Resources\BookingResource\RelationManagers\PaymentsRelationManager;
 use App\Models\Booking;
@@ -95,7 +94,7 @@ final class BookingResource extends Resource
                     ->formatStateUsing(fn (Booking $record): string => $record->payment_status?->label())
                     ->sortable(),
                 Tables\Columns\TextColumn::make('payment_method')
-                ->label('P Method')
+                    ->label('P Method')
                     ->formatStateUsing(fn (Booking $record): ?string => $record->payment_method?->label())
                     ->sortable(),
             ])

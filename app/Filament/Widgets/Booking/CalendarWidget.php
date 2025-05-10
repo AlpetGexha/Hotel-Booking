@@ -1,23 +1,25 @@
 <?php
 
-namespace App\Filament\Widgets;
+declare(strict_types=1);
+
+namespace App\Filament\Booking\Widgets;
 
 use App\Models\Booking;
 use Carbon\Carbon;
 use Filament\Widgets\Widget;
 use Illuminate\Database\Eloquent\Builder;
-use Saade\FilamentFullCalendar\Widgets\FullCalendarWidget;
 use Saade\FilamentFullCalendar\Data\EventData;
+use Saade\FilamentFullCalendar\Widgets\FullCalendarWidget;
 
-class CalendarWidget extends FullCalendarWidget
+final class CalendarWidget extends FullCalendarWidget
 {
     // Widget configuration
     protected static string $heading = 'Booking Calendar';
-    // public $model = Booking::class;
-
-    protected int | string | array $columnSpan = 'full';
 
     protected static ?int $sort = 2;
+    // public $model = Booking::class;
+
+    protected int|string|array $columnSpan = 'full';
 
     /**
      * FullCalendar will call this function whenever it needs new event data.
@@ -64,7 +66,7 @@ class CalendarWidget extends FullCalendarWidget
                     'total_price' => $booking->total_price,
                     'status' => $booking->status ? $booking->status->label() : 'Unknown',
                     'payment_status' => $booking->payment_status ? $booking->payment_status->label() : 'Unknown',
-                    'tooltip' => "$roomLabel • $customerName • {$booking->status->label()}",
+                    'tooltip' => "{$roomLabel} • {$customerName} • {$booking->status->label()}",
                 ])
                 ->toArray();
         })->toArray();
@@ -73,13 +75,13 @@ class CalendarWidget extends FullCalendarWidget
     /**
      * Get color for booking status
      *
-     * @param mixed $status The booking status
-     * @param bool $darker Whether to return a darker shade (for borders)
+     * @param  mixed  $status  The booking status
+     * @param  bool  $darker  Whether to return a darker shade (for borders)
      * @return string The hex color code
      */
     protected function getStatusColor($status, bool $darker = false): string
     {
-        if (!$status) {
+        if (! $status) {
             return '#6B7280'; // Gray for unknown status
         }
 

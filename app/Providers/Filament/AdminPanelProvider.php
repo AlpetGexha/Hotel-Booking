@@ -27,24 +27,24 @@ final class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         $plugin = [
-                'headerToolbar' => [
-                    // 'left' => 'prev,next today',
-                    // 'center' => 'title',
-                    // 'right' => 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
-                ],
-                'initialView' => 'resourceTimeline',
-                'dayMaxEvents' => true,
-                'eventTimeFormat' => [
-                    'hour' => '2-digit',
-                    'minute' => '2-digit',
-                    'meridiem' => 'short',
-                ],
-                'navLinks' => true,
-                'eventClick' => 'function(info) {
+            'headerToolbar' => [
+                // 'left' => 'prev,next today',
+                // 'center' => 'title',
+                // 'right' => 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+            ],
+            'initialView' => 'resourceTimeline',
+            'dayMaxEvents' => true,
+            'eventTimeFormat' => [
+                'hour' => '2-digit',
+                'minute' => '2-digit',
+                'meridiem' => 'short',
+            ],
+            'navLinks' => true,
+            'eventClick' => 'function(info) {
                     const url = "/admin/bookings/" + info.event.id;
                     window.open(url, "_self");
                 }',
-                'eventDidMount' => 'function(info) {
+            'eventDidMount' => 'function(info) {
                     const props = info.event.extendedProps;
                     if (props.tooltip) {
                         const tooltip = document.createElement("div");
@@ -78,7 +78,7 @@ final class AdminPanelProvider extends PanelProvider
 
                         tooltip.style.display = "none";
                     }
-                }',];
+                }', ];
 
         return $panel
             ->default()

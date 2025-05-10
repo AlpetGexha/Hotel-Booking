@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Filament\Resources\BookingResource\Pages;
 
 use App\Filament\Resources\BookingResource;
-use App\Filament\Widgets\CalendarWidget;
-use Filament\Actions\CreateAction;
+use App\Filament\Widgets\Booking\CalendarWidget;
 use Filament\Resources\Pages\Page;
-use Filament\Support\Facades\FilamentView;
 use Filament\Support\Enums\MaxWidth;
 
-class CalendarBookings extends Page
+final class CalendarBookings extends Page
 {
     protected static string $resource = BookingResource::class;
 
@@ -38,19 +36,31 @@ class CalendarBookings extends Page
         return null;
     }
 
+    public function getMaxContentWidth(): MaxWidth
+    {
+        return MaxWidth::Full;
+    }
+
+    // Override layout to make calendar widget full-width
+    public function getColumns(): int|array
+    {
+        // Return a custom layout that makes the calendar take up the full width
+        return 1;
+    }
+
     protected function getHeaderActions(): array
     {
         return [
             \Filament\Actions\Action::make('list')
                 ->label('List View')
-                ->url(fn(): string => BookingResource::getUrl('index'))
+                ->url(fn (): string => BookingResource::getUrl('index'))
                 ->color('gray')
                 ->icon('heroicon-o-table-cells')
                 ->button(),
 
             \Filament\Actions\Action::make('refresh')
                 ->label('Refresh Calendar')
-                ->action(fn() => $this->refreshPage())
+                ->action(fn () => $this->refreshPage())
                 ->color('warning')
                 ->icon('heroicon-o-arrow-path')
                 ->button(),
@@ -60,18 +70,7 @@ class CalendarBookings extends Page
     protected function getHeaderWidgets(): array
     {
         return [
-            CalendarWidget::class,
+            // CalendarWidget::class,
         ];
-    }
-
-    public function getMaxContentWidth(): MaxWidth
-    {
-        return MaxWidth::Full;
-    }
-    // Override layout to make calendar widget full-width
-    public function getColumns(): int | array
-    {
-        // Return a custom layout that makes the calendar take up the full width
-        return 1;
     }
 }

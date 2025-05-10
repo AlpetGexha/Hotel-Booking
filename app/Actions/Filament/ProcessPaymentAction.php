@@ -37,14 +37,14 @@ final class ProcessPaymentAction
             ->form([
                 \Filament\Forms\Components\TextInput::make('amount')
                     ->label('Payment Amount')
-                    ->default(fn(Booking $record) => $record->getBalanceDue())
+                    ->default(fn (Booking $record) => $record->getBalanceDue())
                     ->numeric()
                     ->prefix('$')
                     ->required(),
                 \Filament\Forms\Components\Select::make('payment_method')
                     ->label('Payment Method')
                     ->options(\App\Enum\PaymentMethod::class)
-                    ->default(fn(Booking $record) => $record->payment_method ?? \App\Enum\PaymentMethod::CASH)
+                    ->default(fn (Booking $record) => $record->payment_method ?? \App\Enum\PaymentMethod::CASH)
                     ->required(),
             ])
             ->action(function (Booking $record, array $data): void {
