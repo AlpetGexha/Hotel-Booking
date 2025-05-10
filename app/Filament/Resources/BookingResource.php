@@ -6,6 +6,7 @@ namespace App\Filament\Resources;
 
 use App\Actions\Filament\ChangeBookingStatusAction;
 use App\Actions\Filament\ProcessPaymentAction;
+use App\Filament\Pages\CalendarBooking;
 use App\Filament\Resources\BookingResource\Pages;
 use App\Filament\Resources\BookingResource\RelationManagers\PaymentsRelationManager;
 use App\Models\Booking;
@@ -133,6 +134,7 @@ final class BookingResource extends Resource
         return [
             'index' => Pages\ListBookings::route('/'),
             'view' => Pages\ViewBooking::route('/{record}'),
+            'calendar' => Pages\CalendarBookings::route('/calendar'),
         ];
     }
 }

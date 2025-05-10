@@ -15,7 +15,11 @@ final class ListBookings extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            // Actions\CreateAction::make(),
+            Actions\CreateAction::make(),
+            Actions\Action::make('calendar')
+                ->label('Calendar View')
+                ->url(fn (): string => BookingResource::getUrl('calendar'))
+                ->icon('heroicon-o-calendar-days'),
         ];
     }
 }
