@@ -39,10 +39,10 @@
             <div>
                 <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
                 <ul class="space-y-2 text-slate-300 text-sm">
-                    <li><a href="#" class="hover:text-indigo-400 transition duration-150">Our Rooms</a></li>
-                    <li><a href="#" class="hover:text-indigo-400 transition duration-150">Amenities</a></li>
-                    <li><a href="#" class="hover:text-indigo-400 transition duration-150">Gallery</a></li>
-                    <li><a href="#" class="hover:text-indigo-400 transition duration-150">Events</a></li>
+                    <li><a href="{{ route('rooms') }}" class="hover:text-indigo-400 transition duration-150">Our Rooms</a></li>
+                    <li><a href="{{ route('amenities') }}" class="hover:text-indigo-400 transition duration-150">Amenities</a></li>
+                    <li><a href="" class="hover:text-indigo-400 transition duration-150">Gallery</a></li>
+                    <li><a href="{{ route('filament.admin.auth.login') }}" class="hover:text-indigo-400 transition duration-150">ADMIN</a></li>
                     <li><a href="#" class="hover:text-indigo-400 transition duration-150">Special Offers</a></li>
                 </ul>
             </div>
